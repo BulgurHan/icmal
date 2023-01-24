@@ -1,0 +1,172 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-10">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col">
+                        <div class="p-5">
+                            <div class="text-center">
+                                
+                                <h1 class="h4 text-gray-900 mb-4"> {{title}} </h1>
+                                <hr>
+                                {% if form.errors %}
+                                {% for field in form  %}
+                                    {% for error in field.errors  %}
+                                        <div class='alert alert-danger'>
+                                            {{error}}
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                {% endif %}
+
+
+    <form method="POST">
+            {% csrf_token %}
+            <div class="row justify-content-center">
+                <div class="col-5 mt-3">
+                    <label for="id_sube">Oluşacak İcmalde Kaç Satır Olsun:</label>
+                </div>
+                <div class="col-3 mt-3">
+                    {{form.satır}}
+                </div>
+            </div>
+            <input class="btn btn-primary mt-3" type="submit" value="Devam"/>
+    </form>
+<hr>
+{% if title == "Ödeme İcmali Oluştur-2" %}
+
+{% for i in satir  %}
+<div class="row">
+    <select name="icmaller_{{i}}" class="form-control col-5" id="id_icmaller_{{i}}" multiple>
+        
+        {% for firma in firmalar  %}
+        
+       <optgroup ondblclick="doubleClick({{firma.pk}},id_icmaller_{{i}},id_secilenler_{{i}})" label="->{{firma.isim}}"></optgroup>
+            {% for sube in icmaller  %}
+            {% if sube.firma == firma %}
+        <option name="{{firma.pk}}" value="{{sube.pk}}">{{sube.sube.isim}}</option>
+        
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+      </select>
+    
+    <div class="col-2">
+    <a  onclick="yaziDegistir(id_icmaller_{{i}},id_secilenler_{{i}})" class="btn btn-success d-flex mt-5 mb-4">>>Ekle</a>
+    <a  onclick="removeOpt(id_icmaller_{{i}},id_secilenler_{{i}})" class="btn btn-dark d-flex">Kaldır<<</a>
+    </div>
+    <form method="POST" action={% url 'odemeIcmali2' %}>
+        {% csrf_token %}
+    <div class="col h-100">
+        <input type="text" class="form-control d-flex" name="secilen_baslik_{{i}}" placeholder="Firma Başlığı" required/>
+        <input type="hidden" id="satir_sayisi" name="satir_sayisi" value="{{sayi}}"/>
+    <select  name="secilenler_{{i}}" class="form-control"  id="id_secilenler_{{i}}" required multiple>
+    </select>
+    </div>
+</div>
+<hr>
+<br>
+{% endfor %}
+
+<br>
+    <input type="submit" onclick="selectText({{sayi}})" value="Devam" class="btn btn-primary"/>
+    
+</form>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+    
+
+<script>
+    
+    function yaziDegistir(icmal_id,secilen_id) {
+        var opt = document.createElement("option");
+        var sel2 = icmal_id;
+        if (sel2.options[sel2.selectedIndex].text){
+            secilen_id.options.add(opt);
+            opt.text = sel2.options[sel2.selectedIndex].text;
+            opt.value = sel2.options[sel2.selectedIndex].value;
+            opt.index = sel2.options[sel2.selectedIndex].index;
+        }
+        var silSelect=icmal_id;
+        silSelect.remove(silSelect.selectedIndex);
+      };
+    function removeOpt(icmal_id,secilen_id){
+        var opt = document.createElement("option");
+        var sel2 = secilen_id;
+        if (sel2.options[sel2.selectedIndex].text){
+            icmal_id.options.add(opt);
+            opt.text = sel2.options[sel2.selectedIndex].text;
+            opt.value = sel2.options[sel2.selectedIndex].value;
+            opt.index = sel2.options[sel2.selectedIndex].index;
+        }
+        var silSelect=secilen_id;
+        silSelect.remove(silSelect.selectedIndex);
+      };
+    function selectText(sayi) {
+        var listem = new Array();
+
+        for ( i=1; i<=sayi; i++){
+            listem[i] = document.getElementById("id_secilenler_"+i);
+        }
+        for (var i in listem){
+            options =  document.getElementById("id_secilenler_"+i);
+            options.focus();
+            for ( i=0; i<options.length; i++)
+            {
+                options[i].selected = "true";
+            }
+        }
+        };
+    
+    function doubleClick(pk,icmal_id,secilen_id){
+        var eklenecekler = new Array();
+        var i = 0;
+        for (let x of icmal_id.options){
+            if (parseInt(x.getAttribute("name")) == parseInt(pk)){
+                eklenecekler[i] = x;
+                
+            }
+            else{
+                continue
+            };
+            i++;
+        };
+        for(let i of eklenecekler){
+            var opt = document.createElement("option");
+            secilen_id.options.add(opt);
+            opt.text = i.text;
+            opt.value = i.value;
+            opt.index = i.index;
+            for(var j =0; j<icmal_id.options.length; j++){
+                if(icmal_id.options[j].text == opt.text){
+                    icmal_id.options[j].remove();
+                };
+            };
+        };
+    };
+    
+
+
+      
+
+    </script>
+</script>
+
+{% endif %}
+{% endblock content %}

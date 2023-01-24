@@ -1,0 +1,239 @@
+{% load static %}
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href={% url 'home' %}>
+                <div class="sidebar-brand-icon">
+                    <img src={% static 'img/logo.jpg' %} height= 50 width=50 />
+                </div>
+                <div class="sidebar-brand-text mx-3">İcmal Takip Sistemi</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item bg-success text-white active">
+                <a class="nav-link" href={% url 'createGirdi' %}>
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>İcmal Gir</span></a>
+            </li>
+
+            <li class="nav-item bg-secondary text-white active">
+                <a class="nav-link" href={% url 'hizliBir' %}>
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Hızlı SGK İcmali Gir</span></a>
+            </li>
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href={% url 'home' %}>
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Anasayfa</span></a>
+            </li>
+
+            <!-- Nav Item - Dashboard -->
+            {% comment %} <li class="nav-item">
+                <a class="nav-link" href={% url 'odemeIcmali' %}>
+                    <i class="fa fa-address-book" aria-hidden="true"></i>
+                    <span>Grup İcmali Görüntüle</span></a>
+            </li> {% endcomment %}
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Firmalar
+            </div>
+            
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                    aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Firmalar</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+
+                    <div class="bg-white py-2 collapse-inner rounded">
+
+                        {% for firma in firmalar %}
+                        {% if grup.isim == firma.grup.isim %}      
+                        <a class="collapse-item" href={% url 'firmaIcmalleri' firma_slug=firma.slug %}>{{firma.isim}}</a>
+                        {% endif %} 
+                        <div class="collapse-divider"></div>
+                         
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Şubeler
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#firmalar"
+                    aria-expanded="true" aria-controls="firmalar">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Şubeler</span>
+                </a>
+                <div id="firmalar" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        {% for firma in firmalar %}                        
+                        <h6 class="collapse-header">{{firma.isim}}</h6>
+                        {% for sube in subeler %}
+                        {% if sube.firma.isim == firma.isim %}      
+                        <a class="collapse-item" href={% url 'subeIcmalleri' sube_slug=sube.slug firma_slug=firma.slug %}>{{sube.isim}} </a>
+                        {% endif %} 
+                        <div class="collapse-divider"></div>
+                         
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+            </li>
+                        <!-- Divider -->
+                        <hr class="sidebar-divider">
+
+                        <!-- Heading -->
+                        <div class="sidebar-heading">
+                            Ayarlar
+                        </div>
+            
+                        <!-- Nav Item - Pages Collapse Menu -->
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href={% url 'ayarlar' %}>
+                                <i class="fas fa-fw fa-cog"></i>
+                                <span>Ayarlar</span>
+                            </a>
+                        </li>
+
+                        <!-- Divider -->
+                        {% comment %} <hr class="sidebar-divider">
+
+                        <!-- Heading -->
+                        <div class="sidebar-heading">
+                            Girişlerim
+                        </div>
+            
+                        <!-- Nav Item - Pages Collapse Menu -->
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href={% url 'icmallerim' %}>
+                                <i class="fas fa-edit "></i>
+                                <span>İcmal Girişlerimi Gör</span>
+                            </a>
+                        </li> {% endcomment %}
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+                    <form
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Ara.."
+                                aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Ara..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                       
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{request.user.first_name}}  {{request.user.last_name}}</span>
+                                <img class="img-profile rounded-circle"
+                                    src={% static 'img/undraw_profile.svg' %}>
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href={% url 'profile' %}>
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profil
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Çıkış
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->

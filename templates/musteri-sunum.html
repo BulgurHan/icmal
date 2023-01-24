@@ -1,0 +1,350 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+     <!-- Begin Page Content -->
+     <div class="container-fluid">
+
+        <!-- Page Heading -->
+          
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href={% url 'home' %}>Anasayfa</a></li>
+              <li class="breadcrumb-item"><a {% if title == "Firma Müşteri Sunum İcmali"  %} href= {% url 'firmaIcmalleri' firma_slug=icmal.firma.slug  %} {% elif title == "Şube Müşteri Sunum İcmali" %} href= {% url 'subeIcmalleri' sube_slug=icmal.sube.slug firma_slug=firma.slug  %} {% else %} href= {% url 'grupIcmalleri' grup_slug=icmal.grup.slug  %} {% endif %}>İcmal Listesi</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Müşteri Sunum İcmali</li>
+
+            </ol>
+            <div class="m-2">
+                <li> 
+                  <a href={% if title == "Şube Müşteri Sunum İcmali" %}
+                  {% url 'generatePdf' firma_slug=firma.slug sube_slug=icmal.sube.slug ay=icmal.ay yil=icmal.yıl %} 
+                  {% elif title == "Firma Müşteri Sunum İcmali" %}
+                  {% url 'generatePdfFirma' firma_slug=icmal.firma.slug ay=icmal.ay yil=icmal.yıl %} 
+                  {% else %}
+                  {% url 'generatePdfGrup' grup_slug=icmal.grup.slug ay=icmal.ay yil=icmal.yıl %}
+                  {% endif %}
+                  
+                  class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                      class="fas fa-download fa-sm text-white-50"></i>PDF'e Aktar</a>
+                  </li></div>
+
+          </nav>
+
+        <!-- DataTales Example -->
+        {% if title == "Şube Müşteri Sunum İcmali" %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">{{sube.firma.isim}} Firması {{sube.isim}} Şubesi {{icmal.yıl}}/{{icmal.ay}} Dönemi Müşteri Sunum İcmali</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable4" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Ödemenin Konusu</th>
+                                <th>Tutar</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th >GENEL TOPLAM</th>
+                                <th>{{icmal.toplam}}</th>                                
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% if icmal.kdvler > 0  %}
+                            <tr>
+                                <td>Katma Değer Vergisi</td>
+                                <td>{{icmal.kdvler}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.muhtasar > 0  %}
+                             <tr>
+                                <td>Muhtasar Vergisi</td>
+                                <td>{{icmal.muhtasar}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.ggkv > 0  %}
+                             <tr>
+                                <td>Gelir, Geçiçi, Kurumlar Vergisi</td>
+                                <td>{{icmal.ggkv}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.damga > 0  %}
+                             <tr>
+                                <td>Tek Başına Alınan / Düzeltme Damga Vergisi</td>
+                                <td>{{icmal.damga}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.cezalar > 0  %}
+                             <tr>
+                                <td>Motorlu Taşıtlar Vergisi/Trafik Cezaları</td>
+                                <td>{{icmal.cezalar}} </td>
+                             </tr>  
+                             {% endif %}
+                             {% if icmal.digercezalar > 0  %}                            
+                             <tr>
+                                <td>Diğer Cezalar, Dava Giderleri vs.</td>
+                                <td>{{icmal.digercezalar}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.geçmişborçlar > 0  %}
+                             <tr>
+                                <td>Geçmiş Aylarda Ödenmemiş Vergi Borçları</td>
+                                <td>{{icmal.geçmişborçlar}} </td>
+                             </tr>  
+                             {% endif %}
+                             {% if icmal.tesvik > 0  %}                                                          
+                            <tr>
+                                <td>İşkur-Teşvik-Kosgeb- Personel Ücreti</td>
+                                <td>{{icmal.tesvik}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.müsavirlikler > 0  %}
+                             <tr>
+                                <td>Muhasebe ve Müşavirlik Ücreti</td>
+                                <td>{{icmal.müsavirlikler}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.bagkur > 0  %}
+                             <tr>
+                                <td>Bağkur Primleri</td>
+                                <td>{{icmal.bagkur}} </td>
+                             </tr>
+                             {% endif %}
+                             <tfoot>
+                                <tr>
+                                    <th>TOPLAM</th>
+                                    <th>{{icmal.odemelertoplami}}</th>                                
+                                </tr>
+                            </tfoot>
+                            {% if icmal.sgk > 0  %}
+                        <tr>
+                            <td>SGK Primleri</td>
+                            <td>{{icmal.sgk}} </td>
+                         </tr>
+                         {% endif %}
+                </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% elif title == "Firma Müşteri Sunum İcmali" %}
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">{{icmal.firma.isim}} Firması  {{icmal.yıl}}/{{icmal.ay}} Dönemi Müşteri Sunum Genel İcmali</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable4" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Ödemenin Konusu</th>
+                                <th>Tutar</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th >GENEL TOPLAM</th>
+                                <th>{{icmal.toplam}}</th>                                
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% if icmal.kdvler > 0  %}
+                            <tr>
+                                <td>Katma Değer Vergisi</td>
+                                <td>{{icmal.kdvler}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.muhtasar > 0  %}
+                             <tr>
+                                <td>Muhtasar Vergisi</td>
+                                <td>{{icmal.muhtasar}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.ggkv > 0  %}
+                             <tr>
+                                <td>Gelir, Geçiçi, Kurumlar Vergisi</td>
+                                <td>{{icmal.ggkv}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.damga > 0  %}
+                             <tr>
+                                <td>Tek Başına Alınan / Düzeltme Damga Vergisi</td>
+                                <td>{{icmal.damga}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.cezalar > 0  %}
+                             <tr>
+                                <td>Motorlu Taşıtlar Vergisi/Trafik Cezaları</td>
+                                <td>{{icmal.cezalar}} </td>
+                             </tr>  
+                             {% endif %}
+                             {% if icmal.digercezalar > 0  %}                            
+                             <tr>
+                                <td>Diğer Cezalar, Dava Giderleri vs.</td>
+                                <td>{{icmal.digercezalar}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.geçmişborçlar > 0  %}
+                             <tr>
+                                <td>Geçmiş Aylarda Ödenmemiş Vergi Borçları</td>
+                                <td>{{icmal.geçmişborçlar}} </td>
+                             </tr>  
+                             {% endif %}
+                             {% if icmal.tesvik > 0  %}                                                          
+                            <tr>
+                                <td>İşkur-Teşvik-Kosgeb- Personel Ücreti</td>
+                                <td>{{icmal.tesvik}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.müsavirlikler > 0  %}
+                             <tr>
+                                <td>Muhasebe ve Müşavirlik Ücreti</td>
+                                <td>{{icmal.müsavirlikler}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.bagkur > 0  %}
+                             <tr>
+                                <td>Bağkur Primleri</td>
+                                <td>{{icmal.bagkur}} </td>
+                             </tr>
+                             {% endif %}
+                             <tfoot>
+                                <tr>
+                                    <th>TOPLAM</th>
+                                    <th>{{icmal.odemelertoplami}}</th>                                
+                                </tr>
+                            </tfoot>
+                            {% if icmal.sgk > 0  %}
+                        <tr>
+                            <td>SGK Primleri</td>
+                            <td>{{icmal.sgk}} </td>
+                         </tr>
+                         {% endif %}
+                </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="card-header py-3 text-center">
+            <h6 class="h2"> Şube İcmalleri </h6>
+        </div>
+
+{% for sube in subeler  %}
+{% for subeIcmal in subeIcmalleri  %}
+{% if sube.isim == subeIcmal.sube.isim %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary"> {{sube.isim}} Şubesi {{subeIcmal.yıl}}/{{subeIcmal.ay}} Dönemi İcmali</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable4" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Ödemenin Konusu</th>
+                                <th>Tutar</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th >GENEL TOPLAM</th>
+                                <th>{{subeIcmal.toplam}}</th>                                
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% if subeIcmal.kdvler > 0  %}
+                            <tr>
+                                <td>Katma Değer Vergisi</td>
+                                <td>{{subeIcmal.kdvler}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if subeIcmal.muhtasar > 0  %}
+                             <tr>
+                                <td>Muhtasar Vergisi</td>
+                                <td>{{subeIcmal.muhtasar}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if subeIcmal.ggkv > 0  %}
+                             <tr>
+                                <td>Gelir, Geçiçi, Kurumlar Vergisi</td>
+                                <td>{{subeIcmal.ggkv}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if subeIcmal.damga > 0  %}
+                             <tr>
+                                <td>Tek Başına Alınan / Düzeltme Damga Vergisi</td>
+                                <td>{{subeIcmal.damga}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if subeIcmal.cezalar > 0  %}
+                             <tr>
+                                <td>Motorlu Taşıtlar Vergisi/Trafik Cezaları</td>
+                                <td>{{subeIcmal.cezalar}} </td>
+                             </tr> 
+                             {% endif %} 
+                             {% if subeIcmal.digercezalar > 0  %}                            
+                             <tr>
+                                <td>Diğer Cezalar, Dava Giderleri vs.</td>
+                                <td>{{subeIcmal.digercezalar}} </td>
+                             </tr>
+                             {% endif %} 
+                             {% if subeIcmal.geçmişborçlar > 0  %}     
+                             <tr>
+                                <td>Geçmiş Aylarda Ödenmemiş Vergi Borçları</td>
+                                <td>{{subeIcmal.geçmişborçlar}} </td>
+                             </tr> 
+                             {% endif %} 
+                             {% if subeIcmal.tesvik > 0  %}                                                             
+                            <tr>
+                                <td>İşkur-Teşvik-Kosgeb- Personel Ücreti</td>
+                                <td>{{subeIcmal.tesvik}} </td>
+                             </tr>
+                             {% endif %} 
+                             {% if subeIcmal.müsavirlikler > 0  %}  
+                             <tr>
+                                <td>Muhasebe ve Müşavirlik Ücreti</td>
+                                <td>{{subeIcmal.müsavirlikler}} </td>
+                             </tr>
+                             {% endif %} 
+                             {% if subeIcmal.bagkur > 0  %} 
+                             <tr>
+                                <td>Bağkur Primleri</td>
+                                <td>{{subeIcmal.bagkur}} </td>
+                             </tr>
+                             {% endif %} 
+
+                             <tfoot>
+                                <tr>
+                                    <th>TOPLAM</th>
+                                    <th>{{subeIcmal.odemelertoplami}}</th>                                
+                                </tr>
+                            </tfoot>
+                            {% if subeIcmal.sgk > 0  %} 
+                        <tr>
+                            <td>SGK Primleri</td>
+                            <td>{{subeIcmal.sgk}} </td>
+                         </tr>
+                         {% endif %} 
+                </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+
+        {% endif %}
+    </div>
+    
+    <!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+
+
+{% endblock content %}

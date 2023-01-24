@@ -1,0 +1,269 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-xl-12 col-lg-12 col-md-9">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <div class="row">
+                    
+                    <div class="col">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">İcmal Giriş Ekranı</h1>
+                                {% if messages %}
+                                {% for message in messages  %}
+                                <div class='alert alert-{{message.tags}}'>
+                                    {{message}}
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-3">
+                                            {% if title == "İcmal Girişi" %}
+                                            <label for="id_sube">Şube Seçiniz:</label>
+                                            {% else %}
+                                            <label for="id_sube">Firma Seçiniz:</label>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-9">
+                                            {{subeForm.sube}}
+                                        </div>
+                                    </div>
+                                    <input class="btn btn-primary mt-3" type="submit" name="icmal-getir" value="Getir"/>
+                            </form>
+                <hr>
+{% if title == "İcmal Girişi" %}
+
+<div class="row justify-content-between">
+    <div class="col-12">
+        <h1 class="h4 text-gray-900 ">{{form.instance.firma.isim}} Firması {{form.instance.sube.isim}}  Şubesi  {{form.instance.yıl}} / {{form.instance.ay}}  Dönemi İcmali</h1>
+   </div>
+</div>
+
+<hr>             
+<form method="POST">
+    {% csrf_token %}
+    <div class="row justify-content-between">
+         <div class="col-2">
+            <label for="id_kdv">Katma Değer Vergisi:</label> 
+        </div>
+        <div class="col-3">
+             {{form.kdv}}
+        </div>
+        <div class="col-2">
+            <label for="id_kdv2">Katma Değer Vergisi-2:</label>
+        </div>
+        <div class="col-3">
+                {{form.kdv2}}
+        </div>
+    </div>
+
+    <div class="row justify-content-between">
+        <div class="col-2">
+            <label for="id_atak">Atak Fatura:</label>
+        </div>
+        <div class="col-3">
+                {{form.atak}}
+        </div>
+        <div class="col-2">
+            <label for="id_yasalKdv">Yasal KDV:</label>
+        </div>
+        <div class="col-3">
+                {{form.yasalKdv}}
+        </div>
+    </div>
+
+        <div class="row justify-content-between">
+            <div class="col-2">
+                <label for="id_muhtasar">Muhtasar Vergisi:</label>
+            </div>
+            <div class="col-3">
+                {{form.muhtasar}}
+            </div>
+            <div class="col-2">
+                <label for="id_ggkv">Gelir, Geçici, Kurumlar Vergisi:</label>                
+            </div>
+            <div class="col-3">
+                {{form.ggkv}}
+            </div>
+        </div>
+
+    <div class="row justify-content-between">
+        <div class="col-2">
+            <label for="id_damga">Tek Başına Alınan/ Düzeltme Damga Vergileri:</label>
+        </div>
+        <div class="col-3">
+            {{form.damga}}
+        </div>
+        <div class="col-2">
+            <label for="id_mtv">Motorlu Taşıtlar Vergisi</label>
+        </div>
+        <div class="col-3">
+            {{form.mtv}}
+        </div>
+    </div>
+
+    <div class="row justify-content-between">
+        <div class="col-2">
+            <label for="id_ceza">Trafik Cezaları:</label>
+        </div>
+        <div class="col-3">
+            {{form.ceza}}
+        </div>
+        <div class="col-2">
+            <label for="id_idariceza">Özel Usülsüzlük ve İdari Para Cezaları</label>
+        </div>
+        <div class="col-3">
+            {{form.idariceza}}
+        </div>
+    </div>
+
+
+    <div class="row justify-content-between">
+        <div class="col-2">
+            <label for="id_davagideri">Yargı ve Dava Giderleri:</label>
+        </div>
+        <div class="col-3">
+            {{form.davagideri}}
+        </div>
+        <div class="col-2">
+            <label for="id_hakemheyeti">Tüketici Hakem Heyeti Borçları':</label>
+        </div>
+        <div class="col-3">
+            {{form.hakemheyeti}}
+        </div>
+    </div>
+
+    <div class="row justify-content-between">
+        <div class="col-2">
+            <label for="id_geçmişborçlar">Geçmiş Aylarda Ödenmeyen Vergi Borçları:</label>            
+        </div>
+        <div class="col-3">
+            {{form.geçmişborçlar}}
+        </div>
+        <div class="col-2">
+            <label for="id_tesvik">İş-Kur-Teşvik-Kosgeb-Personel Ücreti:</label>            
+        </div>
+        <div class="col-3">
+            {{form.tesvik}}
+        </div>
+    </div>
+
+
+    <div class="row justify-content-between">
+        <div class="col-2">
+            <label for="id_müsavirlik">Muhasebe ve Müşavirlik Hizmeti:</label>    
+        </div>
+        <div class="col-3">
+            {{form.müsavirlik}}
+        </div>
+        <div class="col-2">
+            <label for="id_harcama">Muhasebe Ofisi Tarafından Yapılan Harcamalar:</label>   
+        </div>
+        <div class="col-3">
+            {{form.harcama}}
+        </div>
+    </div>
+
+    <div class="row justify-content-between">
+        <div class="col-2">
+            <label for="id_sgk">Sgk Primleri:</label>
+        </div>
+        <div class="col-3">
+            {{form.sgk}}
+        </div>
+        <div class="col-2">
+            <label for="id_bagkur">Bağ-Kur Primleri:</label>
+        </div>
+        <div class="col-3">
+            {{form.bagkur}}
+        </div>
+    </div>
+    <div class="row justify-content-between">
+        <div class="col-2">
+            <label for="id_tasdik">Defter Açılış, Kapanış, Tasdik Ücreti</label>
+        </div>
+        <div class="col-3">
+            {{form.tasdik}}
+        </div>
+        <div class="col-2">
+            <label for="sonuc"> Toplam:</label>
+        </div>
+        <div class="col-3">
+            <input  class="form-control"  type="text" id="sonuc" name="sonuc" disabled/>
+        </div>
+    </div>
+    <hr>
+    <input type="submit" value="Ekle" name="icmal-kaydet" class="btn btn-success"/>
+
+</form>
+{% endif %}   
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+
+    var sonuc = 0;
+    var sayilar = new Array();
+
+    function topla(){
+        sayilar[0] = 0; 
+        sayilar[1] = document.getElementById("id_kdv2").value;
+        sayilar[2] = document.getElementById("id_atak").value; 
+        sayilar[3] = document.getElementById("id_yasalKdv").value;
+        sayilar[4] = document.getElementById("id_muhtasar").value; 
+        sayilar[5] = document.getElementById("id_damga").value;
+        sayilar[6] = document.getElementById("id_mtv").value; 
+        sayilar[7] = document.getElementById("id_ceza").value;
+        sayilar[8] = document.getElementById("id_idariceza").value; 
+        sayilar[9] = document.getElementById("id_davagideri").value;
+        sayilar[10] = document.getElementById("id_hakemheyeti").value; 
+        sayilar[11] = document.getElementById("id_geçmişborçlar").value;
+        sayilar[12] = document.getElementById("id_tesvik").value;
+        sayilar[13] = document.getElementById("id_müsavirlik").value; 
+        sayilar[14] = document.getElementById("id_harcama").value;
+        sayilar[15] = document.getElementById("id_sgk").value; 
+        sayilar[16] = document.getElementById("id_bagkur").value;
+        sayilar[17] = document.getElementById("id_ggkv").value;
+        sayilar[18] = document.getElementById("id_kdv").value; 
+        sayilar[19] = document.getElementById("id_tasdik").value; 
+        
+
+
+        for (var i in sayilar){
+            if (i<= 0 ){
+                sonuc = 0;
+            }else {
+                sonuc = parseFloat(sayilar[i]) + sonuc;
+            }
+            
+        }
+        
+
+        if (document.getElementById("sonuc").value = NaN){
+            return  document.getElementById("sonuc").value = 0;
+        }else{
+            return document.getElementById("sonuc").value = sonuc;
+        }
+        
+    }
+
+    setInterval("topla()", 100);
+
+</script>
+
+
+
+{% endblock content %}

@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+
+     <!-- Begin Page Content -->
+     <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href={% url 'home' %}>Anasayfa</a></li>
+              <li class="breadcrumb-item active" aria-current="page">İcmal Girişlerim</li>
+            </ol>
+          </nav>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">{{request.user.first_name}}  {{request.user.last_name}} Kullanıcısının Girdiği İcmaller</h6>                
+
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable4" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Personel</th>
+                                <th>Yıl</th>
+                                <th>Ay</th>
+                                <th>Firma</th>
+                                <th>Şube</th>
+                                <th>Düzenle / Sil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for icmal in icmaller  %}
+                             
+                            <tr>   
+                                <td>{{icmal.personel.first_name}}  {{icmal.personel.last_name}}</td>                           
+                                <td>{{icmal.yıl}}</td>
+                                <td>{{icmal.ay}}</td> 
+                                <td>{{icmal.sube.firma.isim}}</td>    
+                                <td>{{icmal.sube.isim}}</td>   
+                                <td>
+                                    <a href="#"><i class="fas fa-edit " aria-hidden="true"></i> </a> /
+                                    <a href="#"><i class="fas fa-window-close    "></i></a>
+                                </td>                  
+                            </tr>                        
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+
+{% endblock content %}

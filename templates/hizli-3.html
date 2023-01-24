@@ -1,0 +1,108 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+     <!-- Begin Page Content -->
+     <div class="container-fluid">
+        {% if messages %}
+        {% for message in messages  %}
+        <div class='alert alert-{{message.tags}}'>
+            {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <input type="hidden" id="sayi" value="{{sayi}}" disabled/>
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">{{title}}</h1>
+        <hr>
+        <h1 class="h4 mb-2 text-gray-800">{{firma.isim}} Firması Şubeleri </h1>
+        <!-- DataTales Example -->
+        <form method="post">
+            {% csrf_token %}
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Dönem</th>
+                        <th>İsim</th>
+                        <th>Sgk No</th>
+                        <th>SGK Primleri</th>
+                        <th>İşkur-Kosgeb-Teşvik Ücretleri</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+            
+            {{ formset.management_form }}
+            {% for form in formset %}
+            
+                {{ form.id }}
+                
+                <tr id="{{forloop.counter}}">
+                    <td>{{form.instance.yıl}}/{{form.instance.ay}}</td>
+                    <td>{{ form.instance.sube.isim }}</td>
+                    <td>{{ form.instance.sube.sgkNo }}</td>
+                    <td>{{ form.sgk }}</td>
+                    <td>{{ form.tesvik }}</td>
+                    
+                </tr>
+
+            {% endfor %}
+            <tr>
+                <td colspan=3>TOPLAM</td>
+                <td> <input  class="form-control"  type="text" id="sonucSGK" name="sonuc" disabled/></td>
+                <td> <input  class="form-control"  type="text" id="sonucTESVIK" name="sonuc" disabled/></td>
+                
+            </tr>
+                <tbody>
+            </table>
+            <input class="btn btn-primary" value="Kaydet" type="submit" />  
+        </form>
+    </div>
+   <input type="hidden" value={{sayi}} id="sayi" />
+    <!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+
+
+
+<script>
+
+function degistir(){
+    var sayi = document.getElementById("sayi").value;
+    document.getElementById("id_form-"+sayi+"-sgk").type = "hidden";
+    document.getElementById("id_form-"+sayi+"-tesvik").type = "hidden";
+    tr = String(parseInt(sayi)+1)
+    sil= document.getElementById(tr);
+    sil.hidden=true;
+    
+    var sgklar = new Array();
+    var tesvikler = new Array();
+    var sgkSonuc = 0;
+    var tesvikSonuc = 0;
+    
+    
+
+    for (var i = 0; i<sayi; i++){
+        sgkSonuc += parseFloat(document.getElementById("id_form-"+i+"-sgk").value);
+        tesvikSonuc += parseFloat(document.getElementById("id_form-"+i+"-tesvik").value);
+    }
+    document.getElementById("sonucSGK").value = sgkSonuc;
+    document.getElementById("sonucTESVIK").value = tesvikSonuc;
+}
+setInterval("degistir()", 100);
+
+
+
+{% comment %} function degistir(){
+    var id = document.getElementById("sayi").value;
+    document.getElementById("id_form-"+id+"-sgk").type = "hidden";
+    return document.getElementById("id_form-"+id+"-tesvik").type = "hidden";
+}
+
+setInterval("degistir()", 1); {% endcomment %}
+       
+        
+
+</script>
+{% endblock content %}

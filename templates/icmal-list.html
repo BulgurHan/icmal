@@ -1,0 +1,130 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+     <!-- Begin Page Content -->
+     <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href={% url 'home' %}>Anasayfa</a></li>
+              <li class="breadcrumb-item active" aria-current="page">İcmal Listesi</li>
+            </ol>
+          </nav>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                {% if title == 'Şube İcmal Listesi' %}
+                <h6 class="m-0 font-weight-bold text-primary">{{sube.isim}} Şubesi İcmal Listesi </h6>
+                {% elif title == 'Firma İcmal Listesi' %}
+                <h6 class="m-0 font-weight-bold text-primary">{{firma.isim}} Firması İcmal Listesi </h6>             
+                {% endif %}
+            </div>
+            {% if title == 'Şube İcmal Listesi' %}
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable4" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Yıl</th>
+                                <th>Ay</th>
+                                <th>Firma</th>
+                                <th>Şube</th>
+                                <th>Detaylı İcmal / Müşteri Sunum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for icmal in icmaller  %}
+                             
+                            <tr>                              
+                                <td>{{icmal.yıl}}</td>
+                                <td>{{icmal.ay}}</td>  
+                                <td>{{icmal.sube.firma.isim}}</td>
+                                <td>{{icmal.sube.isim}}</td>   
+                                <td>
+                                    <a href={% url 'icmal_detay' firma_slug=sube.firma.slug sube_slug=icmal.sube.slug yil=icmal.yıl ay=icmal.ay %}><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> </a> /
+                                    <a href={% url 'musteri_sunum_icmali' firma_slug=sube.firma.slug sube_slug=icmal.sube.slug yil=icmal.yıl ay=icmal.ay  %}><i class="fa fa-address-card mx-3" aria-hidden="true"></i> </a>
+                                </td>                  
+                            </tr>                        
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+{% elif title == 'Firma İcmal Listesi' %}  
+    
+             <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable4" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Yıl</th>
+                                <th>Ay</th>
+                                <th>Firma</th>
+                                <th>Detaylı İcmal / Müşteri Sunum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for icmal in icmaller  %}
+                             
+                            <tr>                              
+                                <td>{{icmal.yıl}}</td>
+                                <td>{{icmal.ay}}</td>  
+                                <td>{{icmal.firma.isim}}</td>
+                                <td>
+                                    <a href={% url 'firma_icmal_detay' firma_slug=icmal.firma.slug ay=icmal.ay yil=icmal.yıl %}><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> </a>  /
+                                    <a href={% url 'firma_musteri_sunum_icmali' firma_slug=icmal.firma.slug ay=icmal.ay yil=icmal.yıl %}><i class="fa fa-address-card mx-3" aria-hidden="true"></i> </a> 
+                                </td>  
+                                                  
+                            </tr>                        
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {% else %}  
+    
+             <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable4" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Yıl</th>
+                                <th>Ay</th>
+                                <th>Detaylı İcmal / Müşteri Sunum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for icmal in icmaller  %}
+                             
+                            <tr>                              
+                                <td>{{icmal.yıl}}</td>
+                                <td>{{icmal.ay}}</td>  
+                                <td>
+                                    <a href={% url 'grup_icmal_detay' grup_slug=icmal.grup.slug ay=icmal.ay yil=icmal.yıl%}><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> </a>  /
+                                    <a href={% url 'grup_musteri_sunum_icmali' grup_slug=icmal.grup.slug ay=icmal.ay yil=icmal.yıl %}><i class="fa fa-address-card mx-3" aria-hidden="true"></i> </a> 
+                                </td>  
+                                                  
+                            </tr>                        
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %} 
+        </div>
+
+    </div>
+    
+    <!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+
+
+{% endblock content %}
