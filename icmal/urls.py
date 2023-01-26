@@ -1,24 +1,10 @@
-"""icmal URL Configuration
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
 from page.views import (home,createFirma,createSube,
                         createGirdi,firmaIcmalleri,grupIcmalleri,
                         subeIcmalleri,icmal_detay,firma_icmal_detay,
-                        grup_icmal_detay,musteri_sunum_icmali,firma_musteri_sunum_icmali,grup_musteri_sunum_icmali,
+                        musteri_sunum_icmali,firma_musteri_sunum_icmali,
                         ayarlar,icmallerim,generatePdf,generatePdfFirma,generatePdfGrup,signinView,signoutView,
                         signupView,profile,allSubeler,editSube,allFirmalar,editFirma,deleteSube,deleteFirma,
                         hizliBir,hizliIki,icmalGir,odemeIcmali,odemeIcmali2,OdemeIcmaliDevam
@@ -32,10 +18,8 @@ urlpatterns = [
     path('subeler/<str:firma_slug>/<str:sube_slug>/', subeIcmalleri, name='subeIcmalleri'),
     path('sube-icmal/<str:firma_slug>/<str:sube_slug>/<int:yil>/<int:ay>/', icmal_detay, name='icmal_detay'),
     path('firma-icmal/<str:firma_slug>/<int:yil>/<int:ay>/', firma_icmal_detay, name='firma_icmal_detay'),
-    path('grup-icmal/<str:grup_slug>/<int:yil>/<int:ay>/', grup_icmal_detay, name='grup_icmal_detay'),
     path('sube-muster-sunum/<str:firma_slug>/<str:sube_slug>/<int:yil>/<int:ay>/', musteri_sunum_icmali, name='musteri_sunum_icmali'),
     path('firma-muster-sunum/<str:firma_slug>/<int:yil>/<int:ay>/', firma_musteri_sunum_icmali, name='firma_musteri_sunum_icmali'),
-    path('grup-muster-sunum/<str:grup_slug>/<int:yil>/<int:ay>/', grup_musteri_sunum_icmali, name='grup_musteri_sunum_icmali'),
     path('firma/olustur/', createFirma, name='createFirma'),
     path('sube/olustur/', createSube, name='createSube'),
     path('icmal/olustur/', createGirdi, name='createGirdi'),

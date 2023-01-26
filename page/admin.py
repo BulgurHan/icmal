@@ -1,9 +1,8 @@
 from django.contrib import admin
-from .models import Firma,Sube,Icmal,Girdi,FirmaIcmal,GrupIcmal
+from .models import Firma,Sube,Icmal,FirmaIcmal,GrupIcmal
 
 
 admin.site.register(Icmal)
-admin.site.register(Girdi)
 admin.site.register(FirmaIcmal)
 admin.site.register(GrupIcmal)
 

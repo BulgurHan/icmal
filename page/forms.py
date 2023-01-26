@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Firma,Girdi,Sube,YEAR_CHOICES,MONTH_CHOICES,Icmal
+from .models import Firma,Sube,YEAR_CHOICES,MONTH_CHOICES,Icmal
 
 FİRMALAR = Firma.objects.all()
 SUBELER =Sube.objects.all()

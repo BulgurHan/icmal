@@ -63,31 +63,7 @@ def icmal_olustur(sender, instance, created, **kwargs):
 
 
 
-
-class Girdi(models.Model):
-    personel = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True)
-    sube = models.ForeignKey(Sube,on_delete=models.CASCADE,null=True)  
-    yıl = models.IntegerField(('yıl'), choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    ay = models.IntegerField(('ay'), choices=MONTH_CHOICES, default=datetime.datetime.now().month)
-    kdv = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    kdv2  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    atak = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    yasalKdv = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    tasdik = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    muhtasar  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    ggkv  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    damga = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    mtv  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    ceza = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    idariceza  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    davagideri  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    hakemheyeti  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    geçmişborçlar  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    tesvik  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    müsavirlik  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    harcama  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    sgk  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    bagkur  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)    
+   
 
 
 class Icmal(models.Model):
@@ -140,7 +116,7 @@ class Icmal(models.Model):
         self.toplam = self.odemelertoplami+self.sgk
         self.cezalar = self.ceza + self.mtv
         self.digercezalar = self.idariceza + self.davagideri + self.hakemheyeti
-        self.müsavirlikler =self.müsavirlik + self.harcama+self.tasdik
+        self.müsavirlikler =self.müsavirlik + self.harcama
         self.firma = self.sube.firma
         super(Icmal, self).save(*args, **kwargs)
     def __str__(self):
@@ -191,7 +167,7 @@ class FirmaIcmal(models.Model):
         self.toplam = self.odemelertoplami+self.sgk
         self.cezalar = self.ceza + self.mtv
         self.digercezalar = self.idariceza + self.davagideri + self.hakemheyeti
-        self.müsavirlikler =self.müsavirlik + self.harcama+self.tasdik
+        self.müsavirlikler =self.müsavirlik + self.harcama
         super(FirmaIcmal, self).save(*args, **kwargs)
 
 
@@ -240,7 +216,7 @@ class GrupIcmal(models.Model):
         self.toplam = self.odemelertoplami+self.sgk
         self.cezalar = self.ceza + self.mtv
         self.digercezalar = self.idariceza + self.davagideri + self.hakemheyeti
-        self.müsavirlikler =self.müsavirlik + self.harcama+self.tasdik
+        self.müsavirlikler =self.müsavirlik + self.harcama
         super(GrupIcmal, self).save(*args, **kwargs)
     def __str__(self):
         return self.baslik

@@ -8,7 +8,7 @@ from django.forms import modelformset_factory
 from django.contrib.auth.models import User
 from django.contrib.auth import login,authenticate,logout
 from django.contrib import messages
-from .models import Girdi,Firma,Icmal,Sube,FirmaIcmal,YEAR_CHOICES,MONTH_CHOICES,GrupIcmal
+from .models import Firma,Icmal,Sube,FirmaIcmal,YEAR_CHOICES,MONTH_CHOICES,GrupIcmal
 from .forms import FirmaForm,SubeForm,GirdiForm,SignInForm,SignUpForm,FirmaCreateForm,HizliForm,IcmalBir,OdemeIcmaliForm,IcmalUc
 
 
@@ -260,24 +260,66 @@ def odemeIcmali2(request):
             a = GrupIcmal.objects.get(baslik=request.POST.getlist('secilen_baslik_{}'.format(index+1))[0],ay=MONTH_CHOICES[0][0], yıl=YEAR_CHOICES[0][0])
         except:
             a = GrupIcmal(baslik=request.POST.getlist('secilen_baslik_{}'.format(index+1))[0],ay=MONTH_CHOICES[0][0], yıl=YEAR_CHOICES[0][0])
+            atak =0
+            yasalKdv =0 
+            tasdik = 0
+            kdv =0
+            kdv2 = 0
+            muhtasar = 0
+            ggkv = 0
+            damga =0
+            mtv =0
+            ceza =0
+            idariceza = 0
+            davagideri =0
+            hakemheyeti =0
+            geçmişborçlar =0
+            tesvik=0
+            müsavirlik=0
+            harcama=0
+            sgk=0
+            bagkur=0
             for icmal in listem:
-                a.atak += icmal.atak
-                a.yasalKdv += icmal.yasalKdv
-                a.tasdik += icmal.tasdik
-                a.kdv += icmal.kdv
-                a.kdv2 += icmal.kdv2
-                a.muhtasar += icmal.muhtasar
-                a.ggkv += icmal.ggkv
-                a.damga += icmal.damga
-                a.mtv += icmal.mtv
-                a.ceza += icmal.ceza
-                a.idariceza += icmal.idariceza
-                a.davagideri += icmal.davagideri
-                a.hakemheyeti += icmal.hakemheyeti
-                a.geçmişborçlar += icmal.geçmişborçlar
-                a.sgk += icmal.sgk
-                a.bagkur += icmal.bagkur
-                a.save()
+                atak += icmal.atak
+                yasalKdv += icmal.yasalKdv
+                tasdik += icmal.tasdik
+                kdv += icmal.kdv
+                kdv2 += icmal.kdv2
+                muhtasar += icmal.muhtasar
+                ggkv += icmal.ggkv
+                damga += icmal.damga
+                mtv += icmal.mtv
+                ceza += icmal.ceza
+                idariceza += icmal.idariceza
+                davagideri += icmal.davagideri
+                hakemheyeti += icmal.hakemheyeti
+                geçmişborçlar += icmal.geçmişborçlar
+                tesvik += icmal.tesvik
+                müsavirlik += icmal.müsavirlik
+                harcama += icmal.harcama
+                sgk += icmal.sgk
+                bagkur += icmal.bagkur
+            a.atak = atak
+            a.yasalKdv = yasalKdv
+            a.tasdik = tasdik
+            a.kdv = kdv
+            a.kdv2 = kdv2
+            a.muhtasar = muhtasar
+            a.ggkv = ggkv
+            a.damga = damga
+            a.mtv = mtv
+            a.ceza = ceza
+            a.idariceza = idariceza
+            a.davagideri = davagideri
+            a.hakemheyeti = hakemheyeti
+            a.geçmişborçlar = geçmişborçlar
+            a.tesvik = tesvik
+            a.müsavirlik = müsavirlik
+            a.harcama = harcama
+            a.sgk = sgk
+            a.bagkur = bagkur
+            a.save()
+            
     context['items'] = GrupIcmal.objects.all()
     context['yıl'] =YEAR_CHOICES[0][0]
     context['ay'] =MONTH_CHOICES[0][0]
@@ -359,9 +401,6 @@ def firma_musteri_sunum_icmali(request,firma_slug,yil,ay):
     context['icmal'] = icmal
     return render(request,'musteri-sunum.html',context)
 
-@login_required
-def grup_musteri_sunum_icmali(request,grup_slug,yil,ay):
-   pass
 
 @login_required
 def firma_icmal_detay(request,firma_slug,yil,ay):
@@ -382,9 +421,6 @@ def firma_icmal_detay(request,firma_slug,yil,ay):
     return render(request,'icmal-detail.html',context)
 
 
-@login_required
-def grup_icmal_detay(request,grup_slug,yil,ay):
-    pass 
 
 
 @login_required
@@ -459,3 +495,9 @@ def profile(request):
             item.save()
             messages.success(request,'Değişiklikler Kaydedildi.')
     return render(request,'signin-form.html',context)
+
+
+@login_required
+def noname(request):
+    context=dict()
+    return
