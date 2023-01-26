@@ -119,11 +119,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 if DEBUG:
-    STATIC_ROOT = "static/"
-else:
-    STATICFILES_DIRS = [
+       STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+else:
+    STATIC_ROOT = "static/"
 
 
 # Default primary key field type
