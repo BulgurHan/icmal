@@ -30,13 +30,8 @@
 			body a {
 				color: #06f;
 			}
-			.sgk{
-				background:red;
-				color:white;
-			}
 
 			.invoice-box {
-				max-width: 800px;
 				margin: auto;
 				padding: 30px;
 				border: 1px solid #eee;
@@ -48,16 +43,21 @@
 			}
 
 			.invoice-box table {
-				width: 100%;
 				line-height: inherit;
-				text-align: left;
+				text-align: center;
 				border-collapse: collapse;
 			}
+
 			.sube-box table {
 				line-height: inherit;
-				text-align: left;
+				text-align: center;
 				border-collapse: collapse;
-				border-bottom: 1px solid #ddd;
+				border: 1px solid #ddd;
+			}
+
+			.sube-box table td {
+				padding: 1px;
+				vertical-align: top;
 			}
 
 			.invoice-box table td {
@@ -66,7 +66,7 @@
 			}
 
 			.invoice-box table tr td:nth-child(2) {
-				text-align: right;
+				text-align: left;
 			}
 
 			.invoice-box table tr.top table td {
@@ -97,9 +97,6 @@
 				border-bottom: 1px solid #eee;
 			}
 
-			.invoice-box table tr.item.last td {
-				border-bottom: none;
-			}
 
 			.invoice-box table tr.total td:nth-child(2) {
 				border-top: 2px solid #eee;
@@ -108,13 +105,11 @@
 
 			@media only screen and (max-width: 600px) {
 				.invoice-box table tr.top table td {
-					width: 100%;
 					display: block;
 					text-align: center;
 				}
 
 				.invoice-box table tr.information table td {
-					width: 100%;
 					display: block;
 					text-align: center;
 				}
@@ -124,15 +119,16 @@
 	{% if title == "Şube İcmali" %}
 	<body>
         <div>
-        <img height=150 width=150 src='https://seeklogo.com/images/M/mali-musavir-logo-ADCCA5EB76-seeklogo.com.png' />
-        <h3> Kocak Müsavirlik </h3>
-		<h3> Zafer Mh 2128 sk Seda Apt Kepez/Antalya</h3>
-		<h3> 0541 586 4712 </h3>
+        <h3> SMMM NEBIL KOCAK </h3>
+		<h3> Korkutreis Mh. Hanimeli Sk. No:21/9 </h3>
+		<h3> E-Posta: smmmnebilkocak@gmail.com </h3>
+		<h3> GSM: 0554 802 4706 </h3>
+		<h3> GSM: 0552 821 3706 </h3>
         </div>
         <br><br><br>
 		<center>
-			<h3> {{icmal.sube.isim}} Subesi {{icmal.yıl}}/{{icmal.ay}} Donemi Musteri Sunum Icmali</h3>
-			
+			<h1> {{icmal.sube.isim}} Subesi {{icmal.yıl}}/{{icmal.ay}} Donemi Musteri Sunum Icmali</h1>
+
 		</center>
 		<br>
 		<div class="invoice-box">
@@ -152,7 +148,7 @@
 			</tr>
 			{% endif %}
 			{% if icmal.muhtasar > 0 %}
-            <tr>				
+            <tr>
 				<td colspan="2">Muhtasar Vergisi</td>
 				<td>{{icmal.muhtasar}}</td>
 			</tr>
@@ -194,7 +190,7 @@
 			</tr>
 			{% endif %}
 			{% if icmal.müsavirlikler > 0 %}
-            <tr>				
+            <tr>
 				<td colspan="2">Muhasebe ve Musavirlik Ucreti</td>
 				<td>{{icmal.müsavirlikler}}</td>
 			</tr>
@@ -231,22 +227,23 @@
 		</table>
 	</div>
 
-		<h4 class="sgkno"> {{icmal.sube.isim}} Subesi Sgk No : {{icmal.sube.sgkNo}}</h4>
+		<h1 class="sgkno"> {{icmal.sube.isim}} Subesi Sgk No : {{icmal.sube.sgkNo}}</h1>
 
 	</body>
 
 	{% elif title == "Firma İcmali" %}
 	<body>
         <div>
-        <img height=150 width=150 src='https://seeklogo.com/images/M/mali-musavir-logo-ADCCA5EB76-seeklogo.com.png' />
-        <h3> Kocak Müsavirlik </h3>
-		<h3> Zafer Mh 2128 sk Seda Apt Kepez/Antalya</h3>
-		<h3> 0541 586 4712 </h3>
+			<h3> SMMM NEBIL KOCAK </h3>
+			<h3> Korkutreis Mh. Hanimeli Sk. No:21/9 </h3>
+			<h3> E-Posta: smmmnebilkocak@gmail.com </h3>
+			<h3> GSM: 0554 802 4706 </h3>
+			<h3> GSM: 0552 821 3706 </h3>
         </div>
         <br><br><br>
 		<center>
-			<h3> {{icmal.firma.isim}} Firmasi {{icmal.yıl}}/{{icmal.ay}} Donemi Musteri Sunum Icmali</h3>
-			
+			<h1> {{icmal.firma.isim}} Firmasi {{icmal.yıl}}/{{icmal.ay}} Donemi Musteri Sunum Icmali</h1>
+
 		</center>
 		<br>
 		<div class="invoice-box">
@@ -266,7 +263,7 @@
 			</tr>
 			{% endif %}
 			{% if icmal.muhtasar > 0 %}
-            <tr>				
+            <tr>
 				<td colspan="2">Muhtasar Vergisi</td>
 				<td>{{icmal.muhtasar}}</td>
 			</tr>
@@ -308,7 +305,7 @@
 			</tr>
 			{% endif %}
 			{% if icmal.müsavirlikler > 0 %}
-            <tr>				
+            <tr>
 				<td colspan="2">Muhasebe ve Musavirlik Ucreti</td>
 				<td>{{icmal.müsavirlikler}}</td>
 			</tr>
@@ -344,15 +341,15 @@
 			</tr>
 		</table>
 	</div>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
 	{% for sube in subeler  %}
 	{% for subeIcmal in subeIcmalleri  %}
 	{% if sube.isim == subeIcmal.sube.isim %}
 
 	<center>
-		<h3> {{subeIcmal.sube.isim}} Subesi {{icmal.yıl}}/{{icmal.ay}} Donemi Musteri Sunum Icmali</h3>
-		
+		<h1> {{subeIcmal.sube.isim}} Subesi {{icmal.yıl}}/{{icmal.ay}} Donemi Musteri Sunum Icmali</h1>
+
 	</center>
 	<div class="sube-box" style="width:50px;">
 	<table>
@@ -371,7 +368,7 @@
 		</tr>
 		{% endif %}
 		{% if subeIcmal.muhtasar > 0 %}
-		<tr>				
+		<tr>
 			<td colspan="2">Muhtasar Vergisi</td>
 			<td>{{subeIcmal.muhtasar}}</td>
 		</tr>
@@ -413,7 +410,7 @@
 		</tr>
 		{% endif %}
 		{% if subeIcmal.müsavirlikler > 0 %}
-		<tr>				
+		<tr>
 			<td colspan="2">Muhasebe ve Musavirlik Ucreti</td>
 			<td>{{subeIcmal.müsavirlikler}}</td>
 		</tr>
@@ -449,25 +446,27 @@
 		</tr>
 	</table>
 </div>
-	<h4 class="sgkno"> {{subeIcmal.sube.isim}} Subesi Sgk No : {{subeIcmal.sube.sgkNo}}</h4>
+	<h1 class="sgkno"> {{subeIcmal.sube.isim}} Subesi Sgk No : {{subeIcmal.sube.sgkNo}}</h1>
 	<hr>
 	{% endif %}
 	{% endfor %}
 	{% endfor %}
 
-	</body>	
+	</body>
 	{% else %}
 	<body>
         <div>
-        <img height=150 width=150 src='https://seeklogo.com/images/M/mali-musavir-logo-ADCCA5EB76-seeklogo.com.png' />
-        <h3> Kocak Müsavirlik </h3>
-		<h3> Zafer Mh 2128 sk Seda Apt Kepez/Antalya</h3>
-		<h3> 0541 586 4712 </h3>
+			<img height=150 width=150 src="{% static 'img/logo.png' %}"/>
+			<h3> SMMM NEBIL KOCAK </h3>
+			<h3> Korkutreis Mh. Hanimeli Sk. No:21/9 </h3>
+			<h3> E-Posta: smmmnebilkocak@gmail.com </h3>
+			<h3> GSM: 0554 802 4706 </h3>
+			<h3> GSM: 0552 821 3706 </h3>
         </div>
         <br><br><br>
 		<center>
 			<h1> Grup Odeme Icmali</h1>
-			
+
 		</center>
 		<br>
 		<div class="invoice-box">
@@ -504,7 +503,7 @@
 		</table>
 	</div>
 
-		
+
 
 	</body>
 
