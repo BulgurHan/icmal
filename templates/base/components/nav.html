@@ -57,7 +57,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Firmalar
+                Firma İcmalleri
             </div>
             
             <!-- Nav Item - Pages Collapse Menu -->
@@ -89,7 +89,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Şubeler
+                Şube İcmalleri
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -97,20 +97,14 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#firmalar"
                     aria-expanded="true" aria-controls="firmalar">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Şubeler</span>
+                    <span>Firmalar</span>
                 </a>
                 <div id="firmalar" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        {% for firma in firmalar %}                        
-                        <h6 class="collapse-header">{{firma.isim}}</h6>
-                        {% for sube in subeler %}
-                        {% if sube.firma.isim == firma.isim %}      
-                        <a class="collapse-item" href={% url 'subeIcmalleri' sube_slug=sube.slug firma_slug=firma.slug %}>{{sube.isim}} </a>
-                        {% endif %} 
+                        {% for firma in firmalar %}                           
+                        <a class="collapse-item" href={% url 'subeIcmalListesi' firma_slug=firma.slug %}>{{firma.isim}} </a>
                         <div class="collapse-divider"></div>
-                         
-                        {% endfor %}
                         {% endfor %}
                     </div>
             </li>

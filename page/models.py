@@ -109,17 +109,24 @@ class Icmal(models.Model):
     bagkur  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     sgktoplamlari = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
+    uclutoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    dortlutoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    beslitoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+
     toplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
 
     def save(self, *args, **kwargs):        
-        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+ self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur+self.atak
+        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+ self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur+self.atak   
         self.kdvler = self.kdv + self.kdv2
         self.toplam = self.odemelertoplami+self.sgk
         self.cezalar = self.ceza + self.mtv
         self.digercezalar = self.idariceza + self.davagideri + self.hakemheyeti
         self.müsavirlikler =self.müsavirlik + self.harcama
         self.firma = self.sube.firma
+        self.uclutoplam = self.odemelertoplami+self.müsavirlikler+self.tesvik
+        self.dortlutoplam =self.uclutoplam+self.sgk
+        self.beslitoplam = self.dortlutoplam+self.bagkur
         super(Icmal, self).save(*args, **kwargs)
     def __str__(self):
         return "{}-{}".format(self.pk,self.sube.isim)

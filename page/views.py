@@ -366,6 +366,17 @@ def subeIcmalleri(request,sube_slug,firma_slug):
     context['icmaller'] = Icmal.objects.filter(sube=sube)
     return render(request,'icmal-list.html',context)
 
+
+@login_required
+def subeIcmalListesi(request,firma_slug):
+    context = dict()
+    context['title'] = "Firmanın Şube İcmal Listesi"
+    firma = Firma.objects.get(slug=firma_slug)
+    context['subeler'] = Sube.objects.filter(firma=firma)
+    context['firma'] =firma
+    return render(request,'sube-list.html',context)
+
+
 @login_required
 def icmal_detay(request,firma_slug,sube_slug,yil,ay):
     context = dict()
@@ -526,4 +537,5 @@ def odemeTakipIki(request,ay,yil):
     context['title']="Ödeme Takip İcmali"
     context['subeIcmalleri'] = Icmal.objects.filter(ay=ay,yıl=yil)
     context['firmaIcmalleri'] = FirmaIcmal.objects.filter(ay=ay,yıl=yil)
+    context['mert'] = "Mert Fucking Gürkan"
     return render(request,"odeme-takip2.html",context)

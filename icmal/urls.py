@@ -7,7 +7,8 @@ from page.views import (home,createFirma,createSube,
                         musteri_sunum_icmali,firma_musteri_sunum_icmali,
                         ayarlar,icmallerim,generatePdf,generatePdfFirma,generatePdfGrup,signinView,signoutView,
                         signupView,profile,allSubeler,editSube,allFirmalar,editFirma,deleteSube,deleteFirma,
-                        hizliBir,hizliIki,icmalGir,odemeIcmali,odemeIcmali2,OdemeIcmaliDevam,odemeTakipBir,odemeTakipIki
+                        hizliBir,hizliIki,icmalGir,odemeIcmali,odemeIcmali2,OdemeIcmaliDevam,odemeTakipBir,odemeTakipIki,
+                        subeIcmalListesi,
                         )
 
 urlpatterns = [
@@ -16,6 +17,7 @@ urlpatterns = [
     path('firmalar/<str:firma_slug>/', firmaIcmalleri, name='firmaIcmalleri'),
     path('gruplar/<str:grup_slug>/', grupIcmalleri, name='grupIcmalleri'),
     path('subeler/<str:firma_slug>/<str:sube_slug>/', subeIcmalleri, name='subeIcmalleri'),
+    path('subeler/<str:firma_slug>/', subeIcmalListesi, name='subeIcmalListesi'),
     path('sube-icmal/<str:firma_slug>/<str:sube_slug>/<int:yil>/<int:ay>/', icmal_detay, name='icmal_detay'),
     path('firma-icmal/<str:firma_slug>/<int:yil>/<int:ay>/', firma_icmal_detay, name='firma_icmal_detay'),
     path('sube-muster-sunum/<str:firma_slug>/<str:sube_slug>/<int:yil>/<int:ay>/', musteri_sunum_icmali, name='musteri_sunum_icmali'),
