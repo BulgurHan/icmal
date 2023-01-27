@@ -1,15 +1,45 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Firma,Sube,YEAR_CHOICES,MONTH_CHOICES,Icmal
+from .models import Firma,Sube,YEAR_CHOICES,MONTH_CHOICES,Icmal,FirmaIcmal
 
 FİRMALAR = Firma.objects.all()
 SUBELER =Sube.objects.all()
 ICMALLER = Icmal.objects.all()
+FIRMAICMALLERİ = FirmaIcmal.objects.all()
+YILLAR = []
+AYLAR = []
 
-def firmaSec(firma):
-    subeler = Sube.objects.filter(firma=firma)
-    return subeler
+for icmal in FIRMAICMALLERİ:
+    if (icmal.ay,icmal.ay) in AYLAR and (icmal.yıl,icmal.yıl) in YILLAR:
+        continue
+    else:
+        YILLAR.append((icmal.yıl,icmal.yıl))
+        AYLAR.append((icmal.ay,icmal.ay))
+
+
+
+
+class DonemForm(forms.Form):
+    ay = forms.ChoiceField(
+        choices=AYLAR,
+        widget=forms.Select(
+        attrs={
+        'class':'form-control'
+        }
+        )
+    )
+    yil = forms.ChoiceField(
+        choices=YILLAR,
+        widget=forms.Select(
+        attrs={
+        'class':'form-control'
+        }
+        )
+    )
+
+
+
 
 class IcmalBir(forms.Form):
     sube = forms.ModelChoiceField(
@@ -410,10 +440,30 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
+    sgkYapilandirmasi=forms.DecimalField(required=False,
+        widget= forms.NumberInput(
+            attrs={
+            'class':'form-control',
+            'placeholder':'0,00',
+            'step': "0.01",
+            'value': 0
+            }
+        ) 
+    )
+    vergiYapilandirmasi=forms.DecimalField(required=False,
+    widget= forms.NumberInput(
+        attrs={
+        'class':'form-control',
+        'placeholder':'0,00',
+        'step': "0.01",
+        'value': 0
+        }
+    ) 
+    )
 
     class Meta:
         model = Icmal
-        fields = ("tasdik",'kdv','kdv2','atak','yasalKdv','muhtasar','ggkv','damga','mtv','ceza','idariceza','davagideri','hakemheyeti','geçmişborçlar','tesvik','müsavirlik','harcama','sgk','bagkur')
+        fields = ("sgkYapilandirmasi","vergiYapilandirmasi","tasdik",'kdv','kdv2','atak','yasalKdv','muhtasar','ggkv','damga','mtv','ceza','idariceza','davagideri','hakemheyeti','geçmişborçlar','tesvik','müsavirlik','harcama','sgk','bagkur')
 
 
 

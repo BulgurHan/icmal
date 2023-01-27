@@ -112,6 +112,18 @@
                                 <td>{{icmal.bagkur}} </td>
                              </tr>
                              {% endif %}
+                             {% if icmal.sgkYapilandirmasi > 0  %}
+                             <tr>
+                                <td>SGK Yapılandırması</td>
+                                <td>{{icmal.sgkYapilandirmasi}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.vergiYapilandirmasi > 0  %}
+                             <tr>
+                                <td>Vergi Yapılandırması</td>
+                                <td>{{icmal.vergiYapilandirmasi}} </td>
+                             </tr>
+                             {% endif %}
                              <tfoot>
                                 <tr>
                                     <th>TOPLAM</th>
@@ -209,6 +221,18 @@
                              <tr>
                                 <td>Bağkur Primleri</td>
                                 <td>{{icmal.bagkur}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.sgkYapilandirmasi > 0  %}
+                             <tr>
+                                <td>SGK Yapılandırması</td>
+                                <td>{{icmal.sgkYapilandirmasi}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.vergiYapilandirmasi > 0  %}
+                             <tr>
+                                <td>Vergi Yapılandırması</td>
+                                <td>{{icmal.vergiYapilandirmasi}} </td>
                              </tr>
                              {% endif %}
                              <tfoot>
@@ -316,7 +340,18 @@
                                 <td>{{subeIcmal.bagkur}} </td>
                              </tr>
                              {% endif %} 
-
+                             {% if subeIcmal.sgkYapilandirmasi > 0  %}
+                             <tr>
+                                <td>SGK Yapılandırması</td>
+                                <td>{{subeIcmal.sgkYapilandirmasi}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if subeIcmal.vergiYapilandirmasi > 0  %}
+                             <tr>
+                                <td>Vergi Yapılandırması</td>
+                                <td>{{subeIcmal.vergiYapilandirmasi}} </td>
+                             </tr>
+                             {% endif %}
                              <tfoot>
                                 <tr>
                                     <th>TOPLAM</th>

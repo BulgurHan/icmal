@@ -87,6 +87,8 @@ class Icmal(models.Model):
     davagideri  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     hakemheyeti  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     geçmişborçlar  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    sgkYapilandirmasi = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    vergiYapilandirmasi = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
 
     odemelertoplami = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
@@ -111,7 +113,7 @@ class Icmal(models.Model):
 
 
     def save(self, *args, **kwargs):        
-        self.odemelertoplami = self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur
+        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+ self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur
         self.kdvler = self.kdv + self.kdv2
         self.toplam = self.odemelertoplami+self.sgk
         self.cezalar = self.ceza + self.mtv
@@ -140,6 +142,8 @@ class FirmaIcmal(models.Model):
     davagideri  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     hakemheyeti  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     geçmişborçlar  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    sgkYapilandirmasi = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    vergiYapilandirmasi = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
     odemelertoplami = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     
@@ -162,7 +166,7 @@ class FirmaIcmal(models.Model):
 
 
     def save(self, *args, **kwargs):        
-        self.odemelertoplami = self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur
+        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+ self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur
         self.kdvler = self.kdv + self.kdv2
         self.toplam = self.odemelertoplami+self.sgk
         self.cezalar = self.ceza + self.mtv
@@ -189,6 +193,8 @@ class GrupIcmal(models.Model):
     davagideri  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     hakemheyeti  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     geçmişborçlar  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    sgkYapilandirmasi = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    vergiYapilandirmasi = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
     odemelertoplami = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     
@@ -211,7 +217,7 @@ class GrupIcmal(models.Model):
 
 
     def save(self, *args, **kwargs):        
-        self.odemelertoplami = self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur
+        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur
         self.kdvler = self.kdv + self.kdv2
         self.toplam = self.odemelertoplami+self.sgk
         self.cezalar = self.ceza + self.mtv
@@ -245,6 +251,8 @@ def icmal_esitle(sender, instance,**kwargs):
     harcama = 0
     sgk = 0
     bagkur = 0
+    sgkYapilandirmasi =0
+    vergiYapilandirmasi=0
     try:
         a = FirmaIcmal.objects.get(firma=firma, ay=instance.ay,yıl=instance.yıl)
     except:
@@ -269,6 +277,8 @@ def icmal_esitle(sender, instance,**kwargs):
         harcama += icmal.harcama
         sgk += icmal.sgk
         bagkur += icmal.bagkur
+        sgkYapilandirmasi += icmal.sgkYapilandirmasi
+        vergiYapilandirmasi += icmal.vergiYapilandirmasi
     a.atak = atak
     a.yasalKdv = yasalKdv
     a.tasdik = tasdik
@@ -288,6 +298,8 @@ def icmal_esitle(sender, instance,**kwargs):
     a.harcama = harcama
     a.sgk = sgk
     a.bagkur = bagkur
+    a.vergiYapilandirmasi = vergiYapilandirmasi
+    a.sgkYapilandirmasi = sgkYapilandirmasi
     a.save()
 
 

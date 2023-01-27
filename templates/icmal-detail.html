@@ -129,7 +129,18 @@
                                 <td>{{icmal.bagkur}} </td>
                              </tr>
                              {% endif %}
-                            
+                             {% if icmal.vergiYapilandirmasi > 0 %}
+                             <tr>
+                                <td>Vergi Yapılandırması</td>
+                                <td>{{icmal.vergiYapilandirmasi}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if icmal.sgkYapilandirmasi > 0 %}
+                             <tr>
+                                <td>SGK Yapılandırması</td>
+                                <td>{{icmal.sgkYapilandirmasi}} </td>
+                             </tr>
+                             {% endif %}
                              <tfoot>
                                 <tr>
                                     <th >TOPLAM</th>

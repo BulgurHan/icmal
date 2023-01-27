@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login,authenticate,logout
 from django.contrib import messages
 from .models import Firma,Icmal,Sube,FirmaIcmal,YEAR_CHOICES,MONTH_CHOICES,GrupIcmal
-from .forms import FirmaForm,SubeForm,GirdiForm,SignInForm,SignUpForm,FirmaCreateForm,HizliForm,IcmalBir,OdemeIcmaliForm,IcmalUc
+from .forms import FirmaForm,SubeForm,GirdiForm,SignInForm,SignUpForm,FirmaCreateForm,HizliForm,IcmalBir,OdemeIcmaliForm,IcmalUc,DonemForm
 
 
 def generatePdf(request,firma_slug,sube_slug,ay,yil):
@@ -279,6 +279,8 @@ def odemeIcmali2(request):
             harcama=0
             sgk=0
             bagkur=0
+            sgkYapilandirmasi =0
+            vergiYapilandirmasi =0
             for icmal in listem:
                 atak += icmal.atak
                 yasalKdv += icmal.yasalKdv
@@ -299,6 +301,8 @@ def odemeIcmali2(request):
                 harcama += icmal.harcama
                 sgk += icmal.sgk
                 bagkur += icmal.bagkur
+                sgkYapilandirmasi += icmal.sgkYapilandirmasi
+                vergiYapilandirmasi += icmal.vergiYapilandirmasi
             a.atak = atak
             a.yasalKdv = yasalKdv
             a.tasdik = tasdik
@@ -318,6 +322,8 @@ def odemeIcmali2(request):
             a.harcama = harcama
             a.sgk = sgk
             a.bagkur = bagkur
+            a.vergiYapilandirmasi = vergiYapilandirmasi
+            a.sgkYapilandirmasi = sgkYapilandirmasi
             a.save()
             
     context['items'] = GrupIcmal.objects.all()
@@ -435,7 +441,6 @@ def icmallerim(request):
     context = dict()
     context['title'] = "İcmallerim"
     user = request.user
-    context['icmaller'] = Girdi.objects.filter(personel=user)
     return render(request,"icmallerim.html",context)
 
 
@@ -498,6 +503,15 @@ def profile(request):
 
 
 @login_required
-def noname(request):
+def odemeTakipBir(request):
     context=dict()
-    return
+    context['title']="Ödeme Takip-Dönem Seçimi"
+    context['form'] = DonemForm(request.POST)
+    return render(request,"odeme-takip1.html",context)
+
+
+
+@login_required
+def odemeTakipIki(request):
+    context=dict()
+    return render(request,"odeme-takip2.html",context)
