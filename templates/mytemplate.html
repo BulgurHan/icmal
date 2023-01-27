@@ -201,6 +201,18 @@
 				<td>{{icmal.bagkur}}</td>
 			</tr>
 			{% endif %}
+			{% if icmal.sgkYapilandirmasi > 0 %}
+			<tr class="sgk">
+				<td colspan="2">SGK Yapılandırmas</td>
+				<td>{{icmal.sgkYapilandirmasi}}</td>
+			</tr>
+			{% endif %}
+			{% if icmal.vergiYapilandirmasi > 0 %}
+			<tr class="sgk">
+				<td colspan="2">Vergi Yapılandırmas</td>
+				<td>{{icmal.vergiYapilandirmasi}}</td>
+			</tr>
+			{% endif %}
             <tr>
 				<td colspan="2">
 					<b>Toplam</b>
@@ -316,6 +328,18 @@
 				<td>{{icmal.bagkur}}</td>
 			</tr>
 			{% endif %}
+			{% if icmal.sgkYapilandirmasi > 0 %}
+			<tr class="sgk">
+				<td colspan="2">SGK Yapılandırmas</td>
+				<td>{{icmal.sgkYapilandirmasi}}</td>
+			</tr>
+			{% endif %}
+			{% if icmal.vergiYapilandirmasi > 0 %}
+			<tr class="sgk">
+				<td colspan="2">Vergi Yapılandırmas</td>
+				<td>{{icmal.vergiYapilandirmasi}}</td>
+			</tr>
+			{% endif %}
             <tr>
 				<td colspan="2">
 					<b>Toplam</b>
@@ -419,6 +443,18 @@
 		<tr>
 			<td colspan="2">Bagkur Primleri</td>
 			<td>{{subeIcmal.bagkur}}</td>
+		</tr>
+		{% endif %}
+		{% if subeIcmal.sgkYapilandirmasi > 0 %}
+		<tr class="sgk">
+			<td colspan="2">SGK Yapılandırmas</td>
+			<td>{{subeIcmal.sgkYapilandirmasi}}</td>
+		</tr>
+		{% endif %}
+		{% if subeIcmal.vergiYapilandirmasi > 0 %}
+		<tr class="sgk">
+			<td colspan="2">Vergi Yapılandırmas</td>
+			<td>{{subeIcmal.vergiYapilandirmasi}}</td>
 		</tr>
 		{% endif %}
 		<tr>
