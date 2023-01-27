@@ -507,11 +507,23 @@ def odemeTakipBir(request):
     context=dict()
     context['title']="Ödeme Takip-Dönem Seçimi"
     context['form'] = DonemForm(request.POST)
+    if request.method == "POST":
+        if context['form'].is_valid():
+            ay =context['form'].cleaned_data["ay"]
+            yil =context['form'].cleaned_data["yil"]
+            return redirect("odemeTakipIki", ay=ay,yil=yil)
+        else:
+            context['form'] = DonemForm()
     return render(request,"odeme-takip1.html",context)
 
 
 
 @login_required
-def odemeTakipIki(request):
+def odemeTakipIki(request,ay,yil):
     context=dict()
+    context["yil"] = yil
+    context["ay"] = ay
+    context['title']="Ödeme Takip İcmali"
+    context['subeIcmalleri'] = Icmal.objects.filter(ay=ay,yıl=yil)
+    context['firmaIcmalleri'] = FirmaIcmal.objects.filter(ay=ay,yıl=yil)
     return render(request,"odeme-takip2.html",context)

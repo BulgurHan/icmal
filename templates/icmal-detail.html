@@ -48,6 +48,12 @@
                                 <td>{{icmal.kdv2}} </td>
                              </tr>
                              {% endif %}
+                             {% if icmal.atak > 0 %}
+                             <tr>
+                                <td>Atak Fatura</td>
+                                <td>{{icmal.atak}} </td>
+                             </tr>
+                             {% endif %}
                              {% if icmal.muhtasar > 0 %}
                              <tr>
                                 <td>Muhtasar Vergisi</td>
@@ -193,6 +199,12 @@
                                 <td>{{icmal.kdv2}} </td>
                              </tr>
                              {% endif %}
+                             {% if icmal.atak > 0 %}
+                             <tr>
+                                <td>Atak Fatura</td>
+                                <td>{{icmal.atak}} </td>
+                             </tr>
+                             {% endif %}
                              {% if icmal.muhtasar > 0 %}
                              <tr>
                                 <td>Muhtasar Vergisi</td>
@@ -333,6 +345,12 @@
                              <tr>
                                 <td>Katma Değer Vergisi-2</td>
                                 <td>{{subeIcmal.kdv2}} </td>
+                             </tr>
+                             {% endif %}
+                             {% if subeIcmal.atak > 0 %}
+                             <tr>
+                                <td>Atak Fatura</td>
+                                <td>{{subeIcmal.atak}} </td>
                              </tr>
                              {% endif %}
                              {% if subeIcmal.muhtasar > 0 %}

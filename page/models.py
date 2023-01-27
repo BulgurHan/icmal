@@ -113,7 +113,7 @@ class Icmal(models.Model):
 
 
     def save(self, *args, **kwargs):        
-        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+ self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur
+        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+ self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur+self.atak
         self.kdvler = self.kdv + self.kdv2
         self.toplam = self.odemelertoplami+self.sgk
         self.cezalar = self.ceza + self.mtv
@@ -166,7 +166,7 @@ class FirmaIcmal(models.Model):
 
 
     def save(self, *args, **kwargs):        
-        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+ self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur
+        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+ self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur+self.atak
         self.kdvler = self.kdv + self.kdv2
         self.toplam = self.odemelertoplami+self.sgk
         self.cezalar = self.ceza + self.mtv
@@ -217,7 +217,7 @@ class GrupIcmal(models.Model):
 
 
     def save(self, *args, **kwargs):        
-        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur
+        self.odemelertoplami =self.atak+self.vergiYapilandirmasi+self.sgkYapilandirmasi+self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur
         self.kdvler = self.kdv + self.kdv2
         self.toplam = self.odemelertoplami+self.sgk
         self.cezalar = self.ceza + self.mtv

@@ -1,0 +1,79 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+     <!-- Begin Page Content -->
+     <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href={% url 'home' %}>Anasayfa</a></li>
+              <li class="breadcrumb-item"><a href={% url 'odemeTakipBir' %} >Dönem Seçme Ekranı</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{yil}}/{{ay}} Dönemi Ödeme Takip İcmali</li>
+            </ol>
+          </nav>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">{{yil}}/{{ay}} Dönemi Ödeme Takip İcmali</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable4" width="100%" cellspacing="0">
+                        {% for firmaIcmal in firmaIcmalleri  %}
+                        <thead>
+                            <tr>
+                                <th>{{firmaIcmal.firma.isim}} </th>
+                                <th>Vergiler</th>
+                                <th>Muhasebe</th>
+                                <th>Teşvik</th>
+                                <th>Toplam</th>
+                                <th>SGK</th>
+                                <th>Toplam</th>
+                                <th>Bağkur</th>
+                                <th>Toplam</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           {% for subeIcmal in  subeIcmalleri %}
+                           {% if subeIcmal.firma.isim == firmaIcmal.firma.isim %}
+                           
+                            <tr>
+                                <td>{{subeIcmal.sube.isim}}</td>
+                                <td>{{subeIcmal.odemelertoplami}}</td>
+                                <td>{{subeIcmal.müsavirlikler}} </td>
+                                <td>{{subeIcmal.tesvik}}</td>
+                                <td></td>
+                                <td>{{subeIcmal.sgk}}</td>
+                                <td>toplam</td>
+                                <td>{{subeIcmal.bagkur}}</td>
+                                <td>toplam</td>
+                                
+                             </tr> 
+                             {% endif %}
+                             {% endfor %}
+                </tbody>
+                <thead>
+                    <tr>
+                        <th>TOPLAM </th>
+                        <th>{{firmaIcmal.odemelertoplami}}</th>
+                        <th>{{firmaIcmal.müsavirlikler}}</th>
+                        <th>{{firmaIcmal.tesvik}}</th>
+                        <th>Toplam</th>
+                        <th>{{firmaIcmal.sgk}}</th>
+                        <th>Toplam</th>
+                        <th>{{firmaIcmal.bagkur}}</th>
+                        <th>Toplam</th>
+                    </tr>
+                </thead>
+                {% endfor %}
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

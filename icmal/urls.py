@@ -7,7 +7,7 @@ from page.views import (home,createFirma,createSube,
                         musteri_sunum_icmali,firma_musteri_sunum_icmali,
                         ayarlar,icmallerim,generatePdf,generatePdfFirma,generatePdfGrup,signinView,signoutView,
                         signupView,profile,allSubeler,editSube,allFirmalar,editFirma,deleteSube,deleteFirma,
-                        hizliBir,hizliIki,icmalGir,odemeIcmali,odemeIcmali2,OdemeIcmaliDevam,odemeTakipBir
+                        hizliBir,hizliIki,icmalGir,odemeIcmali,odemeIcmali2,OdemeIcmaliDevam,odemeTakipBir,odemeTakipIki
                         )
 
 urlpatterns = [
@@ -45,4 +45,5 @@ urlpatterns = [
     path("odeme-icmali/", odemeIcmali2, name="odemeIcmali2"),
     path("odeme-icmali/<int:satır_sayisi>/", OdemeIcmaliDevam, name="OdemeIcmaliDevam"),
     path("odeme-takip/", odemeTakipBir, name="odemeTakipBir"),
+    path("odeme-takip/<int:yil>/<int:ay>/", odemeTakipIki, name="odemeTakipIki"),
 ]
