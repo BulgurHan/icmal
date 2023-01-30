@@ -77,12 +77,12 @@ def home(request):
     for item in items:
         item.delete()
     #dev code 
-    icmaller = Icmal.objects.all()
-    for icmal in icmaller:
-        icmal.save()
-    firmaicmalleri = FirmaIcmal.objects.all()
-    for firmaicmal in firmaicmalleri:
-        firmaicmal.save()
+    # icmaller = Icmal.objects.all()
+    # for icmal in icmaller:
+    #     icmal.save()
+    # firmaicmalleri = FirmaIcmal.objects.all()
+    # for firmaicmal in firmaicmalleri:
+    #     firmaicmal.save()
 
     context['title'] = "Anasayfa"
     context['firma_sayisi'] = len(Firma.objects.all())
