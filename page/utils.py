@@ -13,7 +13,7 @@ from .models import Icmal,Sube,Firma,FirmaIcmal,GrupIcmal
 from django.shortcuts import get_object_or_404
 
 
-def render_to_pdf(template_src,ay,yil,grup_slug=False,sube_slug=None,firma_slug=None, context_dict={}):
+def render_to_pdf(template_src,ay,yil,grup_slug=False,odemeTakip=False,sube_slug=None,firma_slug=None, context_dict={}):
     template = get_template(template_src)
     if  sube_slug  != None and firma_slug !=None:
         firma = Firma.objects.get(slug=firma_slug)
@@ -36,7 +36,7 @@ def render_to_pdf(template_src,ay,yil,grup_slug=False,sube_slug=None,firma_slug=
                 continue
         context_dict['subeIcmalleri'] = subeIcmalleri  
     elif grup_slug:
-        context_dict['title'] = "Ödeme İcmali Görüntüle"
+        context_dict['title'] = "Ödeme Icmali Görüntüle"
         context_dict['icmaller'] = GrupIcmal.objects.all()
         context_dict['vergilerTop'] = 0
         context_dict['atakTop'] = 0
@@ -51,6 +51,10 @@ def render_to_pdf(template_src,ay,yil,grup_slug=False,sube_slug=None,firma_slug=
             context_dict['defterTop']+=icmal.tasdik
             context_dict['sgkTop']+=icmal.sgk
             context_dict['bagkurTop']+=icmal.bagkur
+    elif odemeTakip:
+        context_dict['title'] = "Ödeme Takip İcmali Görüntüle"
+        context_dict['subeIcmalleri'] = Icmal.objects.filter(ay=ay,yıl=yil)
+        context_dict['firmaIcmalleri'] = FirmaIcmal.objects.filter(ay=ay,yıl=yil)
     html  = template.render(context_dict)
     result = BytesIO()
 

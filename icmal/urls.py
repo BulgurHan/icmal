@@ -8,7 +8,7 @@ from page.views import (home,createFirma,createSube,
                         ayarlar,icmallerim,generatePdf,generatePdfFirma,generatePdfGrup,signinView,signoutView,
                         signupView,profile,allSubeler,editSube,allFirmalar,editFirma,deleteSube,deleteFirma,
                         hizliBir,hizliIki,icmalGir,odemeIcmali,odemeIcmali2,OdemeIcmaliDevam,odemeTakipBir,odemeTakipIki,
-                        subeIcmalListesi,
+                        subeIcmalListesi,generatePdfOdemeTakip
                         )
 
 urlpatterns = [
@@ -31,6 +31,7 @@ urlpatterns = [
     path('pdf/sube/<str:firma_slug>/<str:sube_slug>/<int:yil>/<int:ay>/', generatePdf, name='generatePdf'),
     path('pdf/firma/<str:firma_slug>/<int:yil>/<int:ay>/', generatePdfFirma, name='generatePdfFirma'),
     path('pdf/grup/<int:yil>/<int:ay>/', generatePdfGrup, name='generatePdfGrup'),
+    path('pdf/odeme-takip/<int:yil>/<int:ay>/',generatePdfOdemeTakip, name="generatePdfOdemeTakip" ),
     path('login/', signinView, name='signinView'),
     path('logout/', signoutView, name='signoutView'),
     path('signup/', signupView, name='signupView'),
@@ -48,4 +49,5 @@ urlpatterns = [
     path("odeme-icmali/<int:satır_sayisi>/", OdemeIcmaliDevam, name="OdemeIcmaliDevam"),
     path("odeme-takip/", odemeTakipBir, name="odemeTakipBir"),
     path("odeme-takip/<int:yil>/<int:ay>/", odemeTakipIki, name="odemeTakipIki"),
+
 ]

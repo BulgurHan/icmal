@@ -507,6 +507,75 @@
 	{% endfor %}
 
 	</body>
+	{% elif title == "Ödeme Takip İcmali Görüntüle" %}
+	<body>
+        <div>
+			<h3> SMMM NEBIL KOCAK </h3>
+			<h3> Korkutreis Mh. Hanimeli Sk. No:21/9 </h3>
+			<h3> E-Posta: smmmnebilkocak@gmail.com </h3>
+			<h3> GSM: 0554 802 4706 </h3>
+			<h3> GSM: 0552 821 3706 </h3>
+        </div>
+        <br><br><br>
+		<center>
+			<h1> {{title}}</h1>
+
+		</center>
+		<br>
+		<div class="invoice-box">
+		<table>
+			{% for firmaIcmal in firmaIcmalleri  %}
+			<thead>
+				<tr>
+					<th>{{firmaIcmal.firma.isim}} </th>
+					<th>Vergiler</th>
+					<th>Muhasebe</th>
+					<th>Tesvik</th>
+					<th>Toplam</th>
+					<th>SGK</th>
+					<th>Toplam</th>
+					<th>Bagkur</th>
+					<th>Toplam</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for subeIcmal in  subeIcmalleri %}
+				{% if subeIcmal.firma.isim == firmaIcmal.firma.isim %}
+				
+				 <tr>
+					 <td>{{subeIcmal.sube.isim}}</td>
+					 <td>{{subeIcmal.odemelertoplami}}</td>
+					 <td>{{subeIcmal.müsavirlikler}} </td>
+					 <td>{{subeIcmal.tesvik}}</td>
+					 <td>{{subeIcmal.uclutoplam}}</td>
+					 <td>{{subeIcmal.sgk}}</td>
+					 <td>{{subeIcmal.dortlutoplam}}</td>
+					 <td>{{subeIcmal.bagkur}}</td>
+					 <td>{{subeIcmal.beslitoplam}}</td>
+					 
+				  </tr> 
+				  {% endif %}
+				  {% endfor %}
+				  <thead>
+                    <tr>
+                        <th>TOPLAM </th>
+                        <th>{{firmaIcmal.odemelertoplami}}</th>
+                        <th>{{firmaIcmal.müsavirlikler}}</th>
+                        <th>{{firmaIcmal.tesvik}}</th>
+                        <th>{{firmaIcmal.uclutoplam}}</th>
+                        <th>{{firmaIcmal.sgk}}</th>
+                        <th>{{firmaIcmal.dortlutoplam}}</th>
+                        <th>{{firmaIcmal.bagkur}}</th>
+                        <th>{{firmaIcmal.beslitoplam}}</th>
+                    </tr>
+                </thead>
+                {% endfor %}
+		</table>
+	</div>
+
+
+
+	</body>
 	{% else %}
 	<body>
         <div>

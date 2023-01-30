@@ -12,6 +12,13 @@
               <li class="breadcrumb-item"><a href={% url 'odemeTakipBir' %} >Dönem Seçme Ekranı</a></li>
               <li class="breadcrumb-item active" aria-current="page">{{yil}}/{{ay}} Dönemi Ödeme Takip İcmali</li>
             </ol>
+            <div class="m-2">
+                <li> 
+                  <a href={% url 'generatePdfOdemeTakip' ay=ay yil=yil %}
+                  
+                  class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                      class="fas fa-download fa-sm text-white-50"></i>PDF'e Aktar</a>
+                  </li></div>
           </nav>
 
         <!-- DataTales Example -->
@@ -61,11 +68,11 @@
                         <th>{{firmaIcmal.odemelertoplami}}</th>
                         <th>{{firmaIcmal.müsavirlikler}}</th>
                         <th>{{firmaIcmal.tesvik}}</th>
-                        <th>Toplam</th>
+                        <th>{{firmaIcmal.uclutoplam}}</th>
                         <th>{{firmaIcmal.sgk}}</th>
-                        <th>Toplam</th>
+                        <th>{{firmaIcmal.dortlutoplam}}</th>
                         <th>{{firmaIcmal.bagkur}}</th>
-                        <th>Toplam</th>
+                        <th>{{firmaIcmal.beslitoplam}}</th>
                     </tr>
                 </thead>
                 {% endfor %}

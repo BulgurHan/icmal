@@ -169,6 +169,10 @@ class FirmaIcmal(models.Model):
     bagkur  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     sgktoplamlari = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
+    uclutoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    dortlutoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    beslitoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+
     toplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
 
@@ -179,6 +183,9 @@ class FirmaIcmal(models.Model):
         self.cezalar = self.ceza + self.mtv
         self.digercezalar = self.idariceza + self.davagideri + self.hakemheyeti
         self.müsavirlikler =self.müsavirlik + self.harcama
+        self.uclutoplam = self.odemelertoplami+self.müsavirlikler+self.tesvik
+        self.dortlutoplam =self.uclutoplam+self.sgk
+        self.beslitoplam = self.dortlutoplam+self.bagkur
         super(FirmaIcmal, self).save(*args, **kwargs)
 
 
@@ -308,6 +315,10 @@ def icmal_esitle(sender, instance,**kwargs):
     a.vergiYapilandirmasi = vergiYapilandirmasi
     a.sgkYapilandirmasi = sgkYapilandirmasi
     a.save()
+
+
+
+
 
 
 

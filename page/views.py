@@ -26,6 +26,10 @@ def generatePdfGrup(request,ay,yil):
     pdf = render_to_pdf('mytemplate.html',grup_slug=True,ay=ay,yil=yil)
     return HttpResponse(pdf, content_type='application/pdf')
 
+def generatePdfOdemeTakip(request,ay,yil):
+    pdf = render_to_pdf('mytemplate.html',odemeTakip=True,ay=ay,yil=yil)
+    return HttpResponse(pdf, content_type='application/pdf')
+
 @login_required
 def hizliBir(request):
     context = dict()
@@ -72,6 +76,14 @@ def home(request):
     items = GrupIcmal.objects.all()
     for item in items:
         item.delete()
+    #dev code 
+    icmaller = Icmal.objects.all()
+    for icmal in icmaller:
+        icmal.save()
+    firmaicmalleri = FirmaIcmal.objects.all()
+    for firmaicmal in firmaicmalleri:
+        firmaicmal.save()
+
     context['title'] = "Anasayfa"
     context['firma_sayisi'] = len(Firma.objects.all())
     context['sube_sayisi'] = len(Sube.objects.all())
@@ -537,5 +549,108 @@ def odemeTakipIki(request,ay,yil):
     context['title']="Ödeme Takip İcmali"
     context['subeIcmalleri'] = Icmal.objects.filter(ay=ay,yıl=yil)
     context['firmaIcmalleri'] = FirmaIcmal.objects.filter(ay=ay,yıl=yil)
-    context['mert'] = "Mert Fucking Gürkan"
     return render(request,"odeme-takip2.html",context)
+
+
+
+# import openpyxl
+# from openpyxl.utils import get_column_letter
+# from openpyxl.styles import Font
+
+# def export_to_excel(queryset):
+#     # Verileri içeren QuerySet
+#     data = queryset
+#     # Excel dosyasını oluşturun
+#     wb = openpyxl.Workbook()
+#     ws = wb.active
+#     ws.title = "Data"
+#     # Başlıkları ayarlayın
+#     row_num = 1
+#     columns = [
+#         (u"ID", 15),
+#         (u"Ad", 30),
+#         (u"Soyad", 30),
+#         (u"Doğum Tarihi", 15),
+#     ]
+#     font = Font(bold=True)
+#     for col_num, column_title in enumerate(columns, 1):
+#         c = ws.cell(row=row_num, column=col_num)
+#         c.value = column_title[0]
+#         c.font = font
+#         ws.column_dimensions[get_column_letter(col_num)].width = column_title[1]
+#     # Verileri yazın
+#     for obj in data:
+#         row_num += 1
+#         row = [
+#             obj.id,
+#             obj.firma.isim,
+#             obj.kdv,
+#             obj.kdv2,
+#         ]
+#         for col_num, cell_value in enumerate(row, 1):
+#             c = ws.cell(row=row_num, column=col_num)
+#             c.value = cell_value
+#     # Dosyayı kaydedin
+#     return wb
+
+
+# def exportExcel(request):
+#     dataset = Icmal.objects.all()
+#     data = dataset
+#     # Excel dosyasını oluşturun
+#     wb = openpyxl.Workbook()
+#     ws = wb.active
+#     ws.title = "Data"
+#     # Başlıkları ayarlayın
+#     row_num = 1
+#     columns = [
+#         (u"ID", 15),
+#         (u"Ad", 30),
+#         (u"Soyad", 30),
+#         (u"Doğum Tarihi", 15),
+#     ]
+#     font = Font(bold=True)
+#     for col_num, column_title in enumerate(columns, 1):
+#         c = ws.cell(row=row_num, column=col_num)
+#         c.value = column_title[0]
+#         c.font = font
+#         ws.column_dimensions[get_column_letter(col_num)].width = column_title[1]
+#     # Verileri yazın
+#     for obj in data:
+#         row_num += 1
+#         row = [
+#             obj.id,
+#             obj.firma.isim,
+#             obj.kdv,
+#             obj.kdv2,
+#         ]
+#         for col_num, cell_value in enumerate(row, 1):
+#             c = ws.cell(row=row_num, column=col_num)
+#             c.value = cell_value
+#     response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+#     response['Content-Disposition'] = 'attachment; filename=data.xlsx'
+#     wb.save(response)
+#     return response
+
+
+
+# def exportExcel(request):
+#     # Verileri toplayın
+#     data = [
+#         ['Adı', 'Soyadı', 'Yaş'],
+#         ['Ahmet', 'Yılmaz', 30],
+#         ['Mehmet', 'Çelik', 40],
+#         ['Ali', 'Kaya', 35],
+#     ]
+
+#     # Excel dosyası oluşturun
+#     wb = openpyxl.Workbook()
+#     ws = wb.active
+#     for row in data:
+#         ws.append(row)
+
+#     # Excel dosyasını döndürün
+#     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+#     response['Content-Disposition'] = 'attachment; filename=data.xlsx'
+#     wb.save(response)
+#     return response
