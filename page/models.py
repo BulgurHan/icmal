@@ -28,6 +28,8 @@ class Firma(models.Model):
         super(Firma, self).save(*args, **kwargs)
     def __str__(self):
         return self.isim
+    class Meta:
+        ordering = ("isim",)
 
 
 
