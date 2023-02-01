@@ -20,7 +20,6 @@ elif datetime.datetime.now().month > 1:
 
 
 
-
 class Firma(models.Model):
     isim = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250,default="")
@@ -130,6 +129,9 @@ class Icmal(models.Model):
         super(Icmal, self).save(*args, **kwargs)
     def __str__(self):
         return "{}-{}".format(self.pk,self.sube.isim)
+    
+    class Meta:
+        ordering = ('-yıl',)
 
 class FirmaIcmal(models.Model):
     firma = models.ForeignKey(Firma,on_delete=models.CASCADE)
@@ -187,6 +189,9 @@ class FirmaIcmal(models.Model):
         self.dortlutoplam =self.uclutoplam+self.sgk
         self.beslitoplam = self.dortlutoplam+self.bagkur
         super(FirmaIcmal, self).save(*args, **kwargs)
+    
+    class Meta:
+        ordering = ("-yıl",)
 
 
 class GrupIcmal(models.Model):

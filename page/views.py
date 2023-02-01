@@ -48,6 +48,12 @@ def hizliIki(request,firma_slug):
     context['title'] = "Şubelere SGK Gir"
     firma = Firma.objects.get(slug=firma_slug)
     icmaller = Icmal.objects.filter(firma=firma,yıl=YEAR_CHOICES[0][0],ay=MONTH_CHOICES[0][0])
+    if len(icmaller) == 0:
+        subeler = Sube.objects.filter(firma=firma)
+        for sube in subeler:
+            a = Icmal(firma=firma,sube=sube,ay=MONTH_CHOICES[0][0],yıl=YEAR_CHOICES[0][0])
+            a.save()
+    icmaller = Icmal.objects.filter(firma=firma,yıl=YEAR_CHOICES[0][0],ay=MONTH_CHOICES[0][0])
     context['subeIcmalleri'] = icmaller
     context['firma'] = firma
     SgkFormSet = modelformset_factory(Icmal, fields=['sgk', 'tesvik'])
@@ -202,7 +208,11 @@ def icmalGir(request,firma_slug,sube_slug):
     context['title'] = "İcmal Girişi"
     firma = Firma.objects.get(slug = firma_slug)
     sube = Sube.objects.get(firma=firma, slug = sube_slug)
-    icmal = Icmal.objects.get(firma=firma,sube=sube)
+    try:
+        icmal = Icmal.objects.get(firma=firma,sube=sube,ay=MONTH_CHOICES[0][0],yıl=YEAR_CHOICES[0][0])
+    except:
+        icmal = Icmal(firma=firma,sube=sube,ay=MONTH_CHOICES[0][0],yıl=YEAR_CHOICES[0][0])
+        icmal.save()
     context['form'] = GirdiForm(instance=icmal)
     context['subeForm'] = IcmalUc(request.POST)
     if request.method == "POST":
@@ -421,7 +431,7 @@ def firma_musteri_sunum_icmali(request,firma_slug,yil,ay):
     subeIcmalleri = []
     for sube in context['subeler']:
         try:
-            i = Icmal.objects.get(sube=sube)
+            i = Icmal.objects.get(sube=sube,ay=ay,yıl=yil)
             subeIcmalleri.append(i)
         except:
             continue

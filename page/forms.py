@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Firma,Sube,YEAR_CHOICES,MONTH_CHOICES,Icmal,FirmaIcmal
+from .models import Firma,Sube,Icmal,FirmaIcmal
 
 FİRMALAR = Firma.objects.all()
 SUBELER =Sube.objects.all()
@@ -250,7 +250,7 @@ class SubeForm(forms.ModelForm):
 
 
 class GirdiForm(forms.ModelForm):
-    kdv = forms.DecimalField(required=False,
+    kdv = forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control ',
@@ -260,7 +260,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    kdv2=forms.DecimalField(required=False,
+    kdv2=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -270,7 +270,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    atak=forms.DecimalField(required=False,
+    atak=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -280,7 +280,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    yasalKdv=forms.DecimalField(required=False,
+    yasalKdv=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -290,7 +290,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    muhtasar=forms.DecimalField(required=False,
+    muhtasar=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -300,7 +300,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    ggkv=forms.DecimalField(required=False,
+    ggkv=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -310,7 +310,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    damga=forms.DecimalField(required=False,
+    damga=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -320,7 +320,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    mtv=forms.DecimalField(required=False,
+    mtv=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -330,7 +330,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    ceza=forms.DecimalField(required=False,
+    ceza=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -340,7 +340,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    idariceza=forms.DecimalField(required=False,
+    idariceza=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -350,7 +350,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    davagideri=forms.DecimalField(required=False,
+    davagideri=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -360,7 +360,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    hakemheyeti=forms.DecimalField(required=False,
+    hakemheyeti=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -370,7 +370,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    geçmişborçlar=forms.DecimalField(required=False,
+    geçmişborçlar=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -380,7 +380,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    tesvik=forms.DecimalField(required=False,
+    tesvik=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -390,7 +390,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    müsavirlik=forms.DecimalField(required=False,
+    müsavirlik=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -400,7 +400,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    harcama=forms.DecimalField(required=False,
+    harcama=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -410,7 +410,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    sgk=forms.DecimalField(required=False,
+    sgk=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -420,7 +420,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    bagkur=forms.DecimalField(required=False,
+    bagkur=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -430,7 +430,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    tasdik=forms.DecimalField(required=False,
+    tasdik=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -440,7 +440,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    sgkYapilandirmasi=forms.DecimalField(required=False,
+    sgkYapilandirmasi=forms.DecimalField(
         widget= forms.NumberInput(
             attrs={
             'class':'form-control',
@@ -450,7 +450,7 @@ class GirdiForm(forms.ModelForm):
             }
         ) 
     )
-    vergiYapilandirmasi=forms.DecimalField(required=False,
+    vergiYapilandirmasi=forms.DecimalField(
     widget= forms.NumberInput(
         attrs={
         'class':'form-control',
