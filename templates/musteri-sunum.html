@@ -15,7 +15,7 @@
               <li class="breadcrumb-item active" aria-current="page">Müşteri Sunum İcmali</li>
 
             </ol>
-            <div class="m-2">
+            <div class="my-2">
                 <li> 
                   <a href={% if title == "Şube Müşteri Sunum İcmali" %}
                   {% url 'generatePdf' firma_slug=firma.slug sube_slug=icmal.sube.slug ay=icmal.ay yil=icmal.yıl %} 
@@ -25,8 +25,8 @@
                   {% url 'generatePdfGrup' grup_slug=icmal.grup.slug ay=icmal.ay yil=icmal.yıl %}
                   {% endif %}
                   
-                  class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                      class="fas fa-download fa-sm text-white-50"></i>PDF'e Aktar</a>
+                  class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                      class="fas fa-download text-white-50"></i>PDF'e Aktar</a>
                   </li></div>
 
           </nav>

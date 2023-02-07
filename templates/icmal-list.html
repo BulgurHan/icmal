@@ -65,7 +65,7 @@
                                 <th>Yıl</th>
                                 <th>Ay</th>
                                 <th>Firma</th>
-                                <th>Detaylı İcmal / Müşteri Sunum</th>
+                                <th>İşlemler </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,8 +76,9 @@
                                 <td>{{icmal.ay}}</td>  
                                 <td>{{icmal.firma.isim}}</td>
                                 <td>
-                                    {% comment %} <a href={% url 'firma_icmal_detay' firma_slug=icmal.firma.slug ay=icmal.ay yil=icmal.yıl %}><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> </a>  / {% endcomment %}
-                                    <a href={% url 'firma_musteri_sunum_icmali' firma_slug=icmal.firma.slug ay=icmal.ay yil=icmal.yıl %}><i class="fa fa-address-card mx-3" aria-hidden="true"></i> </a> 
+                                    <a title="Firma ve Şubeleri PDF'ini Görüntüle" href={% url 'generatePdfFirma' firma_slug=icmal.firma.slug ay=icmal.ay yil=icmal.yıl %}> <i class="fa fa-calculator" aria-hidden="true"></i> </a> 
+                                    <a title="Müşteri Sunum İcmalini Görüntüle" href={% url 'firma_musteri_sunum_icmali' firma_slug=icmal.firma.slug ay=icmal.ay yil=icmal.yıl %}><i class="fa fa-address-card mx-3" aria-hidden="true"></i> </a> 
+                                    <a title="Tüm Şubelerin PDF'lerini İndir" href=""> <i class="fa fa-download" aria-hidden="true"></i> </a> 
                                 </td>  
                                                   
                             </tr>                        
