@@ -1,22 +1,41 @@
+import datetime
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Firma,Sube,Icmal,FirmaIcmal
+from .models import Firma,Sube,Icmal,Donem
+from.models import AYLAR,YILLAR
 
 FİRMALAR = Firma.objects.all()
 SUBELER =Sube.objects.all()
 ICMALLER = Icmal.objects.all()
-FIRMAICMALLERİ = FirmaIcmal.objects.all()
-YILLAR = []
-AYLAR = []
+KULLANICILAR = User.objects.all()
 
-for icmal in FIRMAICMALLERİ:
-    if (icmal.ay,icmal.ay) in AYLAR and (icmal.yıl,icmal.yıl) in YILLAR:
-        continue
-    else:
-        YILLAR.append((icmal.yıl,icmal.yıl))
-        AYLAR.append((icmal.ay,icmal.ay))
 
+class KullaniciDonemForm(forms.ModelForm):
+    kullanici = forms.ModelChoiceField(
+        queryset=KULLANICILAR,
+        required=False
+    )
+    ay = forms.ChoiceField(
+        choices=AYLAR,
+        widget=forms.Select(
+        attrs={
+        'class':'form-control'
+        }
+        )
+    )
+    yil = forms.ChoiceField(
+        choices=YILLAR,
+        widget=forms.Select(
+        attrs={
+        'class':'form-control'
+        }
+        )
+    )
+    class Meta:
+        model = Donem
+        fields = ('ay','yil',"kullanici")
+ 
 
 
 
@@ -467,16 +486,3 @@ class GirdiForm(forms.ModelForm):
 
 
 
-
-class OdemeIcmaliForm(forms.Form):
-    satır = forms.IntegerField(
-        widget=forms.NumberInput(
-            attrs={
-                'class' : 'form-control col-5',
-                
-            }
-        )
-    )
-    def __init__(self, *args, **kwargs):
-        super(OdemeIcmaliForm, self).__init__(*args, **kwargs)
-        self.fields['satır'].required = False

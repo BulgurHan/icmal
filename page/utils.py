@@ -9,8 +9,9 @@ from django.template.loader import get_template
 
 from xhtml2pdf import pisa  
 #difine render_to_pdf() function
-from .models import Icmal,Sube,Firma,FirmaIcmal,GrupIcmal
+from .models import Icmal,Sube,Firma,FirmaIcmal
 from django.shortcuts import get_object_or_404
+
 
 
 def render_to_pdf(template_src,ay,yil,grup_slug=False,odemeTakip=False,sube_slug=None,firma_slug=None, context_dict={}):

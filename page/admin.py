@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Firma,Sube,Icmal,FirmaIcmal,GrupIcmal
+from .models import Firma,Sube,Icmal,FirmaIcmal,Donem
 
 
 admin.site.register(Icmal)
 admin.site.register(FirmaIcmal)
-admin.site.register(GrupIcmal)
+admin.site.register(Donem)
 
 
 

@@ -44,7 +44,7 @@
                                 <td>{{icmal.sube.firma.isim}}</td>
                                 <td>{{icmal.sube.isim}}</td>   
                                 <td>
-                                    <a href={% url 'icmal_detay' firma_slug=sube.firma.slug sube_slug=icmal.sube.slug yil=icmal.yıl ay=icmal.ay %}><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> </a> /
+                                    {% comment %} <a title="Detaylı İcmal" href={% url 'icmal_detay' firma_slug=sube.firma.slug sube_slug=icmal.sube.slug yil=icmal.yıl ay=icmal.ay %}><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> </a> / {% endcomment %}
                                     <a href={% url 'musteri_sunum_icmali' firma_slug=sube.firma.slug sube_slug=icmal.sube.slug yil=icmal.yıl ay=icmal.ay  %}><i class="fa fa-address-card mx-3" aria-hidden="true"></i> </a>
                                 </td>                  
                             </tr>                        
@@ -76,7 +76,7 @@
                                 <td>{{icmal.ay}}</td>  
                                 <td>{{icmal.firma.isim}}</td>
                                 <td>
-                                    <a href={% url 'firma_icmal_detay' firma_slug=icmal.firma.slug ay=icmal.ay yil=icmal.yıl %}><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> </a>  /
+                                    {% comment %} <a href={% url 'firma_icmal_detay' firma_slug=icmal.firma.slug ay=icmal.ay yil=icmal.yıl %}><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> </a>  / {% endcomment %}
                                     <a href={% url 'firma_musteri_sunum_icmali' firma_slug=icmal.firma.slug ay=icmal.ay yil=icmal.yıl %}><i class="fa fa-address-card mx-3" aria-hidden="true"></i> </a> 
                                 </td>  
                                                   
@@ -106,7 +106,7 @@
                                 <td>{{icmal.yıl}}</td>
                                 <td>{{icmal.ay}}</td>  
                                 <td>
-                                    <a href={% url 'grup_icmal_detay' grup_slug=icmal.grup.slug ay=icmal.ay yil=icmal.yıl%}><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> </a>  /
+                                    {% comment %} <a href={% url 'grup_icmal_detay' grup_slug=icmal.grup.slug ay=icmal.ay yil=icmal.yıl%}><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> </a>  / {% endcomment %}
                                     <a href={% url 'grup_musteri_sunum_icmali' grup_slug=icmal.grup.slug ay=icmal.ay yil=icmal.yıl %}><i class="fa fa-address-card mx-3" aria-hidden="true"></i> </a> 
                                 </td>  
                                                   

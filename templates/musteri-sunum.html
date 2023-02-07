@@ -2,6 +2,7 @@
 
 {% block content %}
 
+
      <!-- Begin Page Content -->
      <div class="container-fluid">
 
@@ -55,13 +56,13 @@
                             {% if icmal.kdvler > 0  %}
                             <tr>
                                 <td>Katma Değer Vergisi</td>
-                                <td>{{icmal.kdvler}} </td>
+                                <td>{{ icmal.kdvler}} </td>
                              </tr>
                              {% endif %}
                              {% if icmal.atak > 0  %}
                              <tr>
                                  <td>Atak Fatura</td>
-                                 <td>{{icmal.atak}} </td>
+                                 <td>{{ icmal.atak}} </td>
                               </tr>
                               {% endif %}
                              {% if icmal.muhtasar > 0  %}

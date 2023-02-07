@@ -7,17 +7,21 @@ from django.contrib.auth.models import User
 
 
 
-YEAR_CHOICES = []
-MONTH_CHOICES = []
-
-if datetime.datetime.now().month == 1:
-    MONTH_CHOICES.append((12,12))
-    YEAR_CHOICES.append((datetime.datetime.now().year-1,datetime.datetime.now().year-1))
-elif datetime.datetime.now().month > 1:
-    MONTH_CHOICES.append((datetime.datetime.now().month-1,datetime.datetime.now().month-1))
-    YEAR_CHOICES.append((datetime.datetime.now().year,datetime.datetime.now().year))
+YILLAR = []
+AYLAR = []
+for i in range(1,13):
+    AYLAR.append((str(i),str(i)))
 
 
+
+class Donem(models.Model):
+    kullanici = models.ForeignKey(User,on_delete=models.CASCADE)
+    ay = models.CharField(
+        choices=AYLAR,
+        max_length=10)
+    yil= models.CharField(
+        choices=YILLAR,
+        max_length=10)
 
 
 class Firma(models.Model):
@@ -48,20 +52,20 @@ class Sube(models.Model):
         return "{} Firması -{} Şubesi".format(self.firma.isim,self.isim)
     
     class Meta:
-        ordering = ('firma__isim',)
+        ordering = ('isim',)
 
 
 @receiver(post_save, sender=Sube)
 def icmal_olustur(sender, instance, created, **kwargs):
     if created:
-        a = Icmal(sube=instance, yıl=YEAR_CHOICES[0][0], ay=MONTH_CHOICES[0][0])
-        a.save()
-        try:
-            icmal = FirmaIcmal.objects.get(firma = instance.firma,yıl=YEAR_CHOICES[0][0], ay=MONTH_CHOICES[0][0])
-        except:
-            b = FirmaIcmal(firma=instance.firma,yıl=YEAR_CHOICES[0][0], ay=MONTH_CHOICES[0][0])       
-            b.save()
-
+        print("şube oluştu")
+        # a = Icmal(sube=instance, yıl=YEAR_CHOICES[0][0], ay=MONTH_CHOICES[0][0])
+        # a.save()
+        # try:
+        #     icmal = FirmaIcmal.objects.get(firma = instance.firma,yıl=YEAR_CHOICES[0][0], ay=MONTH_CHOICES[0][0])
+        # except:
+        #     b = FirmaIcmal(firma=instance.firma,yıl=YEAR_CHOICES[0][0], ay=MONTH_CHOICES[0][0])       
+        #     b.save()
 
 
    
@@ -70,8 +74,8 @@ def icmal_olustur(sender, instance, created, **kwargs):
 class Icmal(models.Model):
     sube = models.ForeignKey(Sube,on_delete=models.CASCADE)
     firma = models.ForeignKey(Firma, null=True,blank=True, on_delete=models.CASCADE)
-    yıl = models.IntegerField(('yıl'), choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    ay = models.IntegerField(('ay'), choices=MONTH_CHOICES, default=datetime.datetime.now().month)
+    yıl = models.IntegerField(('yıl'), choices=YILLAR, default=datetime.datetime.now().year)
+    ay = models.IntegerField(('ay'), choices=AYLAR, default=datetime.datetime.now().month)
 
     atak = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     yasalKdv = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
@@ -137,8 +141,8 @@ class Icmal(models.Model):
 
 class FirmaIcmal(models.Model):
     firma = models.ForeignKey(Firma,on_delete=models.CASCADE)
-    yıl = models.IntegerField(('yıl'), choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    ay = models.IntegerField(('ay'), choices=MONTH_CHOICES, default=datetime.datetime.now().month)
+    yıl = models.IntegerField(('yıl'), choices=YILLAR, default=datetime.datetime.now().year)
+    ay = models.IntegerField(('ay'), choices=AYLAR, default=datetime.datetime.now().month)
     atak = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     yasalKdv = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     tasdik = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
@@ -196,57 +200,6 @@ class FirmaIcmal(models.Model):
         ordering = ("-yıl",)
 
 
-class GrupIcmal(models.Model):
-    baslik = models.CharField(max_length=250)
-    yıl = models.IntegerField(('yıl'), choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    ay = models.IntegerField(('ay'), choices=MONTH_CHOICES, default=datetime.datetime.now().month)
-    atak = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    yasalKdv = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    tasdik = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    kdv = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    kdv2  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    muhtasar  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    ggkv  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    damga = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    mtv  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    ceza = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    idariceza  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    davagideri  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    hakemheyeti  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    geçmişborçlar  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    sgkYapilandirmasi = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    vergiYapilandirmasi = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-
-    odemelertoplami = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    
-    kdvler = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    cezalar = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    digercezalar = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    kosgebler = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    müsavirlikler = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-
-    tesvik  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    müsavirlik  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    harcama  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    danismanliktoplami = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    
-    sgk  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    bagkur  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    sgktoplamlari = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-
-    toplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-
-
-    def save(self, *args, **kwargs):        
-        self.odemelertoplami =self.atak+self.vergiYapilandirmasi+self.sgkYapilandirmasi+self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur
-        self.kdvler = self.kdv + self.kdv2
-        self.toplam = self.odemelertoplami+self.sgk
-        self.cezalar = self.ceza + self.mtv
-        self.digercezalar = self.idariceza + self.davagideri + self.hakemheyeti
-        self.müsavirlikler =self.müsavirlik + self.harcama
-        super(GrupIcmal, self).save(*args, **kwargs)
-    def __str__(self):
-        return self.baslik
 
 
 @receiver(post_save, sender=Icmal)
@@ -325,11 +278,20 @@ def icmal_esitle(sender, instance,**kwargs):
 
 
 
+FIRMAICMALLERİ = FirmaIcmal.objects.all()
 
+for icmal in FIRMAICMALLERİ:
+    if  (str(icmal.yıl),str(icmal.yıl)) in YILLAR:
+        continue
+    else:
+        YILLAR.append((str(icmal.yıl),str(icmal.yıl)))
+        
 
-
-
-
-
+if  (str(datetime.datetime.now().year-1),str(datetime.datetime.now().year-1)) not in YILLAR:
+    YILLAR.append((str(datetime.datetime.now().year-1),str(datetime.datetime.now().year-1)))
+if  (str(datetime.datetime.now().year),str(datetime.datetime.now().year)) not in YILLAR:   
+    YILLAR.append((str(datetime.datetime.now().year),str(datetime.datetime.now().year)))
+if datetime.datetime.now().month == 12:
+    YILLAR.append((str(datetime.datetime.now().year+1),str(datetime.datetime.now().year+1)))
 
 

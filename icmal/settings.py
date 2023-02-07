@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     "page",
     ]
 
@@ -147,6 +148,8 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 LOGIN_URL = "/login"
 LOGIN_REDIRECT_URL=""
+
+USE_THOUSAND_SEPARATOR = True
 
 
 

@@ -21,7 +21,7 @@
                                 </div>
                                 {% endfor %}
                                 {% endif %}
-
+                      {% if title == "İcmal Girişi - Firma Seçin" %}
                                 <form method="POST">
                                     {% csrf_token %}
                                     <div class="row">
@@ -39,11 +39,36 @@
                                     <input class="btn btn-primary mt-3" type="submit" name="icmal-getir" value="Getir"/>
                             </form>
                 <hr>
-{% if title == "İcmal Girişi" %}
+{% elif title == "İcmal Girişi" %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="row justify-content-center">
+        <div class="col-10">
 
-<div class="row justify-content-between">
-    <div class="col-12">
-        <h1 class="h4 text-gray-900 ">{{form.instance.firma.isim}} Firması {{form.instance.sube.isim}}  Şubesi  {{form.instance.yıl}} / {{form.instance.ay}}  Dönemi İcmali</h1>
+
+                <label for="subeler">Şube Seçin</label>
+                <select class="form-control" name="sube" id="subeler">
+                    {% for sube in subeler  %}
+                    {% if sube == selected %}
+                    <option value="{{sube.isim}}" selected >{{sube.isim}}</option>
+                    {% else %}
+                    <option value="{{sube.isim}}" >{{sube.isim}}</option>
+                    {% endif %}
+                  
+                  {% endfor %}
+                </select>
+
+
+            </div>
+        </div>
+    
+    <input class="btn btn-primary mt-3" type="submit" name="icmal-getir" value="Getir"/>
+</div>
+</form>
+<hr>
+<div class="row">
+    <div class="col">
+        <h1 class="h4 text-gray-900 text-center">{{form.instance.firma.isim}} Firması {{form.instance.sube.isim}}  Şubesi  {{form.instance.yıl}} / {{form.instance.ay}}  Dönemi İcmali</h1>
    </div>
 </div>
 
@@ -216,8 +241,10 @@
         </div>
     </div>
     <hr>
-    <input type="submit" value="Ekle" name="icmal-kaydet" class="btn btn-success"/>
-
+    <div class="row justify-content-between">
+    <input type="submit" value="Ekle" name="icmal-kaydet" class="btn btn-success mx-5"/>
+    <a href={% url 'icmalGir' firma_slug=fslug sube_slug=slug %} class="btn btn-info mx-5">Sonraki -> </a>
+    </div>
 </form>
 {% endif %}   
 </div>

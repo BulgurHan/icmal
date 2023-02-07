@@ -1,6 +1,6 @@
 from django.template.loader import get_template
 from .utils import render_to_pdf
-
+import datetime
 from django.shortcuts import render,get_object_or_404,redirect,HttpResponse
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
@@ -8,8 +8,8 @@ from django.forms import modelformset_factory
 from django.contrib.auth.models import User
 from django.contrib.auth import login,authenticate,logout
 from django.contrib import messages
-from .models import Firma,Icmal,Sube,FirmaIcmal,YEAR_CHOICES,MONTH_CHOICES,GrupIcmal
-from .forms import FirmaForm,SubeForm,GirdiForm,SignInForm,SignUpForm,FirmaCreateForm,HizliForm,IcmalBir,OdemeIcmaliForm,IcmalUc,DonemForm
+from .models import Firma,Icmal,Sube,FirmaIcmal,Donem
+from .forms import FirmaForm,SubeForm,GirdiForm,SignInForm,SignUpForm,FirmaCreateForm,HizliForm,IcmalBir,IcmalUc,DonemForm,KullaniciDonemForm
 
 
 def generatePdf(request,firma_slug,sube_slug,ay,yil):
@@ -47,13 +47,14 @@ def hizliIki(request,firma_slug):
     context = dict()
     context['title'] = "Şubelere SGK Gir"
     firma = Firma.objects.get(slug=firma_slug)
-    icmaller = Icmal.objects.filter(firma=firma,yıl=YEAR_CHOICES[0][0],ay=MONTH_CHOICES[0][0])
+    donem = Donem.objects.get(kullanici=request.user)
+    icmaller = Icmal.objects.filter(firma=firma,yıl=donem.yil,ay=donem.ay)
     if len(icmaller) == 0:
         subeler = Sube.objects.filter(firma=firma)
         for sube in subeler:
-            a = Icmal(firma=firma,sube=sube,ay=MONTH_CHOICES[0][0],yıl=YEAR_CHOICES[0][0])
+            a = Icmal(firma=firma,sube=sube,ay=donem.ay,yıl=donem.yil)
             a.save()
-    icmaller = Icmal.objects.filter(firma=firma,yıl=YEAR_CHOICES[0][0],ay=MONTH_CHOICES[0][0])
+    icmaller = Icmal.objects.filter(firma=firma,yıl=donem.yil,ay=donem.ay)
     context['subeIcmalleri'] = icmaller
     context['firma'] = firma
     SgkFormSet = modelformset_factory(Icmal, fields=['sgk', 'tesvik'])
@@ -79,9 +80,6 @@ def hizliIki(request,firma_slug):
 @login_required
 def home(request):
     context=dict()
-    items = GrupIcmal.objects.all()
-    for item in items:
-        item.delete()
     #dev code 
     # icmaller = Icmal.objects.all()
     # for icmal in icmaller:
@@ -89,11 +87,27 @@ def home(request):
     # firmaicmalleri = FirmaIcmal.objects.all()
     # for firmaicmal in firmaicmalleri:
     #     firmaicmal.save()
-
+    try:
+        donem = Donem.objects.get(kullanici=request.user)
+    except:
+        donem = Donem(kullanici=request.user,ay=datetime.datetime.now().month,yil=datetime.datetime.now().year)
+        donem.save()
+    context['donem'] = donem
+    context['form'] = KullaniciDonemForm(instance=donem) 
     context['title'] = "Anasayfa"
     context['firma_sayisi'] = len(Firma.objects.all())
     context['sube_sayisi'] = len(Sube.objects.all())
     context['kullanici_sayisi'] = len(User.objects.all())
+    if request.method == "POST":
+        context['form'] = KullaniciDonemForm(request.POST,instance=donem)
+        if context['form'].is_valid():
+            item = context['form'].save(commit=False)
+            item.kullanici = request.user
+            item.save()
+            messages.info(request,"Döneminiz Başarıyla Güncellendi")
+            return redirect("home")
+        else:
+            messages.info(request,"Ops.")
     return render(request,'home.html',context)
 
 
@@ -208,19 +222,32 @@ def icmalGir(request,firma_slug,sube_slug):
     context['title'] = "İcmal Girişi"
     firma = Firma.objects.get(slug = firma_slug)
     sube = Sube.objects.get(firma=firma, slug = sube_slug)
+    context['fslug'] = firma.slug
+    context['selected']=sube
+    context['subeler'] = Sube.objects.filter(firma=firma).order_by("isim")
+    subeler = list(context['subeler'])
+    i = subeler.index(sube)
+    j=0
+    for index,s in enumerate(subeler):
+        if i == index:
+            j = i+1
     try:
-        icmal = Icmal.objects.get(firma=firma,sube=sube,ay=MONTH_CHOICES[0][0],yıl=YEAR_CHOICES[0][0])
+        sıradaki = subeler[j]
+        context['slug'] = sıradaki.slug
     except:
-        icmal = Icmal(firma=firma,sube=sube,ay=MONTH_CHOICES[0][0],yıl=YEAR_CHOICES[0][0])
+        sıradaki = subeler[0]
+        context['slug'] = sıradaki.slug
+    donem = Donem.objects.get(kullanici=request.user)
+    try:
+        icmal = Icmal.objects.get(firma=firma,sube=sube,ay=donem.ay,yıl=donem.yil)
+    except:
+        icmal = Icmal(firma=firma,sube=sube,ay=donem.ay,yıl=donem.yil)
         icmal.save()
     context['form'] = GirdiForm(instance=icmal)
-    context['subeForm'] = IcmalUc(request.POST)
     if request.method == "POST":
         if  'icmal-getir' in request.POST :   
-            if context['subeForm'].is_valid():
-                sube = context['subeForm'].cleaned_data['sube']
-                firma = sube.firma
-                return redirect("icmalGir", firma_slug=firma.slug, sube_slug = sube.slug)
+            sube =Sube.objects.get(isim=request.POST['sube'],firma=firma)
+            return redirect("icmalGir", firma_slug=firma.slug, sube_slug = sube.slug)
         if 'icmal-kaydet' in request.POST:  
             context['form'] = GirdiForm(request.POST,instance=icmal)   
             if context['form'].is_valid():
@@ -231,140 +258,18 @@ def icmalGir(request,firma_slug,sube_slug):
     return render(request,'girdi-form.html',context)
 
 
-@login_required
-def odemeIcmali(request):
-    context = dict()
-    items = GrupIcmal.objects.all()
-    for item in items:
-        item.delete()
-    context['title'] = "Ödeme İcmali Oluştur"
-    context['form'] = OdemeIcmaliForm(request.POST)
-    if request.method == 'POST':
-        if context['form'].is_valid():
-            satır_sayisi = context['form'].cleaned_data['satır']
-            return redirect("OdemeIcmaliDevam", satır_sayisi=satır_sayisi)
-    return render(request,'odeme-icmali-form.html', context)
-
-
-@login_required
-def OdemeIcmaliDevam(request,satır_sayisi):
-    context = dict()
-    context['title'] = "Ödeme İcmali Oluştur-2"
-    context['form'] = OdemeIcmaliForm(request.POST)
-    if request.method == 'POST':
-        if context['form'].is_valid():
-            satır_sayisi = context['form'].cleaned_data['satır']
-            return redirect("OdemeIcmaliDevam", satır_sayisi=satır_sayisi)
-    context['satir'] = range(1,satır_sayisi+1)
-    context['sayi'] = satır_sayisi
-    context['icmaller'] = Icmal.objects.filter(ay=MONTH_CHOICES[0][0], yıl=YEAR_CHOICES[0][0])
-    return render(request,'odeme-icmali-form.html',context)
-
-
-@login_required
-def odemeIcmali2(request):
-    context = dict()
-    satir = int(request.POST.getlist('satir_sayisi')[0])
-    count=1
-    i = 0
-    subeler =list()
-    while i < satir:
-        subeler.append(request.POST.getlist('secilenler_{}'.format(count)))
-        i +=1
-        count+=1
-    for index,kutu in enumerate(subeler):
-        listem = list()
-        for i in kutu:
-            icmal = Icmal.objects.get(pk=i)
-            listem.append(icmal)
-        print(listem)
-        try:
-            a = GrupIcmal.objects.get(baslik=request.POST.getlist('secilen_baslik_{}'.format(index+1))[0],ay=MONTH_CHOICES[0][0], yıl=YEAR_CHOICES[0][0])
-        except:
-            a = GrupIcmal(baslik=request.POST.getlist('secilen_baslik_{}'.format(index+1))[0],ay=MONTH_CHOICES[0][0], yıl=YEAR_CHOICES[0][0])
-            atak =0
-            yasalKdv =0 
-            tasdik = 0
-            kdv =0
-            kdv2 = 0
-            muhtasar = 0
-            ggkv = 0
-            damga =0
-            mtv =0
-            ceza =0
-            idariceza = 0
-            davagideri =0
-            hakemheyeti =0
-            geçmişborçlar =0
-            tesvik=0
-            müsavirlik=0
-            harcama=0
-            sgk=0
-            bagkur=0
-            sgkYapilandirmasi =0
-            vergiYapilandirmasi =0
-            for icmal in listem:
-                atak += icmal.atak
-                yasalKdv += icmal.yasalKdv
-                tasdik += icmal.tasdik
-                kdv += icmal.kdv
-                kdv2 += icmal.kdv2
-                muhtasar += icmal.muhtasar
-                ggkv += icmal.ggkv
-                damga += icmal.damga
-                mtv += icmal.mtv
-                ceza += icmal.ceza
-                idariceza += icmal.idariceza
-                davagideri += icmal.davagideri
-                hakemheyeti += icmal.hakemheyeti
-                geçmişborçlar += icmal.geçmişborçlar
-                tesvik += icmal.tesvik
-                müsavirlik += icmal.müsavirlik
-                harcama += icmal.harcama
-                sgk += icmal.sgk
-                bagkur += icmal.bagkur
-                sgkYapilandirmasi += icmal.sgkYapilandirmasi
-                vergiYapilandirmasi += icmal.vergiYapilandirmasi
-            a.atak = atak
-            a.yasalKdv = yasalKdv
-            a.tasdik = tasdik
-            a.kdv = kdv
-            a.kdv2 = kdv2
-            a.muhtasar = muhtasar
-            a.ggkv = ggkv
-            a.damga = damga
-            a.mtv = mtv
-            a.ceza = ceza
-            a.idariceza = idariceza
-            a.davagideri = davagideri
-            a.hakemheyeti = hakemheyeti
-            a.geçmişborçlar = geçmişborçlar
-            a.tesvik = tesvik
-            a.müsavirlik = müsavirlik
-            a.harcama = harcama
-            a.sgk = sgk
-            a.bagkur = bagkur
-            a.vergiYapilandirmasi = vergiYapilandirmasi
-            a.sgkYapilandirmasi = sgkYapilandirmasi
-            a.save()
-            
-    context['items'] = GrupIcmal.objects.all()
-    context['yıl'] =YEAR_CHOICES[0][0]
-    context['ay'] =MONTH_CHOICES[0][0]
-    return render(request,'grup-table.html',context)
 
 @login_required
 def firmaIcmalleri(request,firma_slug):
     context =dict()
     context['title'] ="Firma İcmal Listesi"
     firma = Firma.objects.get(slug=firma_slug)
+    donem = Donem.objects.get(kullanici=request.user)
     context['firma'] = firma
-    context['icmaller'] = FirmaIcmal.objects.filter(firma=firma)
+    context['icmaller'] = FirmaIcmal.objects.filter(firma=firma,ay=donem.ay,yıl=donem.yil)
     return render(request,'icmal-list.html',context)
 
-@login_required
-def grupIcmalleri(request,grup_slug):
-    pass
+
 
 @login_required
 def allSubeler(request):
@@ -378,49 +283,8 @@ def allFirmalar(request):
     context['title'] = "Tüm Firmalar"
     return render(request,'firma-table.html',context)
 
-@login_required
-def subeIcmalleri(request,sube_slug,firma_slug):
-    context = dict()
-    firma = Firma.objects.get(slug=firma_slug)
-    sube = Sube.objects.get(slug=sube_slug,firma=firma)
-    context['title'] = "Şube İcmal Listesi"
-    context['sube'] = sube
-    context['icmaller'] = Icmal.objects.filter(sube=sube)
-    return render(request,'icmal-list.html',context)
 
 
-@login_required
-def subeIcmalListesi(request,firma_slug):
-    context = dict()
-    context['title'] = "Firmanın Şube İcmal Listesi"
-    firma = Firma.objects.get(slug=firma_slug)
-    context['subeler'] = Sube.objects.filter(firma=firma)
-    context['firma'] =firma
-    return render(request,'sube-list.html',context)
-
-
-@login_required
-def icmal_detay(request,firma_slug,sube_slug,yil,ay):
-    context = dict()
-    context['title'] = "Şube İcmal Detayı"
-    firma = Firma.objects.get(slug=firma_slug)
-    sube = Sube.objects.get(slug=sube_slug,firma=firma)
-    context['sube'] = sube
-    icmal = Icmal.objects.get(sube=sube,yıl=yil,ay=ay)
-    context['icmal'] = icmal
-    return render(request,'icmal-detail.html',context)
-
-@login_required
-def musteri_sunum_icmali(request,firma_slug,sube_slug,yil,ay):
-    context = dict()
-    context['title'] = "Şube Müşteri Sunum İcmali"
-    firma = Firma.objects.get(slug=firma_slug)
-    sube = Sube.objects.get(slug=sube_slug,firma=firma)
-    context['sube'] = sube
-    icmal = Icmal.objects.get(sube=sube,yıl=yil,ay=ay)
-    context['icmal'] = icmal
-    context['firma'] = firma
-    return render(request,'musteri-sunum.html',context)
 
 @login_required
 def firma_musteri_sunum_icmali(request,firma_slug,yil,ay):
@@ -441,26 +305,6 @@ def firma_musteri_sunum_icmali(request,firma_slug,yil,ay):
     return render(request,'musteri-sunum.html',context)
 
 
-@login_required
-def firma_icmal_detay(request,firma_slug,yil,ay):
-    context = dict()
-    context['title'] = "Firma İcmal Detayı"
-    firma = Firma.objects.get(slug=firma_slug)
-    context['subeler'] = Sube.objects.filter(firma=firma)
-    subeIcmalleri = []
-    for sube in context['subeler']:
-        try:
-            i = Icmal.objects.get(sube=sube)
-            subeIcmalleri.append(i)
-        except:
-            continue
-    context['subeIcmalleri'] = subeIcmalleri
-    icmal = FirmaIcmal.objects.get(firma=firma,yıl=yil,ay=ay)
-    context['icmal'] = icmal
-    return render(request,'icmal-detail.html',context)
-
-
-
 
 @login_required
 def ayarlar(request):
@@ -469,12 +313,6 @@ def ayarlar(request):
     return render(request,'ayarlar.html',context)
 
 
-@login_required
-def icmallerim(request):
-    context = dict()
-    context['title'] = "İcmallerim"
-    user = request.user
-    return render(request,"icmallerim.html",context)
 
 
 @login_required
@@ -535,132 +373,19 @@ def profile(request):
     return render(request,'signin-form.html',context)
 
 
-@login_required
-def odemeTakipBir(request):
-    context=dict()
-    context['title']="Ödeme Takip-Dönem Seçimi"
-    context['form'] = DonemForm(request.POST)
-    if request.method == "POST":
-        if context['form'].is_valid():
-            ay =context['form'].cleaned_data["ay"]
-            yil =context['form'].cleaned_data["yil"]
-            return redirect("odemeTakipIki", ay=ay,yil=yil)
-        else:
-            context['form'] = DonemForm()
-    return render(request,"odeme-takip1.html",context)
 
 
 
 @login_required
-def odemeTakipIki(request,ay,yil):
+def odemeTakip(request):
     context=dict()
-    context["yil"] = yil
-    context["ay"] = ay
+    donem = Donem.objects.get(kullanici=request.user)
+    context["yil"] = donem.yil
+    context["ay"] = donem.ay
     context['title']="Ödeme Takip İcmali"
-    context['subeIcmalleri'] = Icmal.objects.filter(ay=ay,yıl=yil)
-    context['firmaIcmalleri'] = FirmaIcmal.objects.filter(ay=ay,yıl=yil)
+    context['subeIcmalleri'] = Icmal.objects.filter(ay=donem.ay,yıl=donem.yil)
+    context['firmaIcmalleri'] = FirmaIcmal.objects.filter(ay=donem.ay,yıl=donem.yil)
     return render(request,"odeme-takip2.html",context)
 
 
 
-# import openpyxl
-# from openpyxl.utils import get_column_letter
-# from openpyxl.styles import Font
-
-# def export_to_excel(queryset):
-#     # Verileri içeren QuerySet
-#     data = queryset
-#     # Excel dosyasını oluşturun
-#     wb = openpyxl.Workbook()
-#     ws = wb.active
-#     ws.title = "Data"
-#     # Başlıkları ayarlayın
-#     row_num = 1
-#     columns = [
-#         (u"ID", 15),
-#         (u"Ad", 30),
-#         (u"Soyad", 30),
-#         (u"Doğum Tarihi", 15),
-#     ]
-#     font = Font(bold=True)
-#     for col_num, column_title in enumerate(columns, 1):
-#         c = ws.cell(row=row_num, column=col_num)
-#         c.value = column_title[0]
-#         c.font = font
-#         ws.column_dimensions[get_column_letter(col_num)].width = column_title[1]
-#     # Verileri yazın
-#     for obj in data:
-#         row_num += 1
-#         row = [
-#             obj.id,
-#             obj.firma.isim,
-#             obj.kdv,
-#             obj.kdv2,
-#         ]
-#         for col_num, cell_value in enumerate(row, 1):
-#             c = ws.cell(row=row_num, column=col_num)
-#             c.value = cell_value
-#     # Dosyayı kaydedin
-#     return wb
-
-
-# def exportExcel(request):
-#     dataset = Icmal.objects.all()
-#     data = dataset
-#     # Excel dosyasını oluşturun
-#     wb = openpyxl.Workbook()
-#     ws = wb.active
-#     ws.title = "Data"
-#     # Başlıkları ayarlayın
-#     row_num = 1
-#     columns = [
-#         (u"ID", 15),
-#         (u"Ad", 30),
-#         (u"Soyad", 30),
-#         (u"Doğum Tarihi", 15),
-#     ]
-#     font = Font(bold=True)
-#     for col_num, column_title in enumerate(columns, 1):
-#         c = ws.cell(row=row_num, column=col_num)
-#         c.value = column_title[0]
-#         c.font = font
-#         ws.column_dimensions[get_column_letter(col_num)].width = column_title[1]
-#     # Verileri yazın
-#     for obj in data:
-#         row_num += 1
-#         row = [
-#             obj.id,
-#             obj.firma.isim,
-#             obj.kdv,
-#             obj.kdv2,
-#         ]
-#         for col_num, cell_value in enumerate(row, 1):
-#             c = ws.cell(row=row_num, column=col_num)
-#             c.value = cell_value
-#     response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-#     response['Content-Disposition'] = 'attachment; filename=data.xlsx'
-#     wb.save(response)
-#     return response
-
-
-
-# def exportExcel(request):
-#     # Verileri toplayın
-#     data = [
-#         ['Adı', 'Soyadı', 'Yaş'],
-#         ['Ahmet', 'Yılmaz', 30],
-#         ['Mehmet', 'Çelik', 40],
-#         ['Ali', 'Kaya', 35],
-#     ]
-
-#     # Excel dosyası oluşturun
-#     wb = openpyxl.Workbook()
-#     ws = wb.active
-#     for row in data:
-#         ws.append(row)
-
-#     # Excel dosyasını döndürün
-#     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-#     response['Content-Disposition'] = 'attachment; filename=data.xlsx'
-#     wb.save(response)
-#     return response
