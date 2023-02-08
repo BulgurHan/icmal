@@ -77,10 +77,10 @@
                                 <td>{{icmal.ggkv}} </td>
                              </tr>
                              {% endif %}
-                             {% if icmal.damga > 0  %}
+                             {% if icmal.yargı_dava_ceza > 0  %}
                              <tr>
-                                <td>Tek Başına Alınan / Düzeltme Damga Vergisi</td>
-                                <td>{{icmal.damga}} </td>
+                                <td>Yargı - Dava - Ceza Gideri</td>
+                                <td>{{icmal.yargı_dava_ceza}} </td>
                              </tr>
                              {% endif %}
                              {% if icmal.cezalar > 0  %}
@@ -89,12 +89,7 @@
                                 <td>{{icmal.cezalar}} </td>
                              </tr>  
                              {% endif %}
-                             {% if icmal.digercezalar > 0  %}                            
-                             <tr>
-                                <td>Diğer Cezalar, Dava Giderleri vs.</td>
-                                <td>{{icmal.digercezalar}} </td>
-                             </tr>
-                             {% endif %}
+
                              {% if icmal.geçmişborçlar > 0  %}
                              <tr>
                                 <td>Geçmiş Aylarda Ödenmemiş Vergi Borçları</td>
@@ -194,10 +189,10 @@
                                 <td>{{icmal.ggkv}} </td>
                              </tr>
                              {% endif %}
-                             {% if icmal.damga > 0  %}
+                             {% if icmal.yargı_dava_ceza > 0  %}
                              <tr>
-                                <td>Tek Başına Alınan / Düzeltme Damga Vergisi</td>
-                                <td>{{icmal.damga}} </td>
+                                <td>Yargı - Dava - Ceza Gideri</td>
+                                <td>{{icmal.yargı_dava_ceza}} </td>
                              </tr>
                              {% endif %}
                              {% if icmal.cezalar > 0  %}
@@ -205,12 +200,6 @@
                                 <td>Motorlu Taşıtlar Vergisi/Trafik Cezaları</td>
                                 <td>{{icmal.cezalar}} </td>
                              </tr>  
-                             {% endif %}
-                             {% if icmal.digercezalar > 0  %}                            
-                             <tr>
-                                <td>Diğer Cezalar, Dava Giderleri vs.</td>
-                                <td>{{icmal.digercezalar}} </td>
-                             </tr>
                              {% endif %}
                              {% if icmal.geçmişborçlar > 0  %}
                              <tr>

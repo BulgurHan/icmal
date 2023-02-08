@@ -1,6 +1,7 @@
 from django.template.loader import get_template
 from .utils import render_to_pdf
 import datetime
+import xlwt
 from django.shortcuts import render,get_object_or_404,redirect,HttpResponse
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
@@ -10,6 +11,41 @@ from django.contrib.auth import login,authenticate,logout
 from django.contrib import messages
 from .models import Firma,Icmal,Sube,FirmaIcmal,Donem
 from .forms import FirmaForm,SubeForm,GirdiForm,SignInForm,SignUpForm,FirmaCreateForm,HizliForm,IcmalBir,IcmalUc,DonemForm,KullaniciDonemForm
+
+
+
+def export_to_excel(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="odeme_icmali.xls"'
+    donem = Donem.objects.get(kullanici=request.user)
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('İcmal')
+
+    # Write header row
+    row_num = 0
+    columns = ['Ünvan', 'Vergiler', 'Muhasebe','Teşvik', 'Toplam','SGK','Toplam','Bağkur','Toplam']
+    for col_num, column_title in enumerate(columns):
+        ws.write(row_num, col_num, column_title)
+
+    # Write data rows
+    
+    sube_data = Icmal.objects.filter(ay=donem.ay,yıl=donem.yil)
+    firma_data = FirmaIcmal.objects.filter(ay=donem.ay,yıl=donem.yil)
+    for mymodel in firma_data:
+        row_num += 1
+        row = [mymodel.firma.isim, mymodel.odemelertoplami, mymodel.müsavirlik,mymodel.tesvik,mymodel.uclutoplam,mymodel.sgk,mymodel.dortlutoplam,mymodel.bagkur,mymodel.beslitoplam]
+        for col_num, cell_value in enumerate(row):
+            cell_style = xlwt.easyxf('font: bold 1')
+            ws.write(row_num, col_num, cell_value, cell_style)
+        for sube in sube_data:
+            if sube.sube.firma == mymodel.firma:
+                row_num += 1
+                row = [sube.sube.isim, sube.odemelertoplami, sube.müsavirlik,sube.tesvik,sube.uclutoplam,sube.sgk,sube.dortlutoplam,sube.bagkur,sube.beslitoplam]
+                for col_num, cell_value in enumerate(row):
+                    ws.write(row_num, col_num, cell_value)
+
+    wb.save(response)
+    return response
 
 
 def generatePdf(request,firma_slug,sube_slug,ay,yil):

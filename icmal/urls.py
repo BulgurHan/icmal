@@ -7,7 +7,7 @@ from page.views import (home,createFirma,createSube,
                         ayarlar,generatePdf,generatePdfFirma,generatePdfGrup,signinView,signoutView,
                         signupView,profile,allSubeler,editSube,allFirmalar,editFirma,deleteSube,deleteFirma,
                         hizliBir,hizliIki,icmalGir,odemeTakip,
-                        generatePdfOdemeTakip
+                        generatePdfOdemeTakip,export_to_excel,
                         )
 
 urlpatterns = [
@@ -37,5 +37,6 @@ urlpatterns = [
     path("hizli-sgk-1/", hizliBir, name="hizliBir"),
     path("hizli-sgk/<str:firma_slug>/", hizliIki, name="hizliIki"),
     path("odeme-takip/", odemeTakip, name="odemeTakip"),
+    path("excel/", export_to_excel, name="export_to_excel"),
 
 ]

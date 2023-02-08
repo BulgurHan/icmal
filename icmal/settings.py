@@ -132,11 +132,13 @@ USE_L10N = True
 
 STATIC_URL = 'static/'
 if DEBUG:
+    
     STATICFILES_DIRS = [
         BASE_DIR / "static",
     ]
 else:
-    STATIC_ROOT = "static/"
+    
+    STATIC_ROOT = BASE_DIR / "static",
 
 
 # Default primary key field type
