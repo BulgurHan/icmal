@@ -35,7 +35,14 @@
         {% if title == "Şube Müşteri Sunum İcmali" %}
         <div class="card shadow mb-4">
             <div class="card-header py-3">
+                <div class="row">
+                    <div class="col-5">
                 <h6 class="m-0 font-weight-bold text-primary">{{sube.firma.isim}} Firması {{sube.isim}} Şubesi {{icmal.yıl}}/{{icmal.ay}} Dönemi Müşteri Sunum İcmali</h6>
+                    </div>
+                    <div class="col-5">
+                        <a href="#" class="btn btn-primary"> <i class="fa fa-download" aria-hidden="true"></i> </a>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -264,7 +271,14 @@
 {% if sube.isim == subeIcmal.sube.isim %}
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary"> {{sube.isim}} Şubesi {{subeIcmal.yıl}}/{{subeIcmal.ay}} Dönemi İcmali</h6>
+                <div class="row ">
+                    <div class="col-11">
+                        <h6 class="m-0 font-weight-bold text-primary"> {{sube.isim}} Şubesi {{subeIcmal.yıl}}/{{subeIcmal.ay}} Dönemi İcmali</h6>
+                    </div>
+                    <div class="col-1">
+                        <a title="Tek Şube İcmal PDF'i Al" href={% url 'generatePdf' firma_slug=subeIcmal.firma.slug sube_slug=subeIcmal.sube.slug ay=icmal.ay yil=icmal.yıl %} class="btn btn-primary"> <i class="fa fa-download" aria-hidden="true"></i> </a>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -306,10 +320,10 @@
                                 <td>{{subeIcmal.ggkv}} </td>
                              </tr>
                              {% endif %}
-                             {% if subeIcmal.damga > 0  %}
+                             {% if subeIcmal.yargı_dava_ceza > 0  %}
                              <tr>
-                                <td>Tek Başına Alınan / Düzeltme Damga Vergisi</td>
-                                <td>{{subeIcmal.damga}} </td>
+                                <td>Yargı - Dava - Ceza Gideri</td>
+                                <td>{{subeIcmal.yargı_dava_ceza}} </td>
                              </tr>
                              {% endif %}
                              {% if subeIcmal.cezalar > 0  %}
@@ -317,12 +331,6 @@
                                 <td>Motorlu Taşıtlar Vergisi/Trafik Cezaları</td>
                                 <td>{{subeIcmal.cezalar}} </td>
                              </tr> 
-                             {% endif %} 
-                             {% if subeIcmal.digercezalar > 0  %}                            
-                             <tr>
-                                <td>Diğer Cezalar, Dava Giderleri vs.</td>
-                                <td>{{subeIcmal.digercezalar}} </td>
-                             </tr>
                              {% endif %} 
                              {% if subeIcmal.geçmişborçlar > 0  %}     
                              <tr>

@@ -329,7 +329,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    damga=forms.DecimalField(
+    yargı_dava_ceza =forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -359,16 +359,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    idariceza=forms.DecimalField(
-            widget= forms.NumberInput(
-                attrs={
-                'class':'form-control',
-                'placeholder':'0,00',
-                'step': "0.01",
-                'value': 0
-                }
-            ) 
-    )
+
     davagideri=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
@@ -379,16 +370,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    hakemheyeti=forms.DecimalField(
-            widget= forms.NumberInput(
-                attrs={
-                'class':'form-control',
-                'placeholder':'0,00',
-                'step': "0.01",
-                'value': 0
-                }
-            ) 
-    )
+
     geçmişborçlar=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
@@ -419,16 +401,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    harcama=forms.DecimalField(
-            widget= forms.NumberInput(
-                attrs={
-                'class':'form-control',
-                'placeholder':'0,00',
-                'step': "0.01",
-                'value': 0
-                }
-            ) 
-    )
+
     sgk=forms.DecimalField(
             widget= forms.NumberInput(
                 attrs={
@@ -482,7 +455,7 @@ class GirdiForm(forms.ModelForm):
 
     class Meta:
         model = Icmal
-        fields = ("sgkYapilandirmasi","vergiYapilandirmasi","tasdik",'kdv','kdv2','atak','yasalKdv','muhtasar','ggkv','damga','mtv','ceza','idariceza','davagideri','hakemheyeti','geçmişborçlar','tesvik','müsavirlik','harcama','sgk','bagkur')
+        fields = ("yargı_dava_ceza","sgkYapilandirmasi","vergiYapilandirmasi","tasdik",'kdv','kdv2','atak','yasalKdv','muhtasar','ggkv','mtv','ceza','davagideri','geçmişborçlar','tesvik','müsavirlik','sgk','bagkur')
 
 
 

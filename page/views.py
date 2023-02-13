@@ -1,8 +1,9 @@
-from django.template.loader import get_template
-from .utils import render_to_pdf
+from PyPDF2 import PdfMerger 
+from .utils import render_to_pdf,save_as_zip
 import datetime
 import xlwt
-from django.shortcuts import render,get_object_or_404,redirect,HttpResponse
+from django.http import FileResponse
+from django.shortcuts import render,redirect,HttpResponse
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
@@ -49,22 +50,42 @@ def export_to_excel(request):
 
 
 def generatePdf(request,firma_slug,sube_slug,ay,yil):
-    pdf = render_to_pdf('mytemplate.html',firma_slug=firma_slug,sube_slug=sube_slug,ay=ay,yil=yil)
-    return HttpResponse(pdf, content_type='application/pdf')
+    firma = Firma.objects.get(slug=firma_slug)
+    sube = Sube.objects.get(firma=firma,slug=sube_slug)
+    response = render_to_pdf('mytemplate.html',firma_slug=firma_slug,sube_slug=sube_slug,ay=ay,yil=yil)
+    response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(str(sube.slug))
+    return response
+
+    
 
 
 def generatePdfFirma(request,firma_slug,ay,yil):
-    pdf = render_to_pdf('mytemplate.html',firma_slug=firma_slug,ay=ay,yil=yil)
-    return HttpResponse(pdf, content_type='application/pdf')
+    firma = Firma.objects.get(slug=firma_slug)
+    response = render_to_pdf('mytemplate.html',firma_slug=firma_slug,ay=ay,yil=yil)
+    response['Content-Disposition'] = 'attachment; filename={}.pdf'.format(str(firma.slug))
+    return response
 
-
-def generatePdfGrup(request,ay,yil):
-    pdf = render_to_pdf('mytemplate.html',grup_slug=True,ay=ay,yil=yil)
-    return HttpResponse(pdf, content_type='application/pdf')
 
 def generatePdfOdemeTakip(request,ay,yil):
-    pdf = render_to_pdf('mytemplate.html',odemeTakip=True,ay=ay,yil=yil)
-    return HttpResponse(pdf, content_type='application/pdf')
+    response = render_to_pdf('mytemplate.html',odemeTakip=True,ay=ay,yil=yil)
+    response['Content-Disposition'] = 'attachment; filename=odeme_takip.pdf'
+    return response
+
+
+def tektuslaPDF(request,firma_slug,ay,yil):
+    firma = Firma.objects.get(slug=firma_slug)
+    subeler = Sube.objects.filter(firma=firma)
+    pdfListesi = []
+    for sube in subeler:
+        pdfListesi.append(generatePdf(request,firma_slug=firma_slug,sube_slug=sube.slug,ay=ay,yil=yil))
+    save_as_zip(pdfListesi,subeler)
+    file = open('responses.zip', 'rb')
+    response = FileResponse(file, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename={}.zip'.format(str(firma_slug))
+    return response
+    
+        
+    
 
 @login_required
 def hizliBir(request):
