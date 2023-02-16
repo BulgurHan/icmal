@@ -14,8 +14,8 @@ admin.site.register(Donem)
 class FirmaResource(resources.ModelResource):
     class Meta:
         model = Firma
-        fields =('isim',)
-        export_order = ('isim', )
+        fields =('id','isim','slug')
+        export_order = ('id','isim','slug')
 
 
 class FirmaAdmin(ImportExportModelAdmin):
@@ -26,8 +26,8 @@ admin.site.register(Firma, FirmaAdmin)
 class SubeResource(resources.ModelResource):
     class Meta:
         model = Sube
-        fields =('isim','firma')
-        export_order = ('isim','firma' )
+        fields =('id','isim','firma')
+        export_order = ('id','isim','firma' )
 
 
 class SubeAdmin(ImportExportModelAdmin):
