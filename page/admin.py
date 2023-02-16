@@ -26,8 +26,8 @@ admin.site.register(Firma, FirmaAdmin)
 class SubeResource(resources.ModelResource):
     class Meta:
         model = Sube
-        fields =('id','isim','firma','slug','sgkNo')
-        export_order = ('id','isim','firma','slug','sgkNo' )
+        fields =('id','isim','firma','slug','sgkNo','merkez')
+        export_order = ('id','isim','firma','slug','sgkNo','merkez' )
 
 
 class SubeAdmin(ImportExportModelAdmin):
