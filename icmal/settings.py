@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'icmal.wsgi.application'
 DATABASES = {
       'default': {
           'ENGINE': 'django.db.backends.mysql',
-          'NAME': 'icmal',
+          'NAME': 'kocak$icmal',
           'USER': 'kocak',
           'PASSWORD': 'mert147258369',
           'HOST': 'kocak.mysql.pythonanywhere-services.com',
