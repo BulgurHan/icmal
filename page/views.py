@@ -143,12 +143,12 @@ def hizliIki(request,firma_slug):
 def home(request):
     context=dict()
     #dev code 
-    icmaller = Icmal.objects.all()
-    for icmal in icmaller:
-        icmal.save()
-    firmaicmalleri = FirmaIcmal.objects.all()
-    for firmaicmal in firmaicmalleri:
-        firmaicmal.save()
+    # icmaller = Icmal.objects.all()
+    # for icmal in icmaller:
+    #     icmal.save()
+    # firmaicmalleri = FirmaIcmal.objects.all()
+    # for firmaicmal in firmaicmalleri:
+    #     firmaicmal.save()
         
     try:
         donem = Donem.objects.get(kullanici=request.user)
