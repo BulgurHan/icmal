@@ -77,17 +77,23 @@ WSGI_APPLICATION = 'icmal.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-      'default': {
-          'ENGINE': 'django.db.backends.mysql',
-          'NAME': 'icmal',
-          'USER': 'root',
-           'PASSWORD': 'mert3446007',
-            'HOST': 'kocak.mysql.pythonanywhere-services.com',
-           'PORT': '3306',
-     }
-   }
+# DATABASES = {
+#       'default': {
+#           'ENGINE': 'django.db.backends.mysql',
+#           'NAME': 'icmal',
+#           'USER': 'root',
+#            'PASSWORD': 'mert3446007',
+#             'HOST': 'kocak.mysql.pythonanywhere-services.com',
+#            'PORT': '3306',
+#      }
+#    }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
+    }
+}
 
 
 # DATABASES = {
