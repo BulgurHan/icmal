@@ -1,4 +1,4 @@
-from PyPDF2 import PdfMerger 
+
 from .utils import render_to_pdf,save_as_zip
 import datetime
 import xlwt
@@ -21,29 +21,34 @@ def export_to_excel(request):
     donem = Donem.objects.get(kullanici=request.user)
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('İcmal')
-
     # Write header row
     row_num = 0
-    columns = ['Ünvan', 'Vergiler', 'Muhasebe','Teşvik', 'Toplam','SGK','Toplam','Bağkur','Toplam']
+    columns = ['', '', '','', '','','','','']
     for col_num, column_title in enumerate(columns):
         ws.write(row_num, col_num, column_title)
 
-    # Write data rows
-    
+
     sube_data = Icmal.objects.filter(ay=donem.ay,yıl=donem.yil)
     firma_data = FirmaIcmal.objects.filter(ay=donem.ay,yıl=donem.yil)
-    for mymodel in firma_data:
+    for firma in firma_data:
         row_num += 1
-        row = [mymodel.firma.isim, mymodel.odemelertoplami, mymodel.müsavirlik,mymodel.tesvik,mymodel.uclutoplam,mymodel.sgk,mymodel.dortlutoplam,mymodel.bagkur,mymodel.beslitoplam]
-        for col_num, cell_value in enumerate(row):
-            cell_style = xlwt.easyxf('font: bold 1')
-            ws.write(row_num, col_num, cell_value, cell_style)
+        columns = [firma.firma.isim, 'KDV', 'Muhtasar','Diğer Vergi ve Cezalar', 'Toplam','Bağkur','Toplam','Muhasebe','Teşvik','Toplam','SGK','Toplam']
+        for col_num, column_title in enumerate(columns):
+            col_style = xlwt.easyxf('font: bold 1')
+            ws.write(row_num, col_num, column_title,col_style)
+        
         for sube in sube_data:
-            if sube.sube.firma == mymodel.firma:
+            if sube.sube.firma == firma.firma:
                 row_num += 1
-                row = [sube.sube.isim, sube.odemelertoplami, sube.müsavirlik,sube.tesvik,sube.uclutoplam,sube.sgk,sube.dortlutoplam,sube.bagkur,sube.beslitoplam]
+                row = [sube.sube.isim, sube.kdvler, sube.muhtasar,sube.yargı_dava_ceza,sube.uclutoplam,sube.bagkur,sube.dortlutoplam,sube.müsavirlik,sube.tesvik,sube.beslitoplam,sube.sgk,sube.altilitoplam]
                 for col_num, cell_value in enumerate(row):
                     ws.write(row_num, col_num, cell_value)
+        
+        row_num += 1
+        columns = ['TOPLAM', firma.kdvler, firma.muhtasar,firma.yargı_dava_ceza,firma.uclutoplam,firma.bagkur,firma.dortlutoplam,firma.müsavirlik,firma.tesvik,firma.beslitoplam,firma.sgk,firma.altilitoplam]
+        for col_num, column_title in enumerate(columns):
+            col_style = xlwt.easyxf('font: bold 1')
+            ws.write(row_num, col_num, column_title,col_style)
 
     wb.save(response)
     return response
@@ -138,12 +143,13 @@ def hizliIki(request,firma_slug):
 def home(request):
     context=dict()
     #dev code 
-    # icmaller = Icmal.objects.all()
-    # for icmal in icmaller:
-    #     icmal.save()
-    # firmaicmalleri = FirmaIcmal.objects.all()
-    # for firmaicmal in firmaicmalleri:
-    #     firmaicmal.save()
+    icmaller = Icmal.objects.all()
+    for icmal in icmaller:
+        icmal.save()
+    firmaicmalleri = FirmaIcmal.objects.all()
+    for firmaicmal in firmaicmalleri:
+        firmaicmal.save()
+        
     try:
         donem = Donem.objects.get(kullanici=request.user)
     except:

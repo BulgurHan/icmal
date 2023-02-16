@@ -55,20 +55,6 @@ class Sube(models.Model):
         ordering = ('isim',)
 
 
-@receiver(post_save, sender=Sube)
-def icmal_olustur(sender, instance, created, **kwargs):
-    if created:
-        print("şube oluştu")
-        # a = Icmal(sube=instance, yıl=YEAR_CHOICES[0][0], ay=MONTH_CHOICES[0][0])
-        # a.save()
-        # try:
-        #     icmal = FirmaIcmal.objects.get(firma = instance.firma,yıl=YEAR_CHOICES[0][0], ay=MONTH_CHOICES[0][0])
-        # except:
-        #     b = FirmaIcmal(firma=instance.firma,yıl=YEAR_CHOICES[0][0], ay=MONTH_CHOICES[0][0])       
-        #     b.save()
-
-
-   
 
 
 class Icmal(models.Model):
@@ -85,16 +71,13 @@ class Icmal(models.Model):
     kdv2  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     muhtasar  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     ggkv  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    damga = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     mtv  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     ceza = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    idariceza  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     davagideri  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    hakemheyeti  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     geçmişborçlar  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     sgkYapilandirmasi = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     vergiYapilandirmasi = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-
+    yargı_dava_ceza = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
     odemelertoplami = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
@@ -107,7 +90,7 @@ class Icmal(models.Model):
 
     tesvik  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     müsavirlik  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    harcama  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    
     danismanliktoplami = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     
     sgk  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
@@ -117,24 +100,26 @@ class Icmal(models.Model):
     uclutoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     dortlutoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     beslitoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    altilitoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
     toplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
 
     def save(self, *args, **kwargs):        
-        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+ self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur+self.atak   
+        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+ self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.mtv+self.ceza+self.davagideri+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.bagkur+self.atak+self.yargı_dava_ceza   
         self.kdvler = self.kdv + self.kdv2
         self.toplam = self.odemelertoplami+self.sgk
         self.cezalar = self.ceza + self.mtv
-        self.digercezalar = self.idariceza + self.davagideri + self.hakemheyeti
-        self.müsavirlikler =self.müsavirlik + self.harcama
+        self.digercezalar =  self.davagideri 
+        self.müsavirlikler =self.müsavirlik 
         self.firma = self.sube.firma
-        self.uclutoplam = self.odemelertoplami+self.müsavirlikler+self.tesvik
-        self.dortlutoplam =self.uclutoplam+self.sgk
-        self.beslitoplam = self.dortlutoplam+self.bagkur
+        self.uclutoplam = self.kdvler+self.muhtasar+self.yargı_dava_ceza
+        self.dortlutoplam =self.uclutoplam+self.bagkur
+        self.beslitoplam = self.dortlutoplam+self.müsavirlik+self.tesvik
+        self.altilitoplam = self.beslitoplam+self.sgk
         super(Icmal, self).save(*args, **kwargs)
     def __str__(self):
-        return "{}-{}".format(self.pk,self.sube.isim)
+        return "{}-{}".format(self.sube.isim)
     
     class Meta:
         ordering = ('-yıl',)
@@ -146,31 +131,31 @@ class FirmaIcmal(models.Model):
     atak = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     yasalKdv = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     tasdik = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+
     kdv = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     kdv2  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     muhtasar  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     ggkv  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    damga = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     mtv  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     ceza = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    idariceza  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     davagideri  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    hakemheyeti  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     geçmişborçlar  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     sgkYapilandirmasi = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     vergiYapilandirmasi = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    yargı_dava_ceza = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
     odemelertoplami = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    
+
     kdvler = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     cezalar = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     digercezalar = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     kosgebler = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     müsavirlikler = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
+
     tesvik  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     müsavirlik  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
-    harcama  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    
     danismanliktoplami = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     
     sgk  = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
@@ -180,20 +165,23 @@ class FirmaIcmal(models.Model):
     uclutoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     dortlutoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
     beslitoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
+    altilitoplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
+    
     toplam = models.DecimalField(decimal_places=2, max_digits=11,null=True,default=0)
 
 
     def save(self, *args, **kwargs):        
-        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+ self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.damga+self.mtv+self.ceza+self.idariceza+self.davagideri+self.hakemheyeti+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.harcama+self.bagkur+self.atak
+        self.odemelertoplami =self.vergiYapilandirmasi+self.sgkYapilandirmasi+ self.kdv+self.kdv2+self.tasdik+self.muhtasar+self.ggkv+self.mtv+self.ceza+self.davagideri+self.geçmişborçlar+self.tesvik+self.müsavirlik+self.bagkur+self.atak+self.yargı_dava_ceza   
         self.kdvler = self.kdv + self.kdv2
         self.toplam = self.odemelertoplami+self.sgk
         self.cezalar = self.ceza + self.mtv
-        self.digercezalar = self.idariceza + self.davagideri + self.hakemheyeti
-        self.müsavirlikler =self.müsavirlik + self.harcama
-        self.uclutoplam = self.odemelertoplami+self.müsavirlikler+self.tesvik
-        self.dortlutoplam =self.uclutoplam+self.sgk
-        self.beslitoplam = self.dortlutoplam+self.bagkur
+        self.digercezalar =  self.davagideri 
+        self.müsavirlikler =self.müsavirlik 
+        self.uclutoplam = self.kdvler+self.muhtasar+self.yargı_dava_ceza
+        self.dortlutoplam =self.uclutoplam+self.bagkur
+        self.beslitoplam = self.dortlutoplam+self.müsavirlik+self.tesvik
+        self.altilitoplam = self.beslitoplam+self.sgk
         super(FirmaIcmal, self).save(*args, **kwargs)
     
     class Meta:
@@ -213,16 +201,13 @@ def icmal_esitle(sender, instance,**kwargs):
     kdv2 = 0
     muhtasar = 0
     ggkv = 0
-    damga = 0
+    yargı_dava_ceza=0
     mtv = 0
     ceza = 0
-    idariceza = 0
     davagideri = 0
-    hakemheyeti = 0
     geçmişborçlar = 0
     tesvik = 0
     müsavirlik = 0
-    harcama = 0
     sgk = 0
     bagkur = 0
     sgkYapilandirmasi =0
@@ -239,16 +224,13 @@ def icmal_esitle(sender, instance,**kwargs):
         kdv2 += icmal.kdv2
         muhtasar += icmal.muhtasar
         ggkv += icmal.ggkv
-        damga += icmal.damga
+        yargı_dava_ceza += icmal.yargı_dava_ceza
         mtv += icmal.mtv
         ceza += icmal.ceza
-        idariceza += icmal.idariceza
         davagideri += icmal.davagideri
-        hakemheyeti += icmal.hakemheyeti
         geçmişborçlar += icmal.geçmişborçlar
         tesvik += icmal.tesvik
         müsavirlik += icmal.müsavirlik
-        harcama += icmal.harcama
         sgk += icmal.sgk
         bagkur += icmal.bagkur
         sgkYapilandirmasi += icmal.sgkYapilandirmasi
@@ -260,16 +242,13 @@ def icmal_esitle(sender, instance,**kwargs):
     a.kdv2 = kdv2
     a.muhtasar = muhtasar
     a.ggkv = ggkv
-    a.damga = damga
+    a.yargı_dava_ceza = yargı_dava_ceza
     a.mtv = mtv
     a.ceza = ceza
-    a.idariceza = idariceza
     a.davagideri = davagideri
-    a.hakemheyeti = hakemheyeti
     a.geçmişborçlar = geçmişborçlar
     a.tesvik = tesvik
     a.müsavirlik = müsavirlik
-    a.harcama = harcama
     a.sgk = sgk
     a.bagkur = bagkur
     a.vergiYapilandirmasi = vergiYapilandirmasi

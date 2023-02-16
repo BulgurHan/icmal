@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'import_export',
     "page",
     ]
 
@@ -77,22 +78,28 @@ WSGI_APPLICATION = 'icmal.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-       'default': {
-          'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': BASE_DIR / 'db.sqlite3',
-      }
-  }
+      'default': {
+          'ENGINE': 'django.db.backends.mysql',
+          'NAME': 'icmal',
+          'USER': 'kocak',
+           'PASSWORD': 'mert3446007',
+            'HOST': 'kocak.mysql.pythonanywhere-services.com',
+           'PORT': '3306',
+     }
+   }
+
+
 
 # DATABASES = {
-#      'default': {
-#          'ENGINE': 'django.db.backends.mysql',
-#          'NAME': 'icmal',
-#          'USER': 'root',
-#           'PASSWORD': 'mert3446007',
-#           'HOST': '127.0.0.1',
-#           'PORT': '3306',
+#       'default': {
+#           'ENGINE': 'django.db.backends.mysql',
+#           'NAME': 'local',
+#           'USER': 'root',
+#            'PASSWORD': 'mert3446007',
+#             'HOST': '127.0.0.1',
+#            'PORT': '3306',
 #      }
-#   }
+#    }
 
 
 # Password validation

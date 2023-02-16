@@ -36,13 +36,16 @@
                         <thead>
                             <tr>
                                 <th>{{firmaIcmal.firma.isim}} </th>
-                                <th>Vergiler</th>
+                                <th>KDV</th>
+                                <th>Muhtasar</th>
+                                <th>Diğer Vergi ve Cezalar</th>
+                                <th>Toplam</th>
+                                <th>Bağkur</th>
+                                <th>Toplam</th>
                                 <th>Muhasebe</th>
                                 <th>Teşvik</th>
                                 <th>Toplam</th>
                                 <th>SGK</th>
-                                <th>Toplam</th>
-                                <th>Bağkur</th>
                                 <th>Toplam</th>
                             </tr>
                         </thead>
@@ -52,14 +55,17 @@
                            
                             <tr>
                                 <td>{{subeIcmal.sube.isim}}</td>
-                                <td>{{subeIcmal.odemelertoplami}}</td>
-                                <td>{{subeIcmal.müsavirlikler}} </td>
-                                <td>{{subeIcmal.tesvik}}</td>
+                                <td>{{subeIcmal.kdvler}}</td>
+                                <td>{{subeIcmal.muhtasar}} </td>
+                                <td>{{subeIcmal.yargı_dava_ceza}}</td>
                                 <td>{{subeIcmal.uclutoplam}}</td>
-                                <td>{{subeIcmal.sgk}}</td>
-                                <td>{{subeIcmal.dortlutoplam}}</td>
                                 <td>{{subeIcmal.bagkur}}</td>
+                                <td>{{subeIcmal.dortlutoplam}}</td>
+                                <td>{{subeIcmal.müsavirlik}}</td>
+                                <td>{{subeIcmal.tesvik}}</td>
                                 <td>{{subeIcmal.beslitoplam}}</td>
+                                <td>{{subeIcmal.sgk}}</td>
+                                <td>{{subeIcmal.altilitoplam}}</td>
                                 
                              </tr> 
                              {% endif %}
@@ -67,15 +73,18 @@
                 </tbody>
                 <thead>
                     <tr>
-                        <th>TOPLAM </th>
-                        <th>{{firmaIcmal.odemelertoplami}}</th>
-                        <th>{{firmaIcmal.müsavirlikler}}</th>
-                        <th>{{firmaIcmal.tesvik}}</th>
-                        <th>{{firmaIcmal.uclutoplam}}</th>
-                        <th>{{firmaIcmal.sgk}}</th>
-                        <th>{{firmaIcmal.dortlutoplam}}</th>
-                        <th>{{firmaIcmal.bagkur}}</th>
-                        <th>{{firmaIcmal.beslitoplam}}</th>
+                        <td>TOPLAM</td>
+                        <td>{{firmaIcmal.kdvler}}</td>
+                        <td>{{firmaIcmal.muhtasar}} </td>
+                        <td>{{firmaIcmal.yargı_dava_ceza}}</td>
+                        <td>{{firmaIcmal.uclutoplam}}</td>
+                        <td>{{firmaIcmal.bagkur}}</td>
+                        <td>{{firmaIcmal.dortlutoplam}}</td>
+                        <td>{{firmaIcmal.müsavirlik}}</td>
+                        <td>{{firmaIcmal.tesvik}}</td>
+                        <td>{{firmaIcmal.beslitoplam}}</td>
+                        <td>{{firmaIcmal.sgk}}</td>
+                        <td>{{firmaIcmal.altilitoplam}}</td>
                     </tr>
                 </thead>
                 {% endfor %}
