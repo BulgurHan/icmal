@@ -256,14 +256,16 @@ def icmal_esitle(sender, instance,**kwargs):
     a.save()
 
 
+try:
+    FIRMAICMALLERİ = FirmaIcmal.objects.all()
 
-FIRMAICMALLERİ = FirmaIcmal.objects.all()
-
-for icmal in FIRMAICMALLERİ:
-    if  (str(icmal.yıl),str(icmal.yıl)) in YILLAR:
-        continue
-    else:
-        YILLAR.append((str(icmal.yıl),str(icmal.yıl)))
+    for icmal in FIRMAICMALLERİ:
+        if  (str(icmal.yıl),str(icmal.yıl)) in YILLAR:
+            continue
+        else:
+            YILLAR.append((str(icmal.yıl),str(icmal.yıl)))
+except:
+    FIRMAICMALLERİ = []
         
 
 if  (str(datetime.datetime.now().year-1),str(datetime.datetime.now().year-1)) not in YILLAR:
