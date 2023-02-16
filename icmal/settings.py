@@ -81,7 +81,7 @@ DATABASES = {
       'default': {
           'ENGINE': 'django.db.backends.mysql',
           'NAME': 'icmal',
-          'USER': 'kocak',
+          'USER': 'kocak$',
            'PASSWORD': 'mert3446007',
             'HOST': 'kocak.mysql.pythonanywhere-services.com',
            'PORT': '3306',
