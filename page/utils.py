@@ -56,7 +56,7 @@ def render_to_pdf(template_src,ay,yil,odemeTakip=False,sube_slug=None,firma_slug
     return None
 
 
-def validate_file_path(path):
+def validate_file_path(path,rel):
     base_path = '/home/kocak/mysite/static'
     full_path = os.path.abspath(os.path.join(base_path, path))
     if not full_path.startswith(base_path):
