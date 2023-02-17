@@ -72,7 +72,7 @@ def generatePdfFirma(request,firma_slug,ay,yil):
 
 
 def generatePdfOdemeTakip(request,ay,yil):
-    response = render_to_pdf('mytemplate.html',odemeTakip=True,ay=ay,yil=yil)
+    response = render_to_pdf('pdf.html',odemeTakip=True,ay=ay,yil=yil)
     response['Content-Disposition'] = 'attachment; filename=odeme_takip.pdf'
     return response
 
