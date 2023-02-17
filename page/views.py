@@ -1,7 +1,9 @@
 
-from .utils import render_to_pdf,save_as_zip
+from .utils import render_to_pdf,save_as_zip,link_callback
 import datetime
 import xlwt
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 from django.http import FileResponse
 from django.shortcuts import render,redirect,HttpResponse
 from django.core import serializers
@@ -71,9 +73,15 @@ def generatePdfFirma(request,firma_slug,ay,yil):
     return response
 
 
-def generatePdfOdemeTakip(request,ay,yil):
-    response = render_to_pdf('pdf.html',odemeTakip=True,ay=ay,yil=yil)
-    response['Content-Disposition'] = 'attachment; filename=odeme_takip.pdf'
+
+def generatePdfOdemeTakip(request):
+    template_path = 'pdf.html'
+    context = {'my_data': 'Lorem ipsum'}
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="my_pdf.pdf"'
+    template = get_template(template_path)
+    html = template.render(context, request)
+    pisa.CreatePDF(html, response, link_callback=link_callback)
     return response
 
 

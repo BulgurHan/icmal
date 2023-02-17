@@ -1,7 +1,7 @@
 from io import BytesIO #A stream implementation using an in-memory bytes buffer
                        # It inherits BufferIOBase
 import os
-from django.core.exceptions import SuspiciousFileOperation
+import urllib
 from django.http import HttpResponse
 from django.template.loader import get_template
 import zipfile
@@ -49,19 +49,32 @@ def render_to_pdf(template_src,ay,yil,odemeTakip=False,sube_slug=None,firma_slug
     result = BytesIO()
 
     #This part will create the pdf.
-    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result,link_callback=validate_file_path)
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result,link_callback=link_callback)
     if not pdf.err:
         response = HttpResponse(result.getvalue(), content_type='application/pdf')
         return response
     return None
 
 
-def validate_file_path(path,rel):
-    base_path = '/home/kocak/mysite/static'
-    full_path = os.path.abspath(os.path.join(base_path, path))
-    if not full_path.startswith(base_path):
-        raise SuspiciousFileOperation("The joined path ({path}) is located outside of the base path component ({base_path})")
-    return full_path
+def link_callback(uri, rel):
+    """
+    Callback function for Pisa to resolve static files in Django project
+    """
+    # Assume /static/ as base directory
+    path = urllib.parse.urlsplit(uri).path
+    if rel == "stylesheet":
+        # Handle stylesheets
+        return pisa.DEFAULT_CSS
+    elif path.startswith("/static/"):
+        # Handle other static files
+        final_path = os.path.join(settings.STATIC_ROOT, path[1:])
+        if not os.path.isfile(final_path):
+            raise Exception('File not found: %s' % path)
+        return final_path
+    else:
+        # Handle other links
+        return uri
+
 
 
 
