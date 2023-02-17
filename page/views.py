@@ -75,7 +75,7 @@ def generatePdfFirma(request,firma_slug,ay,yil):
 
 
 def generatePdfOdemeTakip(request):
-    template_path = 'pdf.html'
+    template_path = 'mytemplate.html'
     context = {'my_data': 'Lorem ipsum'}
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="my_pdf.pdf"'
