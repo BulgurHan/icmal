@@ -338,6 +338,7 @@ def firmaIcmalleri(request,firma_slug):
 def allSubeler(request):
     context =dict()
     context['title'] = "Tüm Şubeler"
+    context['subeler'] = Sube.objects.all()
     return render(request,'sube-table.html',context)
 
 @login_required
@@ -346,7 +347,30 @@ def allFirmalar(request):
     context['title'] = "Tüm Firmalar"
     return render(request,'firma-table.html',context)
 
+@login_required
+def allKullanicilar(request):
+    context =dict()
+    context['title'] = "Tüm Kullanıcılar"
+    context['users'] = User.objects.all()
+    return render(request,'user-table.html',context)
 
+@login_required
+def yetkiVer(request,username):
+    kullanici = User.objects.get(username=username)
+    if kullanici.is_superuser:
+        kullanici.is_superuser = False
+    else:
+        kullanici.is_superuser = True
+    messages.success(request, 'Kullanıcı başarıyla güncellendi')
+    kullanici.save()
+    return redirect('allKullanicilar')
+
+@login_required
+def kullaniciSil(request,username):
+    kullanici = User.objects.get(username=username)
+    kullanici.delete()
+    messages.success(request, 'Kullanıcı başarıyla silindi')
+    return redirect('allKullanicilar')
 
 
 @login_required

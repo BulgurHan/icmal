@@ -7,7 +7,7 @@ from page.views import (home,createFirma,createSube,
                         ayarlar,generatePdf,generatePdfFirma,signinView,signoutView,
                         signupView,profile,allSubeler,editSube,allFirmalar,editFirma,deleteSube,deleteFirma,
                         hizliBir,hizliIki,icmalGir,odemeTakip,
-                        generatePdfOdemeTakip,export_to_excel,tektuslaPDF,
+                        generatePdfOdemeTakip,export_to_excel,tektuslaPDF,allKullanicilar,yetkiVer,kullaniciSil
                         )
 
 urlpatterns = [
@@ -29,6 +29,9 @@ urlpatterns = [
     path('profile/', profile, name='profile'),
     path('subeler/', allSubeler, name='allSubeler'),
     path('firmalar/', allFirmalar, name='allFirmalar'),
+    path('kullanicilar/', allKullanicilar, name="allKullanicilar"),
+    path('kullanicilar/yetki-ver/<str:username>/', yetkiVer, name="yetkiVer"),
+    path('kullanicilar/sil/<str:username>/', kullaniciSil, name='kullaniciSil'),
     path("sube/duzenle/<str:firma_slug>/<str:sube_slug>/", editSube, name="editSube"),
     path("firma/duzenle/<str:firma_slug>/", editFirma ,name="editFirma"),
     path("sil/sube/<str:firma_slug>/<str:sube_slug>/", deleteSube, name="deleteSube"),

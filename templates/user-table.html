@@ -1,0 +1,85 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+     <!-- Begin Page Content -->
+     <div class="container-fluid">
+        {% if messages %}
+        {% for message in messages  %}
+        <div class='alert alert-{{message.tags}}'>
+            {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">Kullanıcı Düzenle veya Sil</h1>
+
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Tüm Kullanıcılar</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>İsim</th>
+                                <th>Mail</th>
+                                <th>Yetkili</th>
+                                <th>Yetki Ver ve Al</th>
+                                <th>Sil</th>
+
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>İsim</th>
+                                <th>Mail</th>
+                                <th>Yetkili</th>
+                                <th>Yetki Ver ve Al</th>
+                                <th>Sil</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for user in users  %}
+                            <tr>
+                                <td>{{user.first_name}} {{user.last_name}}</td>
+                                <td>{{user.email}}</td>
+                                <td>
+                                    {% if user.is_superuser %}
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                    {% else %}
+                                    <i class="fa fa-close" aria-hidden="true"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href={% url 'yetkiVer' username=user.username %}>
+                                        <i class="fas fa-edit " aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a  href={% url 'kullaniciSil' username=user.username %}>
+                                        <i class="fa fa-window-close text-danger" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+   
+    
+    <!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+
+
+{% endblock content %}
