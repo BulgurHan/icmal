@@ -1,6 +1,7 @@
 from io import BytesIO #A stream implementation using an in-memory bytes buffer
                        # It inherits BufferIOBase
 import os
+from django.core.exceptions import SuspiciousFileOperation
 from django.http import HttpResponse
 from django.template.loader import get_template
 import zipfile
@@ -48,35 +49,21 @@ def render_to_pdf(template_src,ay,yil,odemeTakip=False,sube_slug=None,firma_slug
     result = BytesIO()
 
     #This part will create the pdf.
-    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result,link_callback=link_callback)
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result,link_callback=validate_file_path)
     if not pdf.err:
         response = HttpResponse(result.getvalue(), content_type='application/pdf')
         return response
     return None
 
 
-def link_callback(uri, rel):
-    """
-    Convert HTML URIs to absolute system paths so xhtml2pdf can access those
-    resources
-    """
-    result = finders.find(uri)
-    if result:
-        print(result)
-        if not isinstance(result, (list, tuple)):
-            result = [result]
-        result = list(os.path.realpath(path) for path in result)
-        path = result[0]
-    else:
-        
-        sUrl = settings.STATIC_URL        # Typically /static/
-        sRoot = settings.STATIC_ROOT     # Typically /home/userX/project_static/
-        
-        if uri.startswith(sUrl):
-            path = os.path.join(sRoot, uri.replace(sUrl, ""))
-        else:
-            return uri
-    return path
+def validate_file_path(path):
+    base_path = '/home/kocak/mysite/static'
+    full_path = os.path.abspath(os.path.join(base_path, path))
+    if not full_path.startswith(base_path):
+        raise SuspiciousFileOperation("The joined path ({path}) is located outside of the base path component ({base_path})")
+    return full_path
+
+
 
 
 
