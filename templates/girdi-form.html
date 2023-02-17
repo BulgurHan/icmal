@@ -128,16 +128,16 @@
             {{form.yargı_dava_ceza}}
         </div>
         <div class="col-2">
-            <label for="id_mtv">Motorlu Taşıtlar Vergisi</label>
+            <label for="id_tasdik">Defter Açılış, Kapanış, Tasdik Ücreti</label>
         </div>
         <div class="col-3">
-            {{form.mtv}}
+            {{form.tasdik}}
         </div>
     </div>
 
     <div class="row justify-content-center">
         <div class="col-2">
-            <label for="id_ceza">Trafik Cezaları:</label>
+            <label for="id_ceza">Trafik Cezaları ve Motorlu Taşıtlar Vergisi:</label>
         </div>
         <div class="col-3">
             {{form.ceza}}
@@ -198,18 +198,7 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-2">
-            <label for="id_tasdik">Defter Açılış, Kapanış, Tasdik Ücreti</label>
-        </div>
-        <div class="col-3">
-            {{form.tasdik}}
-        </div>
-        <div class="col-2">
-            <label for="id_davagideri">Dava Gideri:</label>
-        </div>
-        <div class="col-3">
-            {{form.davagideri}}
-        </div>
+        
 
         <div class="row justify-content-center">
             <div class="col-3">
@@ -249,19 +238,17 @@
         sayilar[3] = document.getElementById("id_yasalKdv").value;
         sayilar[4] = document.getElementById("id_muhtasar").value; 
         sayilar[5] = document.getElementById("id_yargı_dava_ceza").value;
-        sayilar[6] = document.getElementById("id_mtv").value; 
-        sayilar[7] = document.getElementById("id_ceza").value;
-        sayilar[8] = document.getElementById("id_davagideri").value;
-        sayilar[9] = document.getElementById("id_geçmişborçlar").value;
-        sayilar[10] = document.getElementById("id_tesvik").value;
-        sayilar[11] = document.getElementById("id_müsavirlik").value; 
-        sayilar[12] = document.getElementById("id_sgk").value; 
-        sayilar[13] = document.getElementById("id_bagkur").value;
-        sayilar[14] = document.getElementById("id_ggkv").value;
-        sayilar[15] = document.getElementById("id_kdv").value; 
-        sayilar[16] = document.getElementById("id_tasdik").value; 
-        sayilar[17] = document.getElementById("id_vergiYapilandirmasi").value; 
-        sayilar[18] = document.getElementById("id_sgkYapilandirmasi").value;        
+        sayilar[6] = document.getElementById("id_ceza").value; 
+        sayilar[7] = document.getElementById("id_geçmişborçlar").value;
+        sayilar[8] = document.getElementById("id_tesvik").value;
+        sayilar[9] = document.getElementById("id_müsavirlik").value; 
+        sayilar[10] = document.getElementById("id_sgk").value; 
+        sayilar[11] = document.getElementById("id_bagkur").value;
+        sayilar[12] = document.getElementById("id_ggkv").value;
+        sayilar[13] = document.getElementById("id_kdv").value; 
+        sayilar[14] = document.getElementById("id_tasdik").value; 
+        sayilar[15] = document.getElementById("id_vergiYapilandirmasi").value; 
+        sayilar[16] = document.getElementById("id_sgkYapilandirmasi").value;        
 
 
         for (var i in sayilar){
