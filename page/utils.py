@@ -49,31 +49,31 @@ def render_to_pdf(template_src,ay,yil,odemeTakip=False,sube_slug=None,firma_slug
     result = BytesIO()
 
     #This part will create the pdf.
-    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result,link_callback=link_callback)
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
     if not pdf.err:
         response = HttpResponse(result.getvalue(), content_type='application/pdf')
         return response
     return None
 
 
-def link_callback(uri, rel):
-    """
-    Callback function for Pisa to resolve static files in Django project
-    """
-    # Assume /static/ as base directory
-    path = urllib.parse.urlsplit(uri).path
-    if rel == "stylesheet":
-        # Handle stylesheets
-        return pisa.DEFAULT_CSS
-    elif path.startswith("/static/"):
-        # Handle other static files
-        final_path = os.path.join(settings.STATIC_ROOT, path[1:])
-        if not os.path.isfile(final_path):
-            raise Exception('File not found: %s' % path)
-        return final_path
-    else:
-        # Handle other links
-        return uri
+# def link_callback(uri, rel):
+#     """
+#     Callback function for Pisa to resolve static files in Django project
+#     """
+#     # Assume /static/ as base directory
+#     path = urllib.parse.urlsplit(uri).path
+#     if rel == "stylesheet":
+#         # Handle stylesheets
+#         return pisa.DEFAULT_CSS
+#     elif path.startswith("/static/"):
+#         # Handle other static files
+#         final_path = os.path.join(settings.STATIC_ROOT, path[1:])
+#         if not os.path.isfile(final_path):
+#             raise Exception('File not found: %s' % path)
+#         return final_path
+#     else:
+#         # Handle other links
+#         return uri
 
 
 

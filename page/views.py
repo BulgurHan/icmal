@@ -1,5 +1,5 @@
 
-from .utils import render_to_pdf,save_as_zip,link_callback
+from .utils import render_to_pdf,save_as_zip
 import datetime
 import xlwt
 from django.template.loader import get_template
@@ -75,13 +75,13 @@ def generatePdfFirma(request,firma_slug,ay,yil):
 
 
 def generatePdfOdemeTakip(request):
-    template_path = 'mytemplate.html'
+    template_path = 'pdf.html'
     context = {'my_data': 'Lorem ipsum'}
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="my_pdf.pdf"'
     template = get_template(template_path)
     html = template.render(context, request)
-    pisa.CreatePDF(html, response, link_callback=link_callback)
+    pisa.CreatePDF(html, response)
     return response
 
 
