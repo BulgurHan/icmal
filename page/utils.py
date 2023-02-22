@@ -1,6 +1,6 @@
 from io import BytesIO #A stream implementation using an in-memory bytes buffer
                        # It inherits BufferIOBase
-import os
+import datetime
 import urllib
 from django.http import HttpResponse
 from django.template.loader import get_template
@@ -19,6 +19,8 @@ from .models import Icmal,Sube,Firma,FirmaIcmal
 def render_to_pdf(template_src,ay,yil,odemeTakip=False,sube_slug=None,firma_slug=None, context_dict={}):
     template = get_template(template_src)
     isim = ""
+    tarih = "{}/{}/{}".format(datetime.datetime.now().day,datetime.datetime.now().month,datetime.datetime.now().year)
+    context_dict['tarih']=tarih
     if  sube_slug  != None and firma_slug !=None:
         firma = Firma.objects.get(slug=firma_slug)
         sube= Sube.objects.get(slug=sube_slug , firma=firma)        

@@ -2,9 +2,14 @@
 <!DOCTYPE html>
 <html lang="tr">
 	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title> {{title}}</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<title>{{title}}</title>
+
+
+
+		<!-- Invoice styling -->
 		<style>
 			body {
 				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
@@ -14,15 +19,11 @@
 
 			body h1 {
 				font-weight: 300;
-				margin-bottom: 0px;
-				padding-bottom: 0px;
 				color: #000;
 			}
 
 			body h3 {
 				font-weight: 300;
-				margin-top: 10px;
-				margin-bottom: 20px;
 				font-style: italic;
 				color: #555;
 			}
@@ -32,8 +33,8 @@
 			}
 
 			.invoice-box {
+				max-width: 800px;
 				margin: auto;
-				padding: 30px;
 				border: 1px solid #eee;
 				box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 				font-size: 16px;
@@ -43,21 +44,10 @@
 			}
 
 			.invoice-box table {
+				width: 100%;
 				line-height: inherit;
-				text-align: center;
+				text-align: left;
 				border-collapse: collapse;
-			}
-
-			.sube-box table {
-				line-height: inherit;
-				text-align: center;
-				border-collapse: collapse;
-				border: 1px solid #ddd;
-			}
-
-			.sube-box table td {
-				padding: 1px;
-				vertical-align: top;
 			}
 
 			.invoice-box table td {
@@ -66,12 +56,9 @@
 			}
 
 			.invoice-box table tr td:nth-child(2) {
-				text-align: left;
+				text-align: right;
 			}
 
-			.invoice-box table tr.top table td {
-				padding-bottom: 20px;
-			}
 
 			.invoice-box table tr.top table td.title {
 				font-size: 45px;
@@ -79,9 +66,6 @@
 				color: #333;
 			}
 
-			.invoice-box table tr.information table td {
-				padding-bottom: 40px;
-			}
 
 			.invoice-box table tr.heading td {
 				background: #eee;
@@ -89,294 +73,368 @@
 				font-weight: bold;
 			}
 
-			.invoice-box table tr.details td {
-				padding-bottom: 20px;
-			}
+
 
 			.invoice-box table tr.item td {
 				border-bottom: 1px solid #eee;
 			}
 
+			.invoice-box table tr.item.last td {
+				border-bottom: none;
+			}
 
 			.invoice-box table tr.total td:nth-child(2) {
 				border-top: 2px solid #eee;
 				font-weight: bold;
 			}
+			.logo {
+      				width: 200px;
+      				height: 200px;
+      				position: relative;
+      				display: flex;
+      				justify-content: center;
+      				align-items: center;
+      				font-size: 120px;
+      				color: black;
+      				font-weight: bold;
+      				text-transform: uppercase;
+      				font-family: Arial, sans-serif;
+    			}
+
+			/* small m in top right corner */
+			.logo::after {
+				content: "m";
+				position: absolute;
+				font-size: 50px;
+				color: black;
+				top: 1px;
+				right: 1px;
+			}
 
 			@media only screen and (max-width: 600px) {
 				.invoice-box table tr.top table td {
+					width: 100%;
 					display: block;
 					text-align: center;
 				}
 
 				.invoice-box table tr.information table td {
+					width: 100%;
 					display: block;
 					text-align: center;
 				}
 			}
 		</style>
 	</head>
-	{% if title == "Şube İcmali" %}
-	<body>
-        <div>
-        <h3> SMMM NEBIL KOCAK </h3>
-		<h3> Korkutreis Mh. Hanimeli Sk. No:21/9 </h3>
-		<h3> E-Posta: smmmnebilkocak@gmail.com </h3>
-		<h3> GSM: 0554 802 4706 </h3>
-		<h3> GSM: 0552 821 3706 </h3>
-        </div>
-        <br><br><br>
-		<center>
-			<h1> {{icmal.sube.isim}} Subesi {{icmal.yıl}}/{{icmal.ay}} Donemi Musteri Sunum Icmali</h1>
 
-		</center>
-		<br>
+	{% if title == "Şube İcmali" %}
+
+	<body>
+
 		<div class="invoice-box">
-		<table>
+			<table>
+				<tr class="top">
+					<td colspan="2">
+						<table>
+							<tr>
+								<td class="title">
+									  <div class="logo">
+   										 M
+  									  </div>
+								</td>
+
+								<td>
+									Tarih: {{tarih}}
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr class="information">
+					<td colspan="2">
+						<table>
+							<tr>
+								<td>
+									SMMM NEBIL KOCAK<br />
+									Korkutreis Mh. Hanimeli Sk. No:21/9 <br />
+									E-Posta: smmmnebilkocak@gmail.com <br />
+									GSM: 0554 802 4706  <br />
+									GSM: 0552 821 3706  <br />
+								</td>
+
+								<td>
+									Sayin,<br />
+									{{icmal.sube.firma.isim}} Firmasi<br />
+									{{icmal.sube.isim}} Sb {{icmal.yıl}}/{{icmal.ay}} Dönemi Icmali 
+									
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr class="heading">
+					<td>Odemenin Konusu</td>
+
+					<td>Tutar  </td>
+				</tr>
+
+				{% if icmal.kdvler > 0 %}
 			<tr>
-				<td valign="top" colspan="2">
-					<b>Odemenin Konusu</b>
-				</td>
-				<td valign="top">
-                    <b>Tutar</b>
-				</td>
-			</tr>
-			{% if icmal.kdvler > 0 %}
-			<tr>
-				<td colspan="2">Katma Deger Vergisi</td>
+				<td class="details">Katma Deger Vergisi</td>
 				<td>{{icmal.kdvler}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.atak > 0 %}
 			<tr>
-			   <td colspan="2">Atak Fatura</td>
+			   <td class="details">Atak Fatura</td>
 			   <td>{{icmal.atak}} </td>
 			</tr>
 			{% endif %}
 			{% if icmal.muhtasar > 0 %}
             <tr>
-				<td colspan="2">Muhtasar Vergisi</td>
+				<td class="details">Muhtasar Vergisi</td>
 				<td>{{icmal.muhtasar}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.ggkv > 0 %}
             <tr>
-				<td colspan="2">Gelir,Gecici,Kurumlar Vergisi</td>
+				<td class="details">Gelir,Gecici,Kurumlar Vergisi</td>
 				<td>{{icmal.ggkv}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.damga > 0 %}
             <tr>
-				<td colspan="2">Tek Basina Alinan / Duzeltme Damga Vergisi </td>
+				<td class="details">Tek Basina Alinan / Duzeltme Damga Vergisi </td>
 				<td>{{icmal.damga}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.cezalar > 0 %}
             <tr>
-				<td colspan="2">Motorlu Tasitlar Vergisi / Trafik Cezalari</td>
+				<td class="details">Motorlu Tasitlar Vergisi / Trafik Cezalari</td>
 				<td>{{icmal.cezalar}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.digercezalar > 0 %}
             <tr>
-				<td colspan="2">Diger Cezalar, Dava Giderleri vs.</td>
+				<td class="details">Diger Cezalar, Dava Giderleri vs.</td>
 				<td>{{icmal.digercezalar}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.geçmişborçlar > 0 %}
             <tr>
-				<td colspan="2">Gecmis Aylarda Odenmemis Vergi Borclari</td>
+				<td class="details">Gecmis Aylarda Odenmemis Vergi Borclari</td>
 				<td>{{icmal.geçmişborçlar}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.tesvik > 0 %}
 			<tr>
-				<td colspan="2">Iskur-Tesvik-Kosgeb- Personel Ucreti</td>
+				<td class="details">Iskur-Tesvik-Kosgeb- Personel Ucreti</td>
 				<td>{{icmal.tesvik}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.müsavirlikler > 0 %}
             <tr>
-				<td colspan="2">Muhasebe ve Musavirlik Ucreti</td>
+				<td class="details">Muhasebe ve Musavirlik Ucreti</td>
 				<td>{{icmal.müsavirlikler}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.bagkur > 0  %}
 			<tr>
-				<td colspan="2">Bagkur Primleri</td>
+				<td class="details">Bagkur Primleri</td>
 				<td>{{icmal.bagkur}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.sgkYapilandirmasi > 0 %}
-			<tr class="sgk">
-				<td colspan="2">SGK Yapilandirmasi</td>
+			<tr >
+				<td class="details">SGK Yapilandirmasi</td>
 				<td>{{icmal.sgkYapilandirmasi}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.vergiYapilandirmasi > 0 %}
-			<tr class="sgk">
-				<td colspan="2">Vergi Yapilandirmasi</td>
+			<tr >
+				<td class="details">Vergi Yapilandirmasi</td>
 				<td>{{icmal.vergiYapilandirmasi}}</td>
 			</tr>
 			{% endif %}
-            <tr>
-				<td colspan="2">
-					<b>Toplam</b>
-				</td>
-				<td >
-                    <b>{{icmal.odemelertoplami}}</b>
-				</td>
-			</tr>
-			{% if icmal.sgk > 0 %}
-            <tr class="sgk">
-				<td colspan="2">SGK Primleri</td>
-				<td>{{icmal.sgk}}</td>
-			</tr>
-			{% endif %}
+				<tr class="heading">
+					<td>Toplam</td>
 
-            <tr>
-				<td colspan="2">
-					<b>Genel Toplam</b>
-				</td>
-				<td >
-                    <b>{{icmal.toplam}}</b>
-				</td>
-			</tr>
-		</table>
-	</div>
+					<td>{{icmal.odemelertoplami}}</td>
+				</tr>
+				{% if icmal.sgk > 0 %}
+				<tr >
+					<td class="details">SGK Primleri</td>
+					<td>{{icmal.sgk}}</td>
+				</tr>
+				{% endif %}
+				<tr class="heading">
+					<td>Genel Toplam</td>
 
-		<h1 class="sgkno"> {{icmal.sube.isim}} Subesi Sgk No : {{icmal.sube.sgkNo}}</h1>
+					<td>{{icmal.toplam}}</td>
+				</tr>
+				<tr class="heading">
+					<td>{{icmal.sube.isim}} Subesi SGK No:</td>
 
+					<td>{{icmal.sube.sgkNo}}</td>
+				</tr>
+			</table>
+		</div>
 	</body>
+</html>
+
+
+
 
 	{% elif title == "Firma İcmali" %}
 	<body>
-        <div>
-			<h3> SMMM NEBIL KOCAK </h3>
-			<h3> Korkutreis Mh. Hanimeli Sk. No:21/9 </h3>
-			<h3> E-Posta: smmmnebilkocak@gmail.com </h3>
-			<h3> GSM: 0554 802 4706 </h3>
-			<h3> GSM: 0552 821 3706 </h3>
-        </div>
-        <br><br><br>
-		<center>
-			<h1> {{icmal.firma.isim}} Firmasi {{icmal.yıl}}/{{icmal.ay}} Donemi Musteri Sunum Icmali</h1>
 
-		</center>
-		<br>
 		<div class="invoice-box">
-		<table>
+			<table>
+				<tr class="top">
+					<td colspan="2">
+						<table>
+							<tr>
+								<td class="title">
+									  <div class="logo">
+   										 M
+  									  </div>
+								</td>
+
+								<td>
+									Tarih: {{tarih}}
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr class="information">
+					<td colspan="2">
+						<table>
+							<tr>
+								<td>
+									SMMM NEBIL KOCAK<br />
+									Korkutreis Mh. Hanimeli Sk. No:21/9 <br />
+									E-Posta: smmmnebilkocak@gmail.com <br />
+									GSM: 0554 802 4706  <br />
+									GSM: 0552 821 3706  <br />
+								</td>
+
+								<td>
+									Sayin,<br />
+									{{icmal.firma.isim}} Firmasi<br />
+								 {{icmal.yıl}}/{{icmal.ay}} Dönemi Icmali 
+									
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr class="heading">
+					<td>Odemenin Konusu</td>
+
+					<td>Tutar  </td>
+				</tr>
+
+				{% if icmal.kdvler > 0 %}
 			<tr>
-				<td valign="top" colspan="2">
-					<b>Odemenin Konusu</b>
-				</td>
-				<td valign="top">
-                    <b>Tutar</b>
-				</td>
-			</tr>
-			{% if icmal.kdvler > 0 %}
-			<tr>
-				<td colspan="2">Katma Deger Vergisi</td>
+				<td class="details">Katma Deger Vergisi</td>
 				<td>{{icmal.kdvler}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.atak > 0 %}
 			<tr>
-			   <td colspan="2">Atak Fatura</td>
+			   <td class="details">Atak Fatura</td>
 			   <td>{{icmal.atak}} </td>
 			</tr>
 			{% endif %}
 			{% if icmal.muhtasar > 0 %}
             <tr>
-				<td colspan="2">Muhtasar Vergisi</td>
+				<td class="details">Muhtasar Vergisi</td>
 				<td>{{icmal.muhtasar}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.ggkv > 0 %}
             <tr>
-				<td colspan="2">Gelir,Gecici,Kurumlar Vergisi</td>
+				<td class="details">Gelir,Gecici,Kurumlar Vergisi</td>
 				<td>{{icmal.ggkv}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.damga > 0 %}
             <tr>
-				<td colspan="2">Tek Basina Alinan / Duzeltme Damga Vergisi </td>
+				<td class="details">Tek Basina Alinan / Duzeltme Damga Vergisi </td>
 				<td>{{icmal.damga}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.cezalar > 0 %}
             <tr>
-				<td colspan="2">Motorlu Tasitlar Vergisi / Trafik Cezalari</td>
+				<td class="details">Motorlu Tasitlar Vergisi / Trafik Cezalari</td>
 				<td>{{icmal.cezalar}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.digercezalar > 0 %}
             <tr>
-				<td colspan="2">Diger Cezalar, Dava Giderleri vs.</td>
+				<td class="details">Diger Cezalar, Dava Giderleri vs.</td>
 				<td>{{icmal.digercezalar}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.geçmişborçlar > 0 %}
             <tr>
-				<td colspan="2">Gecmis Aylarda Odenmemis Vergi Borclari</td>
+				<td class="details">Gecmis Aylarda Odenmemis Vergi Borclari</td>
 				<td>{{icmal.geçmişborçlar}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.tesvik > 0 %}
 			<tr>
-				<td colspan="2">Iskur-Tesvik-Kosgeb- Personel Ucreti</td>
+				<td class="details">Iskur-Tesvik-Kosgeb- Personel Ucreti</td>
 				<td>{{icmal.tesvik}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.müsavirlikler > 0 %}
             <tr>
-				<td colspan="2">Muhasebe ve Musavirlik Ucreti</td>
+				<td class="details">Muhasebe ve Musavirlik Ucreti</td>
 				<td>{{icmal.müsavirlikler}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.bagkur > 0  %}
 			<tr>
-				<td colspan="2">Bagkur Primleri</td>
+				<td class="details">Bagkur Primleri</td>
 				<td>{{icmal.bagkur}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.sgkYapilandirmasi > 0 %}
-			<tr class="sgk">
-				<td colspan="2">SGK Yapilandirmasi</td>
+			<tr >
+				<td class="details">SGK Yapilandirmasi</td>
 				<td>{{icmal.sgkYapilandirmasi}}</td>
 			</tr>
 			{% endif %}
 			{% if icmal.vergiYapilandirmasi > 0 %}
-			<tr class="sgk">
-				<td colspan="2">Vergi Yapilandirmasi</td>
+			<tr >
+				<td class="details">Vergi Yapilandirmasi</td>
 				<td>{{icmal.vergiYapilandirmasi}}</td>
 			</tr>
 			{% endif %}
-            <tr>
-				<td colspan="2">
-					<b>Toplam</b>
-				</td>
-				<td >
-                    <b>{{icmal.odemelertoplami}}</b>
-				</td>
-			</tr>
-			{% if icmal.sgk > 0 %}
-            <tr class="sgk">
-				<td colspan="2">SGK Primleri</td>
-				<td>{{icmal.sgk}}</td>
-			</tr>
-			{% endif %}
+				<tr class="heading">
+					<td>Toplam</td>
 
-            <tr>
-				<td colspan="2">
-					<b>Genel Toplam</b>
-				</td>
-				<td >
-                    <b>{{icmal.toplam}}</b>
-				</td>
-			</tr>
-		</table>
-	</div>
+					<td>{{icmal.odemelertoplami}}</td>
+				</tr>
+				{% if icmal.sgk > 0 %}
+				<tr >
+					<td class="details">SGK Primleri</td>
+					<td>{{icmal.sgk}}</td>
+				</tr>
+				{% endif %}
+				<tr class="heading">
+					<td>Genel Toplam</td>
+
+					<td>{{icmal.toplam}}</td>
+				</tr>
+			</table>
+		</div>
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
 	{% for sube in subeler  %}
