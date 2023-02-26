@@ -16,12 +16,8 @@ for i in range(1,13):
 
 class Donem(models.Model):
     kullanici = models.ForeignKey(User,on_delete=models.CASCADE)
-    ay = models.CharField(
-        choices=AYLAR,
-        max_length=10)
-    yil= models.CharField(
-        choices=YILLAR,
-        max_length=10)
+    ay = models.IntegerField(('ay'), choices=AYLAR, default=datetime.datetime.now().month)
+    yil= models.IntegerField(('yıl'), choices=YILLAR, default=datetime.datetime.now().year)
 
 
 class Firma(models.Model):
