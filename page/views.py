@@ -326,6 +326,8 @@ def icmalGir(request,firma_slug,sube_slug):
                 item.save()
                 messages.success(request,'İcmal Başarıyla Kaydedildi')
                 return redirect("icmalGir", firma_slug=firma.slug, sube_slug = sube.slug)
+            else:
+                print(context['form'].errors)
     return render(request,'girdi-form.html',context)
 
 

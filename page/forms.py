@@ -339,7 +339,7 @@ class GirdiForm(forms.ModelForm):
                 }
             ) 
     )
-    mtv=forms.DecimalField(
+    mtv=forms.DecimalField(required=False,
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
@@ -360,7 +360,7 @@ class GirdiForm(forms.ModelForm):
             ) 
     )
 
-    davagideri=forms.DecimalField(
+    davagideri=forms.DecimalField(required=False,
             widget= forms.NumberInput(
                 attrs={
                 'class':'form-control',
