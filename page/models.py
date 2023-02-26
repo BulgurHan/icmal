@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 YILLAR = []
 AYLAR = []
 for i in range(1,13):
-    AYLAR.append((str(i),str(i)))
+    AYLAR.append((i,i))
 
 
 
@@ -262,11 +262,11 @@ except:
     FIRMAICMALLERİ = []
         
 
-if  (str(datetime.datetime.now().year-1),str(datetime.datetime.now().year-1)) not in YILLAR:
-    YILLAR.append((str(datetime.datetime.now().year-1),str(datetime.datetime.now().year-1)))
-if  (str(datetime.datetime.now().year),str(datetime.datetime.now().year)) not in YILLAR:   
-    YILLAR.append((str(datetime.datetime.now().year),str(datetime.datetime.now().year)))
+if  (datetime.datetime.now().year-1,datetime.datetime.now().year-1) not in YILLAR:
+    YILLAR.append((datetime.datetime.now().year-1,datetime.datetime.now().year-1))
+if  (datetime.datetime.now().year,datetime.datetime.now().year) not in YILLAR:   
+    YILLAR.append((datetime.datetime.now().year,datetime.datetime.now().year))
 if datetime.datetime.now().month == 12:
-    YILLAR.append((str(datetime.datetime.now().year+1),str(datetime.datetime.now().year+1)))
+    YILLAR.append((datetime.datetime.now().year+1,datetime.datetime.now().year+1))
 
 
