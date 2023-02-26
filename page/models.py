@@ -118,8 +118,6 @@ class Icmal(models.Model):
         self.beslitoplam = self.dortlutoplam+self.müsavirlik+self.tesvik
         self.altilitoplam = self.beslitoplam+self.sgk
         super(Icmal, self).save(*args, **kwargs)
-    def __str__(self):
-        return "{}-{}".format(self.sube.isim)
     
     class Meta:
         ordering = ('-yıl',)
