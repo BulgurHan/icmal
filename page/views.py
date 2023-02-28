@@ -34,7 +34,7 @@ def export_to_excel(request):
     firma_data = FirmaIcmal.objects.filter(ay=donem.ay,yıl=donem.yil)
     for firma in firma_data:
         row_num += 1
-        columns = [firma.firma.isim, 'KDV', 'Muhtasar','Diğer Vergi ve Cezalar','Atak Fatura', 'Yasal KDV','Gelir/Geçici Kurumlar Vergisi','Defter Açılış-Kapanış Tasdik Ücreti','Trafik Cezaları ve MTV','Vergi Yapılandırması','SGK Yapılandırması' ,'Geçmiş Aylarda Ödenmeyen Vergi ve Borçlar'   'Toplam','Bağkur','Toplam','Muhasebe','Teşvik','Toplam','SGK','Toplam']
+        columns = [firma.firma.isim, 'KDV', 'Muhtasar','Diğer Vergi ve Cezalar','Atak Fatura', 'Yasal KDV','Gelir/Geçici Kurumlar Vergisi','Defter Açılış-Kapanış Tasdik Ücreti','Trafik Cezaları ve MTV','Vergi Yapılandırması','SGK Yapılandırması' ,'Geçmiş Aylarda Ödenmeyen Vergi ve Borçlar','Toplam','Bağkur','Toplam','Muhasebe','Teşvik','Toplam','SGK','Toplam']
         for col_num, column_title in enumerate(columns):
             col_style = xlwt.easyxf('font: bold 1')
             ws.write(row_num, col_num, column_title,col_style)
@@ -152,12 +152,12 @@ def home(request):
     context=dict()
     #dev code 
 
-    icmaller = Icmal.objects.all()
-    for icmal in icmaller:
-        icmal.save()
-    firmaicmalleri = FirmaIcmal.objects.all()
-    for firmaicmal in firmaicmalleri:
-        firmaicmal.save()
+    # icmaller = Icmal.objects.all()
+    # for icmal in icmaller:
+    #     icmal.save()
+    # firmaicmalleri = FirmaIcmal.objects.all()
+    # for firmaicmal in firmaicmalleri:
+    #     firmaicmal.save()
         
     try:
         donem = Donem.objects.get(kullanici=request.user)
