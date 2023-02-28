@@ -109,7 +109,7 @@ class Icmal(models.Model):
         self.digercezalar =  self.davagideri 
         self.müsavirlikler =self.müsavirlik 
         self.firma = self.sube.firma
-        self.uclutoplam = self.kdvler+self.muhtasar+self.yargı_dava_ceza
+        self.uclutoplam = self.kdvler+self.muhtasar+self.yargı_dava_ceza+self.atak+self.yasalKdv+self.ggkv+self.tasdik+self.ceza+self.vergiYapilandirmasi+self.sgkYapilandirmasi+self.geçmişborçlar
         self.dortlutoplam =self.uclutoplam+self.bagkur
         self.beslitoplam = self.dortlutoplam+self.müsavirlik+self.tesvik
         self.altilitoplam = self.beslitoplam+self.sgk
@@ -172,7 +172,7 @@ class FirmaIcmal(models.Model):
         self.cezalar = self.ceza + self.mtv
         self.digercezalar =  self.davagideri 
         self.müsavirlikler =self.müsavirlik 
-        self.uclutoplam = self.kdvler+self.muhtasar+self.yargı_dava_ceza
+        self.uclutoplam = self.kdvler+self.muhtasar+self.yargı_dava_ceza+self.atak+self.yasalKdv+self.ggkv+self.tasdik+self.ceza+self.vergiYapilandirmasi+self.sgkYapilandirmasi+self.geçmişborçlar
         self.dortlutoplam =self.uclutoplam+self.bagkur
         self.beslitoplam = self.dortlutoplam+self.müsavirlik+self.tesvik
         self.altilitoplam = self.beslitoplam+self.sgk

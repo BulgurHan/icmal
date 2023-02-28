@@ -34,7 +34,7 @@ def export_to_excel(request):
     firma_data = FirmaIcmal.objects.filter(ay=donem.ay,yıl=donem.yil)
     for firma in firma_data:
         row_num += 1
-        columns = [firma.firma.isim, 'KDV', 'Muhtasar','Diğer Vergi ve Cezalar', 'Toplam','Bağkur','Toplam','Muhasebe','Teşvik','Toplam','SGK','Toplam']
+        columns = [firma.firma.isim, 'KDV', 'Muhtasar','Diğer Vergi ve Cezalar','Atak Fatura', 'Yasal KDV','Gelir/Geçici Kurumlar Vergisi','Defter Açılış-Kapanış Tasdik Ücreti','Trafik Cezaları ve MTV','Vergi Yapılandırması','SGK Yapılandırması' ,'Geçmiş Aylarda Ödenmeyen Vergi ve Borçlar'   'Toplam','Bağkur','Toplam','Muhasebe','Teşvik','Toplam','SGK','Toplam']
         for col_num, column_title in enumerate(columns):
             col_style = xlwt.easyxf('font: bold 1')
             ws.write(row_num, col_num, column_title,col_style)
@@ -42,12 +42,12 @@ def export_to_excel(request):
         for sube in sube_data:
             if sube.sube.firma == firma.firma:
                 row_num += 1
-                row = [sube.sube.isim, sube.kdvler, sube.muhtasar,sube.yargı_dava_ceza,sube.uclutoplam,sube.bagkur,sube.dortlutoplam,sube.müsavirlik,sube.tesvik,sube.beslitoplam,sube.sgk,sube.altilitoplam]
+                row = [sube.sube.isim, sube.kdvler,sube.muhtasar,sube.yargı_dava_ceza,sube.atak,sube.yasalKdv,sube.ggkv,sube.tasdik,sube.ceza,sube.vergiYapilandirmasi,sube.sgkYapilandirmasi,sube.geçmişborçlar,sube.uclutoplam,sube.bagkur,sube.dortlutoplam,sube.müsavirlik,sube.tesvik,sube.beslitoplam,sube.sgk,sube.altilitoplam]
                 for col_num, cell_value in enumerate(row):
                     ws.write(row_num, col_num, cell_value)
         
         row_num += 1
-        columns = ['TOPLAM', firma.kdvler, firma.muhtasar,firma.yargı_dava_ceza,firma.uclutoplam,firma.bagkur,firma.dortlutoplam,firma.müsavirlik,firma.tesvik,firma.beslitoplam,firma.sgk,firma.altilitoplam]
+        columns = ['TOPLAM', firma.kdvler, firma.muhtasar,firma.yargı_dava_ceza,firma.atak,firma.yasalKdv,firma.ggkv,firma.tasdik,firma.ceza,firma.vergiYapilandirmasi,firma.sgkYapilandirmasi,firma.geçmişborçlar,firma.uclutoplam,firma.bagkur,firma.dortlutoplam,firma.müsavirlik,firma.tesvik,firma.beslitoplam,firma.sgk,firma.altilitoplam]
         for col_num, column_title in enumerate(columns):
             col_style = xlwt.easyxf('font: bold 1')
             ws.write(row_num, col_num, column_title,col_style)
@@ -151,12 +151,13 @@ def hizliIki(request,firma_slug):
 def home(request):
     context=dict()
     #dev code 
-    # icmaller = Icmal.objects.all()
-    # for icmal in icmaller:
-    #     icmal.save()
-    # firmaicmalleri = FirmaIcmal.objects.all()
-    # for firmaicmal in firmaicmalleri:
-    #     firmaicmal.save()
+
+    icmaller = Icmal.objects.all()
+    for icmal in icmaller:
+        icmal.save()
+    firmaicmalleri = FirmaIcmal.objects.all()
+    for firmaicmal in firmaicmalleri:
+        firmaicmal.save()
         
     try:
         donem = Donem.objects.get(kullanici=request.user)
